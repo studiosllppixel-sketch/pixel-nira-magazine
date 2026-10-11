@@ -130,7 +130,40 @@ bind("textContent","input",x=>x.text=$("textContent").value);bind("fontFamily","
 function add(type){snap();const x=type==="image"?{id:crypto.randomUUID(),type:"image",kind:"image",url:"",alt:"",x:48,y:20,width:45,height:48,fit:"cover",focalX:50,focalY:50,scale:100,filter:"none"}:{id:crypto.randomUUID(),type:"text",kind:type==="heading"?"heading":"body",text:type==="heading"?"Your new headline":"Write your story here…",x:6,y:68,width:55,fontFamily:type==="heading"?"Playfair Display":"DM Sans",fontSize:type==="heading"?36:14,color:"#22221f",lineHeight:type==="heading"?1.02:1.45,textAlign:"left",letterSpacing:0,fontWeight:type==="heading"?"500":"400"};s.elements.push(x);s.selectedId=x.id;dirty();render()}
 $("addHeadingBtn").onclick=()=>add("heading");$("addTextBtn").onclick=()=>add("text");$("addImageBtn").onclick=()=>add("image");$("deleteElementBtn").onclick=()=>{if(!el())return;snap();s.elements=s.elements.filter(x=>x.id!==s.selectedId);s.selectedId=null;dirty();render()};$("undoBtn").onclick=()=>{const p=s.history.pop();if(!p)return toast("Nothing to undo yet.");s.redoHistory.push(snapshot());restoreSnapshot(p)};if($("redoBtn"))$("redoBtn").onclick=()=>{const p=s.redoHistory.pop();if(!p)return toast("Nothing to redo yet.");s.history.push(snapshot());restoreSnapshot(p)};
 $("brandSelect").onchange=async()=>{if(s.dirty&&!confirm("Discard unsaved changes and switch brand?")){$("brandSelect").value=s.brand;return}s.brand=$("brandSelect").value;s.layout="editorial";$("layoutSelect").value=s.layout;s.history=[];await loadPage()};
-$("layoutSelect").onchange=()=>{s.layout=$("layoutSelect").value;snap();if(s.layout==="editorial")s.elements=seed(s.brand);else s.elements.forEach(x=>{if(x.type==="image"){x.x=s.layout==="cover"?52:6;x.y=s.layout==="cover"?13:48;x.width=s.layout==="cover"?42:42;x.height=s.layout==="cover"?68:30}else if(x.kind==="heading"){x.x=6;x.y=s.layout==="cover"?32:24;x.width=75;x.fontSize=s.layout==="cover"?50:38}});dirty();render()};
+$("layoutSelect").onchange=()=>{
+ const next=$("layoutSelect").value;
+ if(!["editorial","cover","gallery"].includes(next))return;
+ // Snapshot the existing content before changing presets; never replace it with demo seed content.
+ snap();
+ s.layout=next;
+ const images=s.elements.filter(x=>x.type==="image");
+ const texts=s.elements.filter(x=>x.type==="text");
+ if(next==="editorial"){
+  images.forEach((x,i)=>{x.x=52;x.y=13+i*2;x.width=42;x.height=Math.max(30,Math.min(68,Number(x.height)||60))});
+  texts.forEach(x=>{
+   if(x.kind==="eyebrow"){x.x=6;x.y=15;x.width=42}
+   else if(x.kind==="heading"){x.x=6;x.y=22;x.width=43}
+   else {x.x=6;x.y=43;x.width=38}
+  });
+ }else if(next==="cover"){
+  images.forEach((x,i)=>{x.x=52;x.y=12+i*2;x.width=42;x.height=Math.max(40,Math.min(72,Number(x.height)||68))});
+  texts.forEach(x=>{
+   if(x.kind==="eyebrow"){x.x=6;x.y=20;x.width=43}
+   else if(x.kind==="heading"){x.x=6;x.y=29;x.width=44;x.fontSize=Math.min(120,Number(x.fontSize)||48)}
+   else {x.x=6;x.y=59;x.width=40}
+  });
+ }else{
+  const count=Math.max(1,images.length),cols=count>=3?3:count;
+  const gap=3,cell=(90-gap*(cols-1))/cols;
+  images.forEach((x,i)=>{const col=i%cols,row=Math.floor(i/cols);x.x=5+col*(cell+gap);x.y=43+row*34;x.width=cell;x.height=30});
+  texts.forEach(x=>{
+   if(x.kind==="eyebrow"){x.x=5;x.y=12;x.width=90}
+   else if(x.kind==="heading"){x.x=5;x.y=18;x.width=90}
+   else {x.x=5;x.y=31;x.width=90}
+  });
+ }
+ saveActiveLayout();dirty();render();
+};
 document.querySelectorAll(".size-button").forEach(b=>b.onclick=()=>{if(s.size===b.dataset.size)return;saveActiveLayout();s.size=b.dataset.size;loadActiveLayout(s.size);mergeSharedImages();s.selectedId=null;syncCanvasBgControls();document.querySelectorAll(".size-button").forEach(x=>x.classList.toggle("active",x===b));$("previewSizeLabel").textContent=s.size==="mobile"?"MOBILE · "+(s.canvasStyle.canvasWidth||375):"DESKTOP · "+(s.canvasStyle.canvasWidth||1440);render();dirty(false)});["canvasWidth","canvasHeight"].forEach(id=>$(id).addEventListener("change",()=>{s.canvasStyle=s.canvasStyle||{};s.canvasStyle.canvasWidth=Math.max(280,Math.min(2400,+$("canvasWidth").value||(s.size==="mobile"?375:1440)));s.canvasStyle.canvasHeight=Math.max(400,Math.min(2400,+$("canvasHeight").value||(s.size==="mobile"?760:850)));$("canvasWidth").value=s.canvasStyle.canvasWidth;$("canvasHeight").value=s.canvasStyle.canvasHeight;dirty();render()}));window.addEventListener("resize",()=>scalePreviewCanvas());
 document.querySelectorAll(".nav-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x===b));const lib=b.dataset.panel==="library";$("editorPanel").hidden=lib;$("libraryPanel").hidden=!lib;$("pageHeading").textContent=lib?"Media library":"Page editor";if(lib){s.galleryTargetId=null;$("galleryPickerHint").hidden=true;loadMedia()}});
 function openLibraryForSelectedImage(){const x=el();if(!x||x.type!=="image")return toast("Select an image on the canvas first.");s.galleryTargetId=x.id;document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.panel==="library"));$("editorPanel").hidden=true;$("libraryPanel").hidden=false;$("pageHeading").textContent="Choose from gallery";$("galleryPickerHint").hidden=false;$("uploadBrand").value=s.brand;loadMedia()}$("chooseGalleryBtn").onclick=openLibraryForSelectedImage;
