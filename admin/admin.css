@@ -3,3 +3,5 @@
 
 /* Editor polish: preserve the artboard while making controls easier on touch screens. */
 .layer-actions{margin:12px 0;}.layer-actions button{padding:9px 6px;font-size:11px;}#elementControls input[type=color]{width:100%;min-height:38px;padding:3px;border:1px solid var(--line);background:white;}#elementControls input[type=range]{width:100%;accent-color:var(--accent);}#elementControls label .help{margin-top:-2px;font-size:10px;}button:disabled{opacity:.55;cursor:wait;}@media(max-width:720px){.workspace{display:flex;flex-direction:column}.preview-area{order:1}.editor-tools{order:2}.canvas-frame{overflow:auto;overscroll-behavior-x:contain}.preview-canvas.mobile-preview{width:375px;max-width:100%;min-height:760px}.top-actions button{flex:1}.top-actions .save-state{flex-basis:100%;}}
+
+.advanced-controls{border:1px solid var(--line);padding:10px;margin:12px 0;}.advanced-controls summary{cursor:pointer;font-size:11px;color:var(--muted);padding:2px 0 6px;}.advanced-controls[open] summary{margin-bottom:8px;}
