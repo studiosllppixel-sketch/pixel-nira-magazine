@@ -5,3 +5,10 @@
 .layer-actions{margin:12px 0;}.layer-actions button{padding:9px 6px;font-size:11px;}#elementControls input[type=color]{width:100%;min-height:38px;padding:3px;border:1px solid var(--line);background:white;}#elementControls input[type=range]{width:100%;accent-color:var(--accent);}#elementControls label .help{margin-top:-2px;font-size:10px;}button:disabled{opacity:.55;cursor:wait;}@media(max-width:720px){.workspace{display:flex;flex-direction:column}.preview-area{order:1}.editor-tools{order:2}.canvas-frame{overflow:auto;overscroll-behavior-x:contain}.preview-canvas.mobile-preview{width:375px;max-width:100%;min-height:760px}.top-actions button{flex:1}.top-actions .save-state{flex-basis:100%;}}
 
 .advanced-controls{border:1px solid var(--line);padding:10px;margin:12px 0;}.advanced-controls summary{cursor:pointer;font-size:11px;color:var(--muted);padding:2px 0 6px;}.advanced-controls[open] summary{margin-bottom:8px;}
+
+/* Direct canvas image tools: selection handles, crop mode and quick zoom. */
+.canvas-image-tool{position:absolute;z-index:30;transform:translate(-50%,-100%);border:1px solid #33352e;background:#262620;color:#fffdf9;padding:6px 9px;font-size:11px;line-height:1.1;min-width:30px;box-shadow:0 2px 8px #0002;touch-action:manipulation}
+.canvas-image-tool:hover{background:#55564c}
+.canvas-resize-handle{position:absolute;z-index:31;width:12px;height:12px;padding:0;border:2px solid #fffdf9;background:#6f7865;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 1px #42483b;touch-action:none}
+.handle-n,.handle-s{cursor:ns-resize}.handle-e,.handle-w{cursor:ew-resize}.handle-nw,.handle-se{cursor:nwse-resize}.handle-ne,.handle-sw{cursor:nesw-resize}
+@media(max-width:720px){.canvas-image-tool{font-size:10px;padding:7px 8px}.canvas-resize-handle{width:14px;height:14px}}
