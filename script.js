@@ -22,10 +22,10 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
     if(headerMark){headerMark.innerHTML=brand==="pixel"?'PIXEL<span>®</span>':'NIRA<span>®</span>';headerMark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");}
     const esc=value=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
     const cs=data.published_content.canvasStyle||{};const canvasBg=cs.bgMode==="linear"?"linear-gradient("+(+cs.gradientAngle||135)+"deg, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":cs.bgMode==="radial"?"radial-gradient(circle, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":(cs.bgColor||"#f7f3eb");const items=data.published_content.elements.map(item=>{
-      const x=Math.max(0,Math.min(100,Number(item.x)||0)),y=Math.max(0,Math.min(100,Number(item.y)||0)),width=Math.max(5,Math.min(100,Number(item.width)||40));
+      const x=Number.isFinite(Number(item.x))?Number(item.x):0,y=Number.isFinite(Number(item.y))?Number(item.y):0,width=Number.isFinite(Number(item.width))?Number(item.width):50;
       const common='left:'+x+'%;top:'+y+'%;width:'+width+'%;';
       if(item.type==="image"){
-        const height=Math.max(8,Math.min(100,Number(item.height)||50));
+        const height=Number.isFinite(Number(item.height))?Number(item.height):50;
         const url=/^https:\/\//i.test(item.url||"")?item.url:"";
         const zoom=Math.max(1,Math.min(2.5,Number(item.scale||100)/100)),fx=Math.max(0,Math.min(100,Number(item.focalX??50))),fy=Math.max(0,Math.min(100,Number(item.focalY??50)));const imageStyle="object-fit:"+(item.fit==="contain"?"contain":"cover")+";object-position:"+fx+"% "+fy+"%;position:absolute;width:"+(zoom*100)+"%;height:"+(zoom*100)+"%;max-width:none;max-height:none;left:"+(-(zoom-1)*fx)+"%;top:"+(-(zoom-1)*fy)+"%;transform:none;filter:"+(/^(none|grayscale\(100%\)|sepia\(30%\)|contrast\(1\.12\) saturate\(\.82\))$/.test(item.filter||"none")?item.filter:"none");return '<figure class="live-magazine-element live-magazine-image" style="'+common+'height:'+height+'%;"><img src="'+esc(url)+'" alt="'+esc(item.alt||"Editorial photograph")+'" style="'+imageStyle+'"></figure>';
       }
