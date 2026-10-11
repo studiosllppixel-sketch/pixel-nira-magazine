@@ -23,3 +23,5 @@
 .text-quick-menu input[type=range]{accent-color:var(--accent);padding:0}
 .canvas-dimensions{margin-top:12px}
 @media(max-width:720px){.text-quick-menu{position:fixed;left:auto!important;right:12px;width:min(260px,calc(100vw - 24px));max-height:70vh;overflow:auto}.canvas-dimensions{gap:8px}}
+
+.history-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.history-actions button{width:100%}
