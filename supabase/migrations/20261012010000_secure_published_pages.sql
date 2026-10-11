@@ -10,10 +10,12 @@ from public.magazine_pages
 where status = 'published'
   and published_content is not null;
 
--- Public callers can read only the columns required by the published view.
+-- Public clients may read only the published interface and the columns needed
+-- to enforce the published-row policy; draft_content remains ungranted.
 revoke all on table public.magazine_pages from anon;
-grant select (brand, slug, published_content, status)
-  on table public.magazine_pages to anon;
+grant select (brand, slug, published_content, status) on table public.magazine_pages to anon;
+
+revoke all on table public.magazine_public_pages from anon, authenticated;
 grant select on table public.magazine_public_pages to anon, authenticated;
 
 commit;
