@@ -12,7 +12,7 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
   try{
     const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
     const {data,error}=await client.from("magazine_pages").select("brand,slug,published_content,status").eq("brand",brand).eq("status","published").maybeSingle();
-    if(error||!data||!Array.isArray(data.published_content?.elements)||!data.published_content.elements.length)return;
+    if(error||!data||!data.published_content)return;const published=data.published_content;const view=window.matchMedia("(max-width: 720px)").matches?"mobile":"desktop";const activeLayout=published.layouts?.[view]||published;if(!Array.isArray(activeLayout.elements)||!activeLayout.elements.length)return;
     const main=document.querySelector("main");
     if(!main)return;
     document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Pixel × Nira";
@@ -21,7 +21,7 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
     const headerMark=document.querySelector(".wordmark");
     if(headerMark){headerMark.innerHTML=brand==="pixel"?'PIXEL<span>®</span>':'NIRA<span>®</span>';headerMark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");}
     const esc=value=>String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-    const cs=data.published_content.canvasStyle||{};const customCanvas=Number.isFinite(Number(cs.canvasWidth))&&Number(cs.canvasWidth)>=280&&Number(cs.canvasHeight)>=400;const canvasDims=customCanvas?"width:100%;max-width:"+Math.min(2400,Number(cs.canvasWidth))+"px;height:"+Math.min(2400,Number(cs.canvasHeight))+"px;":"";const canvasBg=cs.bgMode==="linear"?"linear-gradient("+(+cs.gradientAngle||135)+"deg, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":cs.bgMode==="radial"?"radial-gradient(circle, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":(cs.bgColor||"#f7f3eb");const items=data.published_content.elements.map(item=>{
+    const cs=activeLayout.canvasStyle||published.canvasStyle||{};const customCanvas=Number.isFinite(Number(cs.canvasWidth))&&Number(cs.canvasWidth)>=280&&Number(cs.canvasHeight)>=400;const canvasDims=customCanvas?"width:100%;max-width:"+Math.min(2400,Number(cs.canvasWidth))+"px;height:"+Math.min(2400,Number(cs.canvasHeight))+"px;":"";const canvasBg=cs.bgMode==="linear"?"linear-gradient("+(+cs.gradientAngle||135)+"deg, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":cs.bgMode==="radial"?"radial-gradient(circle, "+(cs.gradientStart||cs.bgColor||"#f7f3eb")+", "+(cs.gradientEnd||"#d8d0c2")+")":(cs.bgColor||"#f7f3eb");const items=activeLayout.elements.map(item=>{
       const x=Number.isFinite(Number(item.x))?Number(item.x):0,y=Number.isFinite(Number(item.y))?Number(item.y):0,width=Number.isFinite(Number(item.width))?Number(item.width):50;
       const common='left:'+x+'%;top:'+y+'%;width:'+width+'%;';
       if(item.type==="image"){
