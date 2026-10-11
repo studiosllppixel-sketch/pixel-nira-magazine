@@ -12,5 +12,5 @@
 .live-magazine-image img{display:block;width:100%;height:100%;object-fit:cover}
 .live-magazine-footer{display:flex;justify-content:space-between;gap:18px;padding:24px 5%;font:9px "DM Sans",Arial,sans-serif;letter-spacing:.12em;border-top:1px solid #d9d2c6}
 .live-magazine-footer a{color:inherit}
-@media(max-width:700px){.live-magazine-canvas{min-height:760px}.live-magazine-masthead{font-size:7px;padding:0 4%}.live-magazine-masthead strong{font-size:15px}.live-magazine-text{font-size: min(4vw,16px)!important}.live-magazine-text.is-heading{font-size:clamp(23px,7vw,40px)!important}.live-magazine-footer{font-size:8px;flex-wrap:wrap}}
+@media(max-width:700px){.live-magazine-canvas{min-height:760px}.live-magazine-masthead{font-size:7px;padding:0 4%}.live-magazine-masthead strong{font-size:15px}.live-magazine-footer{font-size:8px;flex-wrap:wrap}}
 
