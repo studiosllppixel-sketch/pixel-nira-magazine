@@ -2,7 +2,7 @@
 
 /* Published editor canvas */
 .live-magazine-main{background:#f7f3eb;min-height:72vh}
-.live-magazine-canvas{position:relative;isolation:isolate;overflow:hidden;width:100%;max-width:1440px;min-height:850px;margin:0 auto;background:#f7f3eb;color:#22221f}
+.live-magazine-canvas{position:relative;isolation:isolate;overflow:hidden;width:100%;max-width:1440px;height:850px;min-height:0;margin:0 auto;background:#f7f3eb;color:#22221f}
 .live-magazine-masthead{height:62px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #d9d2c6;font:9px "DM Sans",Arial,sans-serif;letter-spacing:.13em}
 .live-magazine-masthead strong{font:500 19px "Playfair Display",Georgia,serif;letter-spacing:0}
 .live-magazine-element{position:absolute;box-sizing:border-box;overflow-wrap:anywhere}
@@ -12,5 +12,5 @@
 .live-magazine-image img{display:block;width:100%;height:100%;object-fit:cover}
 .live-magazine-footer{display:flex;justify-content:space-between;gap:18px;padding:24px 5%;font:9px "DM Sans",Arial,sans-serif;letter-spacing:.12em;border-top:1px solid #d9d2c6}
 .live-magazine-footer a{color:inherit}
-@media(max-width:700px){.live-magazine-canvas{min-height:760px}.live-magazine-masthead{font-size:7px;padding:0 4%}.live-magazine-masthead strong{font-size:15px}.live-magazine-footer{font-size:8px;flex-wrap:wrap}}
+@media(max-width:700px){.live-magazine-canvas{height:760px;min-height:0}.live-magazine-masthead{font-size:7px;padding:0 4%}.live-magazine-masthead strong{font-size:15px}.live-magazine-footer{font-size:8px;flex-wrap:wrap}}
 
