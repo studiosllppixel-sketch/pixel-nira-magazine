@@ -25,3 +25,7 @@
 @media(max-width:720px){.text-quick-menu{position:fixed;left:auto!important;right:12px;width:min(260px,calc(100vw - 24px));max-height:70vh;overflow:auto}.canvas-dimensions{gap:8px}}
 
 .history-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.history-actions button{width:100%}
+
+/* Workspace usability: keep the preview available while editing and tuck secondary settings away. */
+@media(min-width:1001px){.preview-area{position:sticky;top:18px;align-self:start}.canvas-frame{max-height:calc(100vh - 150px);overflow:auto}}
+.tool-accordion{border:1px solid var(--line);padding:12px 12px 2px;background:#fbf9f4}.tool-accordion summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}.tool-accordion summary::-webkit-details-marker{display:none}.tool-accordion summary:after{content:"+";font-size:17px;font-weight:400}.tool-accordion[open] summary:after{content:"−"}.tool-accordion[open]{padding-bottom:12px}.tool-accordion>label,.tool-accordion>.two-fields{margin-top:12px}.tool-accordion .help{margin-bottom:10px}@media(max-width:720px){.tool-accordion{padding:11px 10px 2px}.tool-accordion[open]{padding-bottom:10px}}
