@@ -12,3 +12,14 @@
 .canvas-resize-handle{position:absolute;z-index:31;width:12px;height:12px;padding:0;border:2px solid #fffdf9;background:#6f7865;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 1px #42483b;touch-action:none}
 .handle-n,.handle-s{cursor:ns-resize}.handle-e,.handle-w{cursor:ew-resize}.handle-nw,.handle-se{cursor:nwse-resize}.handle-ne,.handle-sw{cursor:nesw-resize}
 @media(max-width:720px){.canvas-image-tool{font-size:10px;padding:7px 8px}.canvas-resize-handle{width:14px;height:14px}}
+
+/* Direct text editing controls and long-press typography menu. */
+.text-resize-handle{background:#a17b55;border-color:#fffdf9}
+.text-quick-menu{position:fixed;z-index:9999;width:240px;padding:14px;background:#fffdf9;border:1px solid #d5cec1;box-shadow:0 12px 36px #0002;color:var(--ink)}
+.text-menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-family:var(--serif);font-size:17px}
+.text-menu-head button{border:0;background:transparent;font-size:22px;line-height:1}
+.text-quick-menu label{display:grid;gap:6px;margin:12px 0;font-size:11px}
+.text-quick-menu input,.text-quick-menu select{width:100%;min-width:0;border:1px solid var(--line);background:white;padding:8px}
+.text-quick-menu input[type=range]{accent-color:var(--accent);padding:0}
+.canvas-dimensions{margin-top:12px}
+@media(max-width:720px){.text-quick-menu{position:fixed;left:auto!important;right:12px;width:min(260px,calc(100vw - 24px));max-height:70vh;overflow:auto}.canvas-dimensions{gap:8px}}
