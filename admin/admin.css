@@ -33,3 +33,5 @@
 .element-arrangement{display:grid;grid-template-columns:1fr;gap:8px;margin:10px 0}.preview-element.locked-element{outline:1px dashed #6f7865;outline-offset:2px}.preview-element[data-type="image"]{user-select:none}.preview-element img{pointer-events:none}
 
 .align-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0 6px}.align-actions button{padding:9px 4px;font-size:11px;min-width:0}@media(max-width:720px){.align-actions button{padding:10px 3px;font-size:10px}}
+
+.media-library-tools{display:grid;grid-template-columns:minmax(220px,1fr) auto;align-items:end;gap:14px;margin:18px 0 14px}.media-library-tools label{display:grid;gap:7px;font-size:12px;font-weight:600}.media-library-tools input{width:100%;min-height:42px;border:1px solid var(--line);background:var(--white);padding:10px 12px;color:var(--ink)}.media-library-tools .help{margin:0 0 10px;text-align:right}.media-item[hidden]{display:none!important}@media(max-width:600px){.media-library-tools{grid-template-columns:1fr;gap:4px}.media-library-tools .help{text-align:left;margin:0}}
