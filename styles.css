@@ -233,3 +233,48 @@
   .pixel-copy{order:2;padding:54px 7% 64px}
   .newsletter{padding-left:7%;padding-right:7%}
 }
+
+
+/* Brand palettes sampled from the Pixel Studios and Nira logo artwork */
+:root[data-brand="pixel"]{
+  --paper:#E8E2D9;
+  --ink:#171219;
+  --muted:#716773;
+  --line:rgba(48,25,48,.22);
+  --brand-accent:#54204F;
+  --brand-soft:#C9B8C9;
+  --brand-plum:#351433;
+  --brand-highlight:#8B5688;
+}
+:root[data-brand="nira"]{
+  --paper:#FFFCF7;
+  --ink:#171116;
+  --muted:#786C75;
+  --line:rgba(62,28,53,.2);
+  --brand-accent:#71365F;
+  --brand-soft:#E6D6E1;
+  --brand-plum:#4C1E43;
+  --brand-highlight:#B57C9F;
+}
+:root[data-brand="pixel"] .announcement{background:#211620;color:#F1EAE1}
+:root[data-brand="nira"] .announcement{background:#4C1E43;color:#FFFCF7}
+:root[data-brand="pixel"] .intro-band{background:#DCD2D7}
+:root[data-brand="nira"] .intro-band{background:#F3EAEF}
+:root[data-brand="pixel"] .quote-section{background:#291B2A;color:#F4ECE4}
+:root[data-brand="pixel"] .quote-section p{color:#D5C5D4}
+:root[data-brand="nira"] .quote-section{background:#4C1E43;color:#FFFCF7}
+:root[data-brand="nira"] .quote-section p{color:#E8D7E2}
+:root[data-brand="pixel"] .hero-stamp{color:#F1EAE1}
+:root[data-brand="nira"] .hero-stamp{color:#FFFCF7}
+:root[data-brand="pixel"] .circle-link:hover{background:#54204F;border-color:#54204F;color:#fff}
+:root[data-brand="nira"] .circle-link:hover{background:#71365F;border-color:#71365F;color:#fff}
+:root[data-brand="pixel"] .underlined-link:after,:root[data-brand="pixel"] .text-link:after{background:#54204F}
+:root[data-brand="nira"] .underlined-link:after,:root[data-brand="nira"] .text-link:after{background:#71365F}
+:root[data-brand="pixel"] .newsletter{background:#E0D6D9}
+:root[data-brand="nira"] .newsletter{background:#F3EAEF}
+:root[data-brand="pixel"] .newsletter button{background:#351433;color:#F1EAE1}
+:root[data-brand="nira"] .newsletter button{background:#4C1E43;color:#FFFCF7}
+:root[data-brand="pixel"] .live-magazine-masthead{background:#DCD2D7;color:#211620}
+:root[data-brand="nira"] .live-magazine-masthead{background:#F3EAEF;color:#4C1E43}
+:root[data-brand="pixel"] .live-magazine-footer{background:#E8E2D9;color:#171219}
+:root[data-brand="nira"] .live-magazine-footer{background:#FFFCF7;color:#171116}
