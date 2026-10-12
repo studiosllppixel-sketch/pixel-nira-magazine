@@ -38,3 +38,29 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
     main.innerHTML='<div class="live-magazine-stage" style="width:100%;max-width:'+canvasWidth+'px;height:'+canvasHeight+'px;margin:0 auto;position:relative;overflow:hidden"><section class="live-magazine-canvas" style="'+canvasDims+'background:'+esc(canvasBg)+';transform-origin:top left" aria-label="'+(brand==="pixel"?"Pixel Studios":"Nira Editorial")+' published page"><div class="live-magazine-masthead"><span>INDEPENDENT CREATIVE JOURNAL</span><strong>'+(brand==="pixel"?"PIXEL STUDIOS":"NIRA EDITORIAL")+'</strong><span>VOL. 01</span></div>'+items+'</section></div><footer class="live-magazine-footer"><span>PIXEL STUDIOS × NIRA EDITORIAL</span><a href="https://www.instagram.com/'+(brand==="pixel"?"pixelstudios.inc":"nira.editorial")+'/" target="_blank" rel="noreferrer">FOLLOW ON INSTAGRAM ↗</a></footer>';const stage=main.querySelector(".live-magazine-stage"),liveCanvas=main.querySelector(".live-magazine-canvas");const scaleLiveCanvas=()=>{const scale=Math.min(1,stage.clientWidth/canvasWidth);liveCanvas.style.transform="scale("+scale+")";stage.style.height=(canvasHeight*scale)+"px"};scaleLiveCanvas();if(typeof ResizeObserver!=="undefined"){const liveResizeObserver=new ResizeObserver(scaleLiveCanvas);liveResizeObserver.observe(stage.parentElement||stage)}else window.addEventListener("resize",scaleLiveCanvas);
   }catch(error){console.error("Unable to load published magazine page.",error);}
 })();
+/* Brand palette: Nira's plum-black and Pixel's studio-plum accent. */
+(function applyBrandPalette(){
+  const brand = new URLSearchParams(window.location.search).get("brand")==="pixel" ? "pixel" : "nira";
+  document.documentElement.dataset.brand = brand;
+  const mark = document.querySelector(".wordmark");
+  if (mark && !mark.querySelector(".brand-name")) {
+    const text = brand === "pixel" ? "PIXEL" : "NIRA";
+    mark.innerHTML = '<span class="brand-name">'+text+'</span><span class="brand-tm">®</span>';
+    mark.setAttribute("aria-label", brand === "pixel" ? "Pixel Studios home" : "Nira Editorial home");
+  }
+  const footerMark = document.querySelector(".footer-mark");
+  if (footerMark) {
+    footerMark.innerHTML = (brand === "pixel" ? "PIXEL" : "NIRA") + '<span>®</span>';
+  }
+  const stamp = document.querySelector(".hero-stamp");
+  if (stamp && brand === "pixel") stamp.innerHTML = 'PIXEL<br><i>STUDIOS INC.</i>';
+  const brandLockup = document.querySelector(".brand-lockup");
+  if (brandLockup && brand === "pixel") brandLockup.innerHTML = 'PIXEL<br><em>STUDIOS INC.</em>';
+  const eyebrow = document.querySelector(".hero-copy .eyebrow");
+  if (eyebrow && brand === "pixel") eyebrow.textContent = "FASHION · EDITORIAL · PRODUCTION";
+  const heroTitle = document.querySelector(".hero-copy h1");
+  if (heroTitle && brand === "pixel") heroTitle.innerHTML = 'Images with<br><em>intention.</em>';
+  const heroDesc = document.querySelector(".hero-description p");
+  if (heroDesc && brand === "pixel") heroDesc.textContent = "A creative studio for fashion, editorial and production. Distinctive images, considered craft, a point of view.";
+  if (brand === "pixel") document.title = "Pixel Studios — Images with Intention";
+})();
