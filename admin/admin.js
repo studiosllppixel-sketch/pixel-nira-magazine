@@ -77,7 +77,7 @@ function textPointerDown(e,x){
  if(x.locked||e.button!==0)return;e.preventDefault();e.stopPropagation();select(x.id);const sx=e.clientX,sy=e.clientY,ox=x.x,oy=x.y,c=$("previewCanvas"),r=c.getBoundingClientRect();let moved=false,longPressed=false;
  const timer=setTimeout(()=>{if(!moved){longPressed=true;openTextQuickMenu(x,e.clientX,e.clientY)}},480);
  const move=v=>{if(Math.abs(v.clientX-sx)+Math.abs(v.clientY-sy)>6){moved=true;clearTimeout(timer)}if(!moved||longPressed)return;x.x=Math.max(0,Math.min(100-x.width,ox+(v.clientX-sx)/r.width*100));x.y=Math.max(0,Math.min(94,oy+(v.clientY-sy)/r.height*100));const n=c.querySelector('[data-id="'+x.id+'"]');if(n){n.style.left=x.x+"%";n.style.top=x.y+"%"}$("elementX").value=Math.round(x.x);$("elementY").value=Math.round(x.y);dirty()};
- const up=()=>{clearTimeout(timer);window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);if(moved&&!longPressed)render()};
+ const up=()=>{clearTimeout(timer);window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);if(moved&&!longPressed){autoAvoidTextOverlaps();dirty();render()}};
  window.addEventListener("pointermove",move);window.addEventListener("pointerup",up,{once:true});
 }
 function openTextQuickMenu(x,clientX,clientY){
