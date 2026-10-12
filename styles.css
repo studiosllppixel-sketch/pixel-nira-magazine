@@ -325,3 +325,6 @@
 :root[data-brand="nira"] .eyebrow{
   letter-spacing:.19em;
 }
+
+/* The old static hero must never flash while published brand canvas loads. */
+.hero[aria-hidden="true"]{display:none!important}
