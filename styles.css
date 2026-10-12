@@ -461,3 +461,35 @@ body.gallery-modal-open .site-footer small{display:none}
 @keyframes cover-exit{to{opacity:0;transform:translateY(-14px) scale(.985);visibility:hidden}}
 @media(max-width:700px){.editorial-cover{min-height:calc(100svh - 96px);padding:10px}.cover-frame{min-height:calc(100svh - 120px);padding:22px 12px}.editorial-cover::after{inset:8px}.cover-overline,.cover-bottom{font-size:7px;letter-spacing:.11em}.cover-main{padding:50px 0}.cover-main h1{font-size:clamp(52px,15vw,88px);max-width:100%}.cover-description{font-size:12px;max-width:280px}.cover-index{right:14px;font-size:8px}}
 @media(prefers-reduced-motion:reduce){.editorial-cover::before,.cover-main,.cover-leaving{animation:none!important}.cover-enter{transition:none!important}}
+
+/* Brand-specific logo typography extends through the cover and every gallery/story title. */
+:root[data-brand="nira"] .editorial-cover .cover-main h1,
+:root[data-brand="nira"] .gallery-intro h1,
+:root[data-brand="nira"] .gallery-preview-panel h3,
+:root[data-brand="nira"] .gallery-card-title,
+:root[data-brand="nira"] .story-title {
+  font-family:"GFS Didot","Bodoni Moda","Didot",serif;
+  font-weight:400;
+  letter-spacing:-.045em;
+}
+:root[data-brand="pixel"] .editorial-cover .cover-main h1,
+:root[data-brand="pixel"] .gallery-intro h1,
+:root[data-brand="pixel"] .gallery-preview-panel h3,
+:root[data-brand="pixel"] .gallery-card-title,
+:root[data-brand="pixel"] .story-title {
+  font-family:"Bodoni Moda","Didot","Bodoni MT",serif;
+  font-weight:400;
+  letter-spacing:-.055em;
+}
+:root[data-brand="nira"] .wordmark,
+:root[data-brand="nira"] .footer-mark {
+  font-family:"GFS Didot","Bodoni Moda","Didot",serif;
+  font-weight:400;
+  letter-spacing:-.035em;
+}
+:root[data-brand="pixel"] .wordmark,
+:root[data-brand="pixel"] .footer-mark {
+  font-family:"Bodoni Moda","Didot","Bodoni MT",serif;
+  font-weight:500;
+  letter-spacing:-.055em;
+}
