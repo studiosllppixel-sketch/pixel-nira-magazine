@@ -386,3 +386,20 @@
 .published-canvas-image{display:block;appearance:none;-webkit-appearance:none;line-height:0}
 .published-canvas-image img{display:block}
 @media(max-width:720px){.published-layout-main{gap:18px}.published-editorial-canvas{width:100%;}}
+
+/* Editorial gallery entrance and image interaction */
+.published-editorial-canvas{position:relative;isolation:isolate;overflow:hidden;transform:translateZ(0)}
+.published-editorial-canvas.gallery-enter{opacity:0;transform:translateY(30px) scale(.992);transition:opacity .85s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.published-editorial-canvas.gallery-enter.gallery-visible{opacity:1;transform:translateY(0) scale(1)}
+.published-canvas-image{display:block;transform:translateZ(0);transition:filter .55s ease,box-shadow .55s ease;will-change:transform}
+.published-canvas-image img{transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .6s ease;will-change:transform}
+.published-canvas-image:hover{z-index:50!important;filter:drop-shadow(0 16px 24px rgba(20,10,18,.16))}
+.published-canvas-image:hover img{transform:scale(1.045)}
+.published-canvas-image:focus-visible{outline:2px solid var(--brand-accent);outline-offset:4px}
+.published-canvas-image:active img{transform:scale(1.015)}
+.story-overlay:not([hidden]) .story-dialog{animation:story-reveal .65s cubic-bezier(.2,.7,.2,1) both}
+.story-overlay:not([hidden]) .story-photo{animation:gallery-photo-reveal .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--gallery-order,0)*75ms)}
+.story-overlay:not([hidden]) .story-photo:nth-child(2n){--gallery-order:1}
+@keyframes story-reveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gallery-photo-reveal{from{opacity:0;transform:translateY(18px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.published-editorial-canvas.gallery-enter,.published-canvas-image,.published-canvas-image img,.story-overlay:not([hidden]) .story-dialog,.story-overlay:not([hidden]) .story-photo{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
