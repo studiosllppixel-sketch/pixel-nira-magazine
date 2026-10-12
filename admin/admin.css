@@ -54,3 +54,5 @@
 @keyframes editor-zoom-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 @keyframes editor-reveal{from{opacity:0;clip-path:inset(0 0 0 100%)}to{opacity:1;clip-path:inset(0 0 0 0)}}
 @media(prefers-reduced-motion:reduce){.preview-element[data-animation]{animation:none!important}}
+
+.gallery-editor-settings{border:1px solid var(--line);background:#fbf9f4;padding:12px;margin:14px 0}.gallery-toggle-label{display:flex!important;grid-template-columns:auto 1fr;align-items:center;gap:9px!important;margin:4px 0 8px!important;font-weight:600}.gallery-toggle-label input{width:16px!important;height:16px;min-width:16px!important;margin:0;accent-color:var(--accent)}.gallery-editor-settings .help{margin:6px 0 12px}.gallery-editor-settings button{margin-top:3px}
