@@ -441,3 +441,23 @@ body.gallery-modal-open .site-footer small{display:none}
 @media(prefers-reduced-motion:reduce){
   .story-overlay:not([hidden]),.story-overlay:not([hidden]) .story-dialog,.story-overlay:not([hidden]) .story-photo,.photo-lightbox:not([hidden]) .lightbox-image{animation:none!important;transition:none!important;transform:none!important}
 }
+
+/* Premium editorial cover — a deliberate pause before the portfolio. */
+.editorial-cover{min-height:calc(100svh - 112px);padding:clamp(14px,2.2vw,30px) clamp(14px,3vw,42px);background:#211a20;color:#f5f0e8;position:relative;isolation:isolate;overflow:hidden}
+.editorial-cover::before{content:"";position:absolute;inset:0;z-index:-2;background-image:linear-gradient(90deg,rgba(20,13,20,.88) 0%,rgba(20,13,20,.65) 45%,rgba(20,13,20,.12) 100%),var(--cover-image,linear-gradient(135deg,#55434f,#211a20));background-size:cover;background-position:center 38%;transform:scale(1.045);animation:cover-image-arrive 1.5s cubic-bezier(.2,.65,.25,1) both}
+.editorial-cover::after{content:"";position:absolute;inset:12px;z-index:-1;border:1px solid rgba(245,240,232,.28);pointer-events:none}
+.cover-frame{min-height:calc(100svh - 150px);display:flex;flex-direction:column;justify-content:space-between;position:relative;padding:clamp(20px,3vw,42px) clamp(12px,3vw,44px)}
+.cover-overline,.cover-bottom{display:flex;justify-content:space-between;gap:18px;align-items:center;font:9px var(--sans);letter-spacing:.18em;color:rgba(245,240,232,.8)}
+.cover-main{max-width:900px;padding:clamp(42px,8vh,100px) 0;animation:cover-copy-arrive 1s .18s cubic-bezier(.2,.75,.25,1) both}
+.cover-kicker{font:9px var(--sans);letter-spacing:.24em;color:#d6b9d0;margin:0 0 22px}
+.cover-main h1{font:400 clamp(56px,10vw,142px)/.88 var(--serif);letter-spacing:-.065em;max-width:900px;margin:0;text-wrap:balance}
+.cover-description{font:13px/1.8 var(--sans);color:rgba(245,240,232,.78);max-width:380px;margin:26px 0 30px}
+.cover-enter{display:inline-flex;align-items:center;gap:34px;padding:14px 0;border:0;border-bottom:1px solid rgba(245,240,232,.6);background:transparent;color:#f5f0e8;font:9px var(--sans);letter-spacing:.18em;cursor:pointer;transition:gap .35s cubic-bezier(.2,1.2,.35,1),border-color .3s}
+.cover-enter:hover{gap:48px;border-color:#d6b9d0}.cover-enter span:last-child{font-size:17px}
+.cover-index{position:absolute;right:clamp(20px,4vw,56px);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font:10px var(--sans);letter-spacing:.3em;color:rgba(245,240,232,.5)}
+.cover-leaving{animation:cover-exit .48s cubic-bezier(.6,0,.8,.2) both;pointer-events:none}
+@keyframes cover-image-arrive{from{opacity:.45;transform:scale(1.09)}to{opacity:1;transform:scale(1.045)}}
+@keyframes cover-copy-arrive{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cover-exit{to{opacity:0;transform:translateY(-14px) scale(.985);visibility:hidden}}
+@media(max-width:700px){.editorial-cover{min-height:calc(100svh - 96px);padding:10px}.cover-frame{min-height:calc(100svh - 120px);padding:22px 12px}.editorial-cover::after{inset:8px}.cover-overline,.cover-bottom{font-size:7px;letter-spacing:.11em}.cover-main{padding:50px 0}.cover-main h1{font-size:clamp(52px,15vw,88px);max-width:100%}.cover-description{font-size:12px;max-width:280px}.cover-index{right:14px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.editorial-cover::before,.cover-main,.cover-leaving{animation:none!important}.cover-enter{transition:none!important}}
