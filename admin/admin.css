@@ -56,3 +56,19 @@
 @media(prefers-reduced-motion:reduce){.preview-element[data-animation]{animation:none!important}}
 
 .gallery-editor-settings{border:1px solid var(--line);background:#fbf9f4;padding:12px;margin:14px 0}.gallery-toggle-label{display:flex!important;grid-template-columns:auto 1fr;align-items:center;gap:9px!important;margin:4px 0 8px!important;font-weight:600}.gallery-toggle-label input{width:16px!important;height:16px;min-width:16px!important;margin:0;accent-color:var(--accent)}.gallery-editor-settings .help{margin:6px 0 12px}.gallery-editor-settings button{margin-top:3px}
+
+/* Page editor dropdown navigation: compact by default, native keyboard-accessible summaries. */
+.editor-tools .editor-dropdown{padding-top:0;margin-top:12px;border-top:1px solid var(--line)}
+.editor-tools .editor-dropdown>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:15px 2px;margin:0;user-select:none}
+.editor-tools .editor-dropdown>summary::-webkit-details-marker{display:none}
+.editor-tools .editor-dropdown>summary::after{content:"＋";font-size:17px;font-weight:400;line-height:1;color:var(--accent)}
+.editor-tools .editor-dropdown[open]>summary::after{content:"−"}
+.editor-tools .editor-dropdown[open]>summary{margin-bottom:8px;color:var(--ink)}
+.editor-tools .editor-dropdown>*:not(summary){min-width:0}
+.editor-tools .editor-dropdown .section-title{margin-bottom:0}
+.editor-tools .editor-dropdown .canvas-size{margin:8px 0}
+.editor-tools .editor-dropdown .help{margin-top:9px}
+.editor-tools .editor-dropdown>label:first-of-type{margin-top:8px}
+.editor-tools .tool-accordion:not(.editor-dropdown){border:1px solid var(--line);padding:10px;margin:12px 0}
+.editor-tools .tool-accordion:not(.editor-dropdown)>summary{cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 0}
+@media(max-width:900px){.workspace{grid-template-columns:minmax(0,1fr)}.editor-tools{order:1}.preview-area{order:2}.editor-tools .editor-dropdown{scroll-margin-top:14px}}
