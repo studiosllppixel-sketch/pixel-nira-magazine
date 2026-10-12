@@ -8,7 +8,7 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
 const cfg=window.PIXEL_NIRA_CONFIG||{};if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||!window.supabase)return;
 const brand=new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira";
 try{
-const response=await fetch(cfg.supabaseUrl.replace(/\\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;
+const response=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;
 const data=await response.json();if(!data?.published_content)return;const published=data.published_content,view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
 const pages=Array.isArray(published.canvasPages)&&published.canvasPages.length?published.canvasPages:[{title:brand==="pixel"?"Pixel Studios":"Nira Editorial",layout:published.layout,layouts:published.layouts,elements:published.elements,canvasStyle:published.canvasStyle}];
 const main=document.querySelector("main");if(!main)return;document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Pixel × Nira";
