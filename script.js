@@ -11,7 +11,7 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
   const brand=params.get("brand")==="pixel"?"pixel":"nira";
   try{
     const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
-    const response=await fetch(cfg.supabaseUrl.replace(/\\/$/, "")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;const data=await response.json();
+    const response=await fetch(cfg.supabaseUrl.replace(/\/+$/, "")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;const data=await response.json();
     if(!data||!data.published_content)return;const published=data.published_content;const view=window.matchMedia("(max-width: 720px)").matches?"mobile":"desktop";const requestedLayout=published.layouts?.[view];const activeLayout=Array.isArray(requestedLayout?.elements)&&requestedLayout.elements.length?requestedLayout:(Array.isArray(published.layouts?.desktop?.elements)&&published.layouts.desktop.elements.length?published.layouts.desktop:published);if(!Array.isArray(activeLayout.elements)||!activeLayout.elements.length)return;
     const main=document.querySelector("main");
     if(!main)return;
