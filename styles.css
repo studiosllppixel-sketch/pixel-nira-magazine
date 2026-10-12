@@ -278,3 +278,50 @@
 :root[data-brand="nira"] .live-magazine-masthead{background:#F3EAEF;color:#4C1E43}
 :root[data-brand="pixel"] .live-magazine-footer{background:#E8E2D9;color:#171219}
 :root[data-brand="nira"] .live-magazine-footer{background:#FFFCF7;color:#171116}
+
+
+/* Logo-inspired type systems: high-contrast Didone serif lettering */
+:root[data-brand="pixel"]{
+  --serif:"Bodoni Moda","Didot","Bodoni MT",serif;
+  --sans:"DM Sans",Arial,sans-serif;
+}
+:root[data-brand="nira"]{
+  --serif:"GFS Didot","Bodoni Moda","Didot",serif;
+  --sans:"DM Sans",Arial,sans-serif;
+}
+:root[data-brand="pixel"] .wordmark,
+:root[data-brand="pixel"] .footer-mark,
+:root[data-brand="pixel"] .hero-stamp,
+:root[data-brand="pixel"] .hero-copy h1,
+:root[data-brand="pixel"] .intro-statement,
+:root[data-brand="pixel"] .section-heading h2,
+:root[data-brand="pixel"] .feature-text h3,
+:root[data-brand="pixel"] .duo-card h3,
+:root[data-brand="pixel"] .quote-section blockquote,
+:root[data-brand="pixel"] .pixel-copy h2,
+:root[data-brand="pixel"] .newsletter h2{
+  font-family:"Bodoni Moda","Didot","Bodoni MT",serif;
+}
+:root[data-brand="nira"] .wordmark,
+:root[data-brand="nira"] .footer-mark,
+:root[data-brand="nira"] .hero-stamp,
+:root[data-brand="nira"] .hero-copy h1,
+:root[data-brand="nira"] .intro-statement,
+:root[data-brand="nira"] .section-heading h2,
+:root[data-brand="nira"] .feature-text h3,
+:root[data-brand="nira"] .duo-card h3,
+:root[data-brand="nira"] .quote-section blockquote,
+:root[data-brand="nira"] .pixel-copy h2,
+:root[data-brand="nira"] .newsletter h2{
+  font-family:"GFS Didot","Bodoni Moda","Didot",serif;
+}
+:root[data-brand="pixel"] .live-magazine-masthead strong,
+:root[data-brand="nira"] .live-magazine-masthead strong{
+  font-family:var(--serif);
+  font-weight:400;
+  letter-spacing:.025em;
+}
+:root[data-brand="pixel"] .eyebrow,
+:root[data-brand="nira"] .eyebrow{
+  letter-spacing:.19em;
+}
