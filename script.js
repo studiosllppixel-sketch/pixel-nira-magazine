@@ -7,6 +7,7 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
 (async function loadPublishedMagazine(){
 const cfg=window.PIXEL_NIRA_CONFIG||{};if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||!window.supabase)return;
 const brand=new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira";
+document.documentElement.setAttribute("data-brand",brand);
 try{
 const response=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;
 const data=await response.json();if(!data?.published_content)return;const published=data.published_content,view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
