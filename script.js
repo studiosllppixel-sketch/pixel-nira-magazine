@@ -35,14 +35,42 @@ pages.forEach((page,pi)=>{
 });
 const pageTitle=brand==="pixel"?"Pixel Studios":"Nira Editorial";
 const hero='<section class="gallery-intro"><p class="gallery-kicker">'+pageTitle+' · PHOTO STORIES</p><h1>Images with <em>intention.</em></h1><p>Explore the photographs. Open a story to discover the full shoot.</p></section>';
-const cards=stories.map((story,i)=>'<button class="gallery-card gallery-card-'+(i%5+1)+'" data-story="'+i+'" aria-label="Open '+esc(story.title)+'"><span class="gallery-card-image"><img loading="lazy" src="'+esc(story.photos[0].url)+'" alt="'+esc(story.photos[0].alt)+'" style="object-position:'+story.photos[0].focalX+'% '+story.photos[0].focalY+'%"></span><span class="gallery-card-meta"><span class="gallery-card-index">'+String(i+1).padStart(2,"0")+' / '+String(stories.length).padStart(2,"0")+'</span><span class="gallery-card-title">'+esc(story.title)+'</span><span class="gallery-card-count">'+story.photos.length+' '+(story.galleryEnabled?(story.photos.length===1?"PHOTOGRAPH":"PHOTOGRAPHS"):"VIEW PHOTO")+' ↗</span></span></button>').join("");
-main.classList.add("photo-gallery-main");main.innerHTML=hero+(stories.length?'<section class="photo-gallery-grid" aria-label="'+pageTitle+' gallery">'+cards+'</section>':'<section class="gallery-empty"><p>Your gallery is ready for its first published photo story.</p><p>Upload images and publish a story in Admin to display it here.</p></section>')+'<footer class="gallery-bottom"><span>'+pageTitle+'</span><span>AN INDEPENDENT IMAGE JOURNAL</span></footer><div class="story-overlay" hidden role="dialog" aria-modal="true" aria-label="Photo story"><button class="story-close" aria-label="Close story">×</button><div class="story-dialog"><div class="story-copy"><p class="gallery-kicker">'+pageTitle+' · EDITORIAL</p><h2 class="story-title"></h2><p class="story-description"></p><p class="story-position"></p></div><div class="story-photos"></div></div></div><div class="photo-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full-screen photo viewer"><button class="lightbox-close" aria-label="Close photo viewer">×</button><button class="lightbox-prev" aria-label="Previous photo">‹</button><img class="lightbox-image" alt=""><button class="lightbox-next" aria-label="Next photo">›</button><div class="lightbox-counter"></div></div>';
+
+const escStyle=v=>String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const renderLayoutPage=(page,pi)=>{
+ const layouts=page.layouts||{},layout=layouts[view]||layouts.desktop||page;
+ const elements=Array.isArray(layout.elements)?layout.elements:[];
+ const style=layout.canvasStyle||page.canvasStyle||{};
+ const cw=Math.max(280,Number(style.canvasWidth)||(view==="mobile"?375:1440));
+ const ch=Math.max(400,Number(style.canvasHeight)||(view==="mobile"?760:850));
+ let bg=style.bgColor||"#f7f3eb";
+ if(style.bgMode==="gradient")bg="linear-gradient("+(Number(style.gradientAngle)||135)+"deg, "+(style.gradientStart||bg)+", "+(style.gradientEnd||"#d8d0c2")+")";
+ const inner=elements.map((e,ei)=>{
+  const x=e.isBackground?0:Number(e.x)||0,y=e.isBackground?0:Number(e.y)||0,w=e.isBackground?100:Number(e.width)||30;
+  const z=e.isBackground?0:ei+1;
+  const common='position:absolute;left:'+x+'%;top:'+y+'%;width:'+w+'%;z-index:'+z+';box-sizing:border-box;';
+  if(e.type==="image"){
+   if(!safeImage(e.url))return "";
+   const h=e.isBackground?100:Number(e.height)||50,zoom=Math.max(1,Math.min(2.5,Number(e.scale||100)/100)),fx=Math.max(0,Math.min(100,Number(e.focalX??50))),fy=Math.max(0,Math.min(100,Number(e.focalY??50)));
+   const storyIndex=stories.findIndex(s=>s.id==="story-"+pi+"-"+elements.filter((el,ix)=>ix<ei&&el.type==="image"&&safeImage(el.url)).length);
+   return '<button type="button" class="published-canvas-image" data-canvas-story="'+storyIndex+'" aria-label="'+escStyle(e.alt||"View photograph")+'" style="'+common+'height:'+h+'%;padding:0;border:0;background:transparent;overflow:hidden;cursor:pointer;"><img loading="lazy" src="'+escStyle(e.url)+'" alt="'+escStyle(e.alt||"")+'" style="position:absolute;left:'+(-(zoom-1)*fx)+'%;top:'+(-(zoom-1)*fy)+'%;width:'+(zoom*100)+'%;height:'+(zoom*100)+'%;max-width:none;max-height:none;object-fit:'+escStyle(e.fit||"cover")+';object-position:'+fx+'% '+fy+'%;filter:'+escStyle(e.filter||"none")+';"></button>';
+  }
+  const fontSize=Math.max(9,Number(e.fontSize)||16);
+  const color=e.color||"#22221f";
+  let textBg="transparent";
+  if(e.bgMode&&e.bgMode!=="transparent")textBg=e.bgMode==="gradient"?"linear-gradient("+(Number(e.bgAngle)||135)+"deg, "+(e.bgStart||"#f1e5d4")+", "+(e.bgEnd||"#c4b6d9")+")":(e.bgStart||"#f1e5d4");
+  const textStyle=common+'font-family:'+escStyle(e.fontFamily||"DM Sans")+';font-size:'+fontSize/cw*100+'cqw;color:'+escStyle(color)+';font-weight:'+escStyle(e.fontWeight||(e.kind==="heading"?"500":"400"))+';line-height:'+(Number(e.lineHeight)||(e.kind==="heading"?1.02:1.45))+';letter-spacing:'+(Number(e.letterSpacing)||0)+'px;text-align:'+escStyle(e.textAlign||"left")+';background:'+textBg+';padding:'+(e.bgMode&&e.bgMode!=="transparent"?"10px":"3px")+';white-space:pre-wrap;overflow-wrap:anywhere;';
+  return '<div class="published-canvas-text" style="'+textStyle+'">'+escStyle(e.text||"")+'</div>';
+ }).join("");
+ return '<section class="published-editorial-canvas" aria-label="'+escStyle(page.title||("Story "+(pi+1)))+'" style="--canvas-ratio:'+cw+'/'+ch+';aspect-ratio:'+cw+'/'+ch+';background:'+bg+';">'+inner+'</section>';
+};
+main.classList.add("published-layout-main");main.innerHTML=pages.map(renderLayoutPage).join("")+'<footer class="gallery-bottom"><span>'+pageTitle+'</span><span>AN INDEPENDENT IMAGE JOURNAL</span></footer><div class="story-overlay" hidden role="dialog" aria-modal="true" aria-label="Photo story"><button class="story-close" aria-label="Close story">×</button><div class="story-dialog"><div class="story-copy"><p class="gallery-kicker">'+pageTitle+' · EDITORIAL</p><h2 class="story-title"></h2><p class="story-description"></p><p class="story-position"></p></div><div class="story-photos"></div></div></div><div class="photo-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full-screen photo viewer"><button class="lightbox-close" aria-label="Close photo viewer">×</button><button class="lightbox-prev" aria-label="Previous photo">‹</button><img class="lightbox-image" alt=""><button class="lightbox-next" aria-label="Next photo">›</button><div class="lightbox-counter"></div></div>';
 const overlay=main.querySelector(".story-overlay"),lightbox=main.querySelector(".photo-lightbox");
 let activeStory=0,activePhoto=0,lastFocus=null;
 const openLightbox=index=>{const story=stories[activeStory];if(!story)return;activePhoto=(index+story.photos.length)%story.photos.length;const p=story.photos[activePhoto];lightbox.querySelector(".lightbox-image").src=p.url;lightbox.querySelector(".lightbox-image").alt=p.alt;lightbox.querySelector(".lightbox-counter").textContent=(activePhoto+1)+" / "+story.photos.length;lightbox.hidden=false;document.body.classList.add("gallery-modal-open")};
 const closeLightbox=()=>{lightbox.hidden=true;if(overlay.hidden)document.body.classList.remove("gallery-modal-open")};
 const openStory=index=>{activeStory=index;const story=stories[index];if(!story)return;lastFocus=document.activeElement;overlay.querySelector(".story-title").textContent=story.title;overlay.querySelector(".story-description").textContent=story.description;overlay.querySelector(".story-position").textContent=story.photos.length+" PHOTOGRAPHS · "+story.brand.toUpperCase();overlay.querySelector(".story-photos").innerHTML=story.photos.map((p,i)=>'<button class="story-photo" data-photo="'+i+'" aria-label="View photograph '+(i+1)+'"><img loading="lazy" src="'+esc(p.url)+'" alt="'+esc(p.alt)+'" style="object-position:'+p.focalX+'% '+p.focalY+'%"><span>VIEW FULL SCREEN ↗</span></button>').join("");overlay.hidden=false;document.body.classList.add("gallery-modal-open");overlay.querySelector(".story-close").focus()};
-main.querySelectorAll("[data-story]").forEach(card=>card.addEventListener("click",()=>{const index=Number(card.dataset.story);if(stories[index]?.galleryEnabled)openStory(index);else{activeStory=index;openLightbox(0)}}));
+main.querySelectorAll("[data-canvas-story]").forEach(card=>card.addEventListener("click",()=>{const index=Number(card.dataset.canvasStory);if(index<0)return;activeStory=index;if(stories[index]?.galleryEnabled)openStory(index);else openLightbox(0)}));
 overlay.addEventListener("click",e=>{if(e.target===overlay||e.target.closest(".story-close")){overlay.hidden=true;document.body.classList.remove("gallery-modal-open");if(lastFocus)lastFocus.focus();return}const photo=e.target.closest("[data-photo]");if(photo)openLightbox(Number(photo.dataset.photo))});
 lightbox.querySelector(".lightbox-close").addEventListener("click",closeLightbox);
 lightbox.querySelector(".lightbox-prev").addEventListener("click",()=>openLightbox(activePhoto-1));
