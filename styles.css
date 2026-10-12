@@ -378,3 +378,11 @@
 :root[data-brand="pixel"] .gallery-intro h1 em,:root[data-brand="pixel"] .gallery-kicker{color:#54204F}
 :root[data-brand="nira"] .gallery-intro h1 em,:root[data-brand="nira"] .gallery-kicker{color:#71365F}
 @media(max-width:700px){.gallery-intro{padding:48px 6% 30px}.photo-gallery-grid{padding:28px 5% 70px;grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 12px}.gallery-card,.gallery-card-2,.gallery-card-3,.gallery-card-4,.gallery-card-5{grid-column:span 3;margin:0}.gallery-card-2,.gallery-card-5{margin-top:42px}.gallery-card-3{margin-top:-12px}.gallery-card-title{font-size:25px}.gallery-card-count{font-size:7px}.gallery-bottom{padding:18px 5%;font-size:7px}.story-dialog{padding:75px 5% 40px}.story-photos{columns:1}.lightbox-image{max-width:calc(100vw - 36px);max-height:calc(100vh - 120px)}.lightbox-prev{left:2px}.lightbox-next{right:2px}.lightbox-prev,.lightbox-next{width:36px;font-size:42px}.story-close,.lightbox-close{right:12px;top:12px}}
+
+/* Public page uses the same positioned canvas geometry as the editor. */
+.published-layout-main{width:100%;max-width:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(20px,4vw,64px)}
+.published-editorial-canvas{position:relative;width:100%;max-width:100%;overflow:hidden;container-type:inline-size;isolation:isolate;margin:0 auto;background-size:cover!important;background-position:center!important}
+.published-canvas-text{min-width:0}
+.published-canvas-image{display:block;appearance:none;-webkit-appearance:none;line-height:0}
+.published-canvas-image img{display:block}
+@media(max-width:720px){.published-layout-main{gap:18px}.published-editorial-canvas{width:100%;}}
