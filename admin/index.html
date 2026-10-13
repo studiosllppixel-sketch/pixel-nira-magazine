@@ -112,7 +112,7 @@
 <label>Hero headline<textarea id="heroTitle" rows="3" maxlength="240"></textarea></label>
 <label>Short description<textarea id="heroDescription" rows="3" maxlength="600"></textarea></label>
 <label>Enter button label<input id="heroButtonLabel" type="text" maxlength="60"></label>
-<div class="site-image-control"><div class="site-image-heading">HERO BACKGROUND IMAGE</div><div class="site-image-preview" id="heroImagePreview">Using first editorial photograph</div><div class="site-image-actions"><button id="chooseHeroImage" class="secondary" type="button">Choose from Media Library</button><button id="clearHeroImage" class="secondary" type="button">Use editorial image</button></div><p class="help">Choose an image already uploaded to this brand's Media Library.</p></div>
+<div class="site-image-control"><div class="site-image-heading">HERO BACKGROUND IMAGE</div><div class="site-image-preview" id="heroImagePreview">Using first editorial photograph</div><div class="site-image-actions"><button id="chooseHeroImage" class="secondary" type="button">Choose from Media Library</button><button id="clearHeroImage" class="secondary" type="button">Use editorial image</button></div><div class="two-fields"><label>Image position X (%)<input id="heroImageX" type="number" min="0" max="100" value="50"></label><label>Image position Y (%)<input id="heroImageY" type="number" min="0" max="100" value="50"></label></div><p class="help">Move the focal point horizontally and vertically to align the hero photograph.</p><p class="help">Choose an image already uploaded to this brand's Media Library.</p></div>
 <label>Cover background colour<input id="heroBackgroundColor" type="color" value="#f4f0e8"></label>
 <label>Image overlay (%)<input id="heroOverlay" type="number" min="0" max="90" value="0"></label>
 </details>
@@ -205,7 +205,7 @@
     }catch(e){}
   }
   iframe?.addEventListener('load',bindFullPage);
-  document.getElementById('refreshFullPagePreview')?.addEventListener('click',()=>setTimeout(bindFullPage,500));
+  document.getElementById('refreshFullPagePreview')?.addEventListener('click',()=>{if(!iframe)return;const current=new URL(iframe.src,location.href);current.searchParams.set('_previewRefresh',Date.now().toString());iframe.src=current.toString();});
 })();
 (function galleryPreviewMode(){
   const canvas=document.getElementById('previewCanvas');
