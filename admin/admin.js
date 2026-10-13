@@ -144,7 +144,7 @@ function drag(e){
  snap();
  const guides=[];
  const addGuide=(axis,pos)=>{let g=guides.find(q=>q.axis===axis);if(!g){g=document.createElement("div");g.className="hero-alignment-guide "+(axis==="x"?"vertical":"horizontal");g.style.cssText="position:absolute;pointer-events:none;z-index:9999;background:#c29b62;box-shadow:0 0 0 1px rgba(255,255,255,.75);";if(axis==="x"){g.style.top="0";g.style.bottom="0";g.style.width="1px"}else{g.style.left="0";g.style.right="0";g.style.height="1px"}c.append(g);guides.push({axis,node:g})}if(axis==="x")g.style.left=pos+"%";else g.style.top=pos+"%";};
- const clearGuides=()=>guides.forEach(g=>g.node.remove());
+ const clearGuides=()=>{guides.forEach(g=>g.node.remove());guides.length=0};
  const move=v=>{
   let nx=Math.max(0,Math.min(100-ow,ox+(v.clientX-sx)/r.width*100));
   let ny=Math.max(0,Math.min(100-oh,oy+(v.clientY-sy)/r.height*100));
