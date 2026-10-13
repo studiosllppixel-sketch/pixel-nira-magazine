@@ -117,7 +117,7 @@
 <details class="tool-section tool-accordion site-settings" id="heroEditorSettings">
 <summary class="section-title">HERO SECTION EDITOR</summary>
 <p class="help">Edit the opening magazine cover for the selected brand. Save as a draft first; publish when ready.</p>
-<div id="heroLivePreview" aria-live="polite" style="position:relative;isolation:isolate;overflow:hidden;min-height:250px;margin:12px 0 18px;padding:24px 20px 18px;display:flex;flex-direction:column;justify-content:space-between;background:#f4f0e8;color:#22221f;border:1px solid #d8d0c2;border-radius:8px;box-sizing:border-box;"><div style="font-size:9px;letter-spacing:.12em;display:flex;justify-content:space-between;gap:8px"><span>LIVE HERO PREVIEW</span><span>ISSUE 01 · 2026</span></div><div style="position:relative;z-index:1;max-width:90%;padding:14px 0;"><p data-hero-eyebrow style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 12px;">NIRA EDITORIAL PRESENTS</p><h3 data-hero-title style="font-family:Georgia,serif;font-weight:400;font-size:clamp(26px,7vw,42px);line-height:1.02;margin:0 0 12px;white-space:pre-line;">The art of being seen.</h3><p data-hero-description style="font-size:12px;line-height:1.5;max-width:300px;margin:0 0 16px;">A considered collection of fashion, portraiture and visual stories.</p><span data-hero-button style="display:inline-block;border:1px solid currentColor;padding:9px 12px;font-size:9px;letter-spacing:.1em;">ENTER THE JOURNAL ↘</span></div><div style="font-size:9px;letter-spacing:.08em;display:flex;justify-content:space-between;gap:8px"><span>PIXEL STUDIOS × NIRA EDITORIAL</span><span>SCROLL TO DISCOVER</span></div></div>
+<div id="heroLivePreview" class="admin-editorial-cover" aria-live="polite"><div class="admin-cover-frame"><div class="admin-cover-overline"><span>INDEPENDENT IMAGE JOURNAL</span><span>ISSUE 01 · 2026</span></div><div class="admin-cover-main"><p data-hero-eyebrow class="admin-cover-kicker">NIRA EDITORIAL PRESENTS</p><h3 data-hero-title>The art of being seen.</h3><p data-hero-description class="admin-cover-description">A considered collection of fashion, portraiture and visual stories.</p><span data-hero-button class="admin-cover-enter">ENTER THE JOURNAL <span aria-hidden="true">↘</span></span></div><div class="admin-cover-bottom"><span>PIXEL STUDIOS <i>×</i> NIRA EDITORIAL</span><span>SCROLL TO DISCOVER</span></div><span class="admin-cover-index" aria-hidden="true">P / N</span></div></div>
 <label>Small heading / eyebrow<input id="heroEyebrow" type="text" maxlength="120"></label>
 <label>Hero headline<textarea id="heroTitle" rows="3" maxlength="240"></textarea></label>
 <label>Short description<textarea id="heroDescription" rows="3" maxlength="600"></textarea></label>
@@ -322,7 +322,7 @@
    out.innerHTML="";kicker.textContent="LIVE "+current.toUpperCase()+" PREVIEW";
    const el=(tag,txt,cls)=>{const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=txt;return n};
    if(current==="hero"){
-    const source=document.getElementById("heroLivePreview");if(source){const clone=source.cloneNode(true);clone.id="heroSectionPreviewClone";clone.style.minHeight="min(65vh,560px)";clone.style.margin="0";out.append(clone)}
+    const source=document.getElementById("heroLivePreview");if(source){const clone=source.cloneNode(true);clone.id="heroSectionPreviewClone";clone.style.margin="0";out.append(clone)}
     else out.append(el("h2",text("heroTitle","Hero headline")));
    }else if(current==="header"){
     const h=el("header","", "section-header-mock");const announce=el("div",text("headerAnnouncement","PIXEL STUDIOS × NIRA EDITORIAL"),"section-header-announcement");const row=el("div","","section-header-row");row.append(el("strong",text("headerWordmark","NIRA"),"section-header-logo"));const links=el("div","","section-header-links");[text("headerJournalLabel","Journal"),text("headerNiraLabel","Nira Editorial"),text("headerPixelLabel","Pixel Studios"),text("headerAboutLabel","About Us"),text("headerContactLabel","Contact Us")].forEach(v=>links.append(el("span",v)));row.append(links);h.append(announce,row);out.append(h,el("p","Header preview — changes update here as you edit.","section-preview-help"));
@@ -406,5 +406,22 @@
 .section-settings-mock{padding:24px;border:1px solid #d4cabb;background:#fffdf9}
 .section-settings-mock h2{font:500 36px 'Playfair Display',serif}
 @media(max-width:720px){.page-section-button{flex:1 1 28%;padding:10px 6px}.section-header-row{align-items:flex-start;flex-direction:column}.section-live-preview{min-height:55vh}}
+
+/* Hero editor preview follows the published .editorial-cover proportions and typography. */
+.admin-editorial-cover{position:relative;isolation:isolate;overflow:hidden;width:100%;min-height:calc(100svh - 112px);margin:12px 0 18px;background:#211a20;color:#f5f0e8;box-sizing:border-box;container-type:inline-size}
+.admin-editorial-cover:after{content:"";position:absolute;inset:14px;border:1px solid rgba(245,240,232,.34);pointer-events:none;z-index:2}
+.admin-editorial-cover [data-hero-image-layer]{transform:scale(1.035)}
+.admin-editorial-cover [data-hero-overlay-layer]{background:linear-gradient(90deg,rgba(22,15,22,.94) 0%,rgba(22,15,22,.78) 34%,rgba(22,15,22,.32) 66%,rgba(22,15,22,.06) 100%)!important;z-index:0!important}
+.admin-cover-frame{position:relative;z-index:1;min-height:inherit;padding:clamp(24px,3.4vw,48px) clamp(16px,3.5vw,50px);display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box}
+.admin-cover-overline,.admin-cover-bottom{display:flex;justify-content:space-between;gap:12px;font-size:9px;letter-spacing:.2em;line-height:1.7}
+.admin-cover-main{position:relative;z-index:1;max-width:min(790px,72%);padding:clamp(48px,8vh,105px) 0}
+.admin-cover-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#d6b9d0;margin:0 0 24px}
+.admin-cover-main h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:clamp(64px,9.1vw,136px);line-height:.86;letter-spacing:-.065em;max-width:760px;text-wrap:balance;white-space:pre-line;margin:0}
+.admin-cover-description{max-width:350px;margin:30px 0 32px;font-size:13px;line-height:1.9}
+.admin-cover-enter{display:inline-flex;align-items:center;gap:28px;border-bottom:1px solid #d6b9d0;padding:16px 0;color:#f5f0e8;font-size:10px;letter-spacing:.13em}
+.admin-cover-enter span{color:#d6b9d0;font-size:16px}
+.admin-cover-index{position:absolute;right:clamp(24px,4vw,58px);top:48%;font-size:10px;letter-spacing:.16em;color:rgba(245,240,232,.72)}
+#heroSectionPreviewClone{width:100%;min-height:calc(100svh - 112px)!important;height:auto}
+@media(max-width:700px){.admin-editorial-cover{min-height:calc(100svh - 96px)}.admin-cover-frame{min-height:calc(100svh - 120px);padding:22px 12px}.admin-cover-overline,.admin-cover-bottom{font-size:7px;letter-spacing:.1em}.admin-cover-main{max-width:100%;padding:clamp(36px,8vh,70px) 0}.admin-cover-main h3{font-size:clamp(54px,14vw,86px);max-width:100%;line-height:.9}.admin-cover-description{max-width:280px;font-size:12px;margin-top:22px;margin-bottom:25px}.admin-cover-index{right:12px;top:45%;font-size:7px}#heroSectionPreviewClone{min-height:calc(100svh - 96px)!important}}
 </style>
 </body></html>
