@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-sidebar-width-v1"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261013-library-panel-fix-v1"></script><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-hero-editor-v1"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261013-hero-editor-v1"></script><style>
 /* Place the editor accordion in the dark navigation sidebar, not above the canvas. */
 .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;align-self:start}
 .sidebar .editor-controls-dropdown{order:initial;display:block;background:transparent;color:#f6f2ea;border:0;border-top:1px solid #44443b;margin-top:8px}
@@ -51,6 +51,17 @@
 <label>About Us menu label<input id="headerAboutLabel" type="text" maxlength="40" value="About Us"></label>
 <label>Contact Us menu label<input id="headerContactLabel" type="text" maxlength="40" value="Contact Us"></label>
 <div class="site-image-control"><div class="site-image-heading">HEADER IMAGE</div><div class="site-image-preview" id="headerImagePreview">No header image selected</div><div class="site-image-actions"><button id="chooseHeaderImage" class="secondary" type="button">Choose from Media Library</button><button id="clearHeaderImage" class="secondary" type="button">Remove</button></div><div class="two-fields"><label>Height (px)<input id="headerImageHeight" type="number" min="60" max="240" value="82"></label><label>Dark overlay (%)<input id="headerImageOverlay" type="number" min="0" max="90" value="20"></label></div><div class="two-fields"><label>Image position X (%)<input id="headerImageX" type="number" min="0" max="100" value="50"></label><label>Image position Y (%)<input id="headerImageY" type="number" min="0" max="100" value="50"></label></div></div>
+</details>
+<details class="tool-section tool-accordion site-settings" id="heroEditorSettings">
+<summary class="section-title">HERO SECTION EDITOR</summary>
+<p class="help">Edit the opening magazine cover for the selected brand. Save as a draft first; publish when ready.</p>
+<label>Small heading / eyebrow<input id="heroEyebrow" type="text" maxlength="120"></label>
+<label>Hero headline<textarea id="heroTitle" rows="3" maxlength="240"></textarea></label>
+<label>Short description<textarea id="heroDescription" rows="3" maxlength="600"></textarea></label>
+<label>Enter button label<input id="heroButtonLabel" type="text" maxlength="60"></label>
+<div class="site-image-control"><div class="site-image-heading">HERO BACKGROUND IMAGE</div><div class="site-image-preview" id="heroImagePreview">Using first editorial photograph</div><div class="site-image-actions"><button id="chooseHeroImage" class="secondary" type="button">Choose from Media Library</button><button id="clearHeroImage" class="secondary" type="button">Use editorial image</button></div><p class="help">Choose an image already uploaded to this brand's Media Library.</p></div>
+<label>Cover background colour<input id="heroBackgroundColor" type="color" value="#f4f0e8"></label>
+<label>Image overlay (%)<input id="heroOverlay" type="number" min="0" max="90" value="0"></label>
 </details>
 <details class="tool-section tool-accordion site-settings">
 <summary class="section-title">ABOUT US PAGE</summary>
