@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-admin-login-fix-v2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261014-save-publish-fix-v1"></script><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-admin-login-fix-v2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261014-save-publish-hero-recovery-v2"></script><style>
 /* Place the editor accordion in the dark navigation sidebar, not above the canvas. */
 .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;align-self:start}
 .sidebar .editor-controls-dropdown{order:initial;display:block;background:transparent;color:#f6f2ea;border:0;border-top:1px solid #44443b;margin-top:8px}
@@ -498,5 +498,25 @@
  .section-preview-paper:has(.section-header-mock) .section-header-links{display:flex;gap:10px;margin-left:0;flex-wrap:wrap}
  .section-preview-paper:has(.section-header-mock) .section-header-links span{font-size:8px}
 }
+
+/* Hero editor: make the background directly draggable in both the primary preview and section-preview clone. */
+#heroLivePreview [data-hero-image-layer],
+#heroSectionPreviewClone [data-hero-image-layer]{pointer-events:auto!important;cursor:grab!important;touch-action:none!important;z-index:0!important}
+#heroLivePreview [data-hero-overlay-layer],
+#heroSectionPreviewClone [data-hero-overlay-layer]{pointer-events:none!important}
+#heroLivePreview .admin-cover-frame,
+#heroSectionPreviewClone .admin-cover-frame{pointer-events:none!important;z-index:1!important}
+#heroLivePreview .admin-cover-frame>*,
+#heroSectionPreviewClone .admin-cover-frame>*{pointer-events:none!important}
+#heroLivePreview [data-hero-eyebrow],
+#heroLivePreview [data-hero-title],
+#heroLivePreview [data-hero-description],
+#heroLivePreview [data-hero-button],
+#heroSectionPreviewClone [data-hero-eyebrow],
+#heroSectionPreviewClone [data-hero-title],
+#heroSectionPreviewClone [data-hero-description],
+#heroSectionPreviewClone [data-hero-button]{pointer-events:auto!important;touch-action:none}
+#heroLivePreview .admin-cover-main,
+#heroSectionPreviewClone .admin-cover-main{pointer-events:none!important}
 </style>
 </body></html>
