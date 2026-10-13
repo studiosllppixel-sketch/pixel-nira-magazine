@@ -613,9 +613,9 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
 
 
 /* Cinematic full-page transition system */
-.page-transition-curtain{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:var(--paper,#f4f0e8);color:var(--ink,#201e1a);transform:scaleY(0);transform-origin:bottom;pointer-events:none;will-change:transform;transition:transform .62s cubic-bezier(.77,0,.18,1)}
+.page-transition-curtain{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:var(--paper,#f4f0e8);color:var(--ink,#201e1a);transform:scaleY(0);transform-origin:top;pointer-events:none;will-change:transform;transition:transform .76s cubic-bezier(.65,0,.35,1)}
 .page-transition-curtain span{font:500 clamp(10px,1.2vw,13px)/1.2 var(--serif,"Bodoni Moda",serif);letter-spacing:.2em;text-align:center;opacity:0;transform:translateY(12px);transition:opacity .22s ease .12s,transform .35s ease .12s}
 .page-transition-curtain i{font-style:normal;margin:0 .45em;color:#8b7764}
-body.page-leaving .page-transition-curtain{transform:scaleY(1);transform-origin:bottom}
+body.page-leaving .page-transition-curtain{transform:scaleY(1);transform-origin:top}
 body.page-leaving .page-transition-curtain span{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}}
