@@ -355,7 +355,7 @@
   /* Drag the large section-preview photo to adjust its focal point. */
   let imageDrag=null;
   preview.addEventListener("pointerdown",e=>{
-   const img=e.target.closest(".section-preview-image");
+   const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
    if(!img||!["header","hero","footer"].includes(current))return;
    const target=current,box=img.getBoundingClientRect();
    if(!box.width||!box.height)return;
@@ -381,6 +381,20 @@
   };
   preview.addEventListener("pointerup",finishImageDrag);
   preview.addEventListener("pointercancel",finishImageDrag);
+  preview.addEventListener("dblclick",e=>{
+   const map=[
+    ["[data-hero-eyebrow]","heroEyebrow"],["[data-hero-title]","heroTitle"],["[data-hero-description]","heroDescription"],["[data-hero-button]","heroButtonLabel"],
+    [".section-header-announcement","headerAnnouncement"],[".section-header-logo","headerWordmark"],
+    [".section-about-mock .section-preview-eyebrow","aboutEyebrow"],[".section-about-mock h2","aboutTitle"],[".section-about-lead","aboutLead"],[".section-about-body","aboutBody"],
+    [".section-contact-mock .section-preview-eyebrow","contactEyebrow"],[".section-contact-mock h2","contactTitle"],[".section-contact-lead","contactLead"],
+    [".section-footer-kicker","footerToplineBrand"],[".section-footer-mock h2","footerTagline"]
+   ];
+   let found=null;for(const [selector,id] of map){const n=e.target.closest(selector);if(n&&preview.contains(n)){found={n,id};break}}
+   if(!found)return;const input=document.getElementById(found.id);if(!input)return;e.preventDefault();e.stopPropagation();
+   const node=found.n;node.contentEditable="true";node.setAttribute("role","textbox");node.setAttribute("aria-label","Edit "+found.id);node.focus();
+   const finish=()=>{node.contentEditable="false";node.removeAttribute("role");input.value=node.textContent.trim();input.dispatchEvent(new Event("input",{bubbles:true}));node.removeEventListener("blur",finish)};
+   node.addEventListener("blur",finish);node.addEventListener("keydown",ev=>{if(ev.key==="Escape"){ev.preventDefault();node.textContent=input.value;node.blur()}if(ev.key==="Enter"&&(ev.metaKey||ev.ctrlKey)){ev.preventDefault();node.blur()}});
+  });
   nav.addEventListener("click",e=>{const b=e.target.closest("[data-page-section]");if(b)choose(b.dataset.pageSection)});
   document.addEventListener("input",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
   document.addEventListener("change",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
