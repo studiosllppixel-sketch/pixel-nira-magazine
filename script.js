@@ -1,3 +1,14 @@
+function applyEditorialFooter(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
+ const defaults={tagline:brand==="pixel"?"The art of image-making.":"The art of being seen.",descriptor:"Fashion · Photography · Stories",location:"Independent image journal",copyright:"© 2026 PIXEL STUDIOS × NIRA EDITORIAL",niraInstagramUrl:"https://www.instagram.com/nira.editorial/",pixelInstagramUrl:"https://www.instagram.com/pixelstudios.inc/"};
+ const f={...defaults,...(settings||{})},footer=document.querySelector(".editorial-footer");if(!footer)return;
+ const put=(selector,value)=>{const node=footer.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value};
+ put(".footer-tagline",f.tagline);put(".footer-description",f.descriptor);put(".footer-location",f.location);put(".footer-copyright",f.copyright);
+ const nira=footer.querySelector(".footer-nira-instagram"),pixel=footer.querySelector(".footer-pixel-instagram");
+ if(nira&&/^https:\/\//i.test(f.niraInstagramUrl||""))nira.href=f.niraInstagramUrl;
+ if(pixel&&/^https:\/\//i.test(f.pixelInstagramUrl||""))pixel.href=f.pixelInstagramUrl;
+ const mark=footer.querySelector(".footer-mark");if(mark)mark.innerHTML=(brand==="pixel"?"PIXEL":"NIRA")+'<span>®</span>';
+}
+applyEditorialFooter();
 const menuButton=document.querySelector(".menu-toggle");
 const navigation=document.querySelector(".main-nav");
 if(menuButton&&navigation){menuButton.addEventListener("click",()=>{const isOpen=navigation.classList.toggle("open");menuButton.setAttribute("aria-expanded",String(isOpen));menuButton.setAttribute("aria-label",isOpen?"Close navigation":"Open navigation");menuButton.textContent=isOpen?"×":"☰";});navigation.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{navigation.classList.remove("open");menuButton.setAttribute("aria-expanded","false");menuButton.setAttribute("aria-label","Open navigation");menuButton.textContent="☰";}));}
@@ -10,7 +21,7 @@ const brand=new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":
 document.documentElement.setAttribute("data-brand",brand);
 try{
 const response=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;
-const data=await response.json();if(!data?.published_content)return;const published=data.published_content,view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
+const data=await response.json();if(!data?.published_content)return;const published=data.published_content;applyEditorialFooter(published.footerSettings,brand);const view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
 const pages=Array.isArray(published.canvasPages)&&published.canvasPages.length?published.canvasPages:[{title:brand==="pixel"?"Pixel Studios":"Nira Editorial",layout:published.layout,layouts:published.layouts,elements:published.elements,canvasStyle:published.canvasStyle}];
 const main=document.querySelector("main");if(!main)return;document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Photo Stories";
 const nav=document.querySelector(".main-nav");if(nav)nav.innerHTML='<a href="?brand=nira">Nira Editorial</a><a href="?brand=pixel">Pixel Studios</a>';
