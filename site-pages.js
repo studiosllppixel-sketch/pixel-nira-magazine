@@ -33,7 +33,7 @@
 (function initStandalonePageTransitions(){
  const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  const body=document.body;if(!body)return;
- if(!reduce)body.classList.add("page-content-reveal");
+ if(!reduce){body.classList.add("page-content-reveal","page-arriving");requestAnimationFrame(()=>requestAnimationFrame(()=>body.classList.add("page-arrived")));window.setTimeout(()=>body.classList.remove("page-arriving"),1050);}
  const curtain=document.createElement("div");curtain.className="page-transition-curtain";curtain.setAttribute("aria-hidden","true");curtain.innerHTML='<span>PIXEL STUDIOS <i>×</i> NIRA EDITORIAL</span>';body.appendChild(curtain);
  let navigating=false;
  document.addEventListener("click",event=>{
