@@ -346,6 +346,35 @@
    if(isSettings)controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("PAGE SETTINGS"));
    if(!isCanvas)draw();
   }
+  /* Drag the large section-preview photo to adjust its focal point. */
+  let imageDrag=null;
+  preview.addEventListener("pointerdown",e=>{
+   const img=e.target.closest(".section-preview-image");
+   if(!img||!["header","footer"].includes(current))return;
+   const target=current,box=img.getBoundingClientRect();
+   if(!box.width||!box.height)return;
+   const x=document.getElementById(target+"ImageX"),y=document.getElementById(target+"ImageY");
+   imageDrag={img,target,startX:e.clientX,startY:e.clientY,baseX:Number(x?.value??50),baseY:Number(y?.value??50),width:box.width,height:box.height,moved:false};
+   img.style.cursor="grabbing";img.style.touchAction="none";img.setPointerCapture?.(e.pointerId);e.preventDefault();
+  });
+  preview.addEventListener("pointermove",e=>{
+   if(!imageDrag)return;
+   const x=document.getElementById(imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target+"ImageY");
+   const clamp=v=>Math.max(0,Math.min(100,v));
+   const px=clamp(imageDrag.baseX-(e.clientX-imageDrag.startX)/imageDrag.width*100);
+   const py=clamp(imageDrag.baseY-(e.clientY-imageDrag.startY)/imageDrag.height*100);
+   imageDrag.img.style.objectPosition=px+"% "+py+"%";
+   if(x)x.value=px;if(y)y.value=py;
+   imageDrag.moved=true;
+  });
+  const finishImageDrag=()=>{
+   if(!imageDrag)return;
+   const target=imageDrag.target,img=imageDrag.img,moved=imageDrag.moved;
+   img.style.cursor="grab";imageDrag=null;
+   if(moved){const x=document.getElementById(target+"ImageX");if(x)x.dispatchEvent(new Event("input",{bubbles:true}));else document.getElementById(target+"ImageY")?.dispatchEvent(new Event("input",{bubbles:true}))}
+  };
+  preview.addEventListener("pointerup",finishImageDrag);
+  preview.addEventListener("pointercancel",finishImageDrag);
   nav.addEventListener("click",e=>{const b=e.target.closest("[data-page-section]");if(b)choose(b.dataset.pageSection)});
   document.addEventListener("input",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
   document.addEventListener("change",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
