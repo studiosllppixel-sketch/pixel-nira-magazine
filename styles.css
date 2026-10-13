@@ -618,7 +618,4 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
 .page-transition-curtain i{font-style:normal;margin:0 .45em;color:#8b7764}
 body.page-leaving .page-transition-curtain{transform:scaleY(1);transform-origin:bottom}
 body.page-leaving .page-transition-curtain span{opacity:1;transform:translateY(0)}
-body.page-arriving .page-transition-curtain{transform:scaleY(1);transform-origin:top;transition-duration:.68s}
-body.page-arriving .page-transition-curtain span{opacity:1;transform:translateY(0)}
-body.page-arrived .page-transition-curtain{transform:scaleY(0);transform-origin:top}
 @media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}}
