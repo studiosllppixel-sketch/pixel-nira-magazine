@@ -746,3 +746,24 @@ body.gallery-modal-open .announcement,
 body.gallery-modal-open .site-header{display:none!important}
 .story-overlay:not([hidden]){inset:24px 3.2% 86px}
 @media(max-width:700px){.story-overlay:not([hidden]){inset:10px 10px 76px}.story-overlay:not([hidden]) .story-close{top:8px;margin:8px 8px -58px 0}}
+
+
+/* Tighten the floating gallery: use the viewport instead of leaving large chrome gutters. */
+body.gallery-modal-open .site-footer{display:none!important}
+.story-overlay:not([hidden]){inset:12px 12px 12px!important;border-radius:4px}
+.story-overlay:not([hidden]) .story-dialog{padding:30px clamp(20px,4vw,56px) 36px}
+.story-overlay:not([hidden]) .story-copy{padding-bottom:24px}
+.story-overlay:not([hidden]) .story-position{margin-top:14px}
+.story-overlay:not([hidden]) .story-photos{column-gap:clamp(12px,2vw,26px)}
+.story-overlay:not([hidden]) .story-photo{margin-bottom:clamp(12px,2vw,26px)}
+.story-overlay:not([hidden]) .story-close{top:8px;margin:8px 8px -54px 0}
+@media(max-width:700px){
+ .story-overlay:not([hidden]){inset:7px!important}
+ .story-overlay:not([hidden]) .story-dialog{padding:62px 16px 24px}
+ .story-overlay:not([hidden]) .story-copy{padding-bottom:20px}
+ .story-overlay:not([hidden]) .story-title{font-size:clamp(38px,10vw,58px);margin-bottom:12px}
+ .story-overlay:not([hidden]) .story-description{font-size:12px;line-height:1.7}
+ .story-overlay:not([hidden]) .story-photos{columns:2;column-gap:10px}
+ .story-overlay:not([hidden]) .story-photo{margin-bottom:10px}
+ .story-overlay:not([hidden]) .story-close{top:6px;left:auto;right:6px;margin:6px 6px -54px 0}
+}
