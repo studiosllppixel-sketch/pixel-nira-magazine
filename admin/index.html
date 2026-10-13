@@ -301,4 +301,81 @@
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",organizePageEditor,{once:true});else organizePageEditor();
 })();
 </script>
+<script>
+/* Page-level section selector controls the preview; the inspector remains inside Editor Controls. */
+(function sectionPreviewNavigation(){
+ const boot=()=>{
+  const panel=document.getElementById("editorPanel"),controls=document.getElementById("editorControlsDropdown"),area=panel?.querySelector(".preview-area");
+  if(!panel||!controls||!area||document.getElementById("pageSectionNav"))return;
+  const nav=document.createElement("nav");nav.id="pageSectionNav";nav.className="page-section-nav";nav.setAttribute("aria-label","Choose page section to preview");
+  const names=[["header","Header"],["hero","Hero"],["canvas","Canvas"],["footer","Footer"],["settings","Page Settings"]];
+  names.forEach(([id,label],i)=>{const b=document.createElement("button");b.type="button";b.dataset.pageSection=id;b.textContent=label;b.className="page-section-button"+(id==="canvas"?" active":"");b.setAttribute("aria-pressed",id==="canvas"?"true":"false");nav.append(b)});
+  panel.insertBefore(nav,controls);
+  const preview=document.createElement("div");preview.id="sectionLivePreview";preview.className="section-live-preview";preview.hidden=true;
+  preview.innerHTML='<div class="section-preview-paper"><div class="section-preview-kicker" id="sectionPreviewKicker">LIVE SECTION PREVIEW</div><div id="sectionPreviewContent"></div></div>';
+  area.insertBefore(preview,area.querySelector("#canvasPreviewFrame"));
+  const canvas=area.querySelector("#canvasPreviewFrame"),gallery=area.querySelector("#galleryPreviewFrame"),full=area.querySelector("#fullPagePreviewFrame"),note=area.querySelector(".preview-note"),toggle=area.querySelector(".preview-view-toggle");
+  let current="canvas";
+  const text=(id,fallback)=>document.getElementById(id)?.value?.trim()||fallback;
+  function draw(){
+   const out=document.getElementById("sectionPreviewContent"),kicker=document.getElementById("sectionPreviewKicker");if(!out)return;
+   out.innerHTML="";kicker.textContent="LIVE "+current.toUpperCase()+" PREVIEW";
+   const el=(tag,txt,cls)=>{const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=txt;return n};
+   if(current==="hero"){
+    const source=document.getElementById("heroLivePreview");if(source){const clone=source.cloneNode(true);clone.id="heroSectionPreviewClone";clone.style.minHeight="min(65vh,560px)";clone.style.margin="0";out.append(clone)}
+    else out.append(el("h2",text("heroTitle","Hero headline")));
+   }else if(current==="header"){
+    const h=el("header","", "section-header-mock");const announce=el("div",text("headerAnnouncement","PIXEL STUDIOS × NIRA EDITORIAL"),"section-header-announcement");const row=el("div","","section-header-row");row.append(el("strong",text("headerWordmark","NIRA"),"section-header-logo"));const links=el("div","","section-header-links");[text("headerJournalLabel","Journal"),text("headerNiraLabel","Nira Editorial"),text("headerPixelLabel","Pixel Studios"),text("headerAboutLabel","About Us"),text("headerContactLabel","Contact Us")].forEach(v=>links.append(el("span",v)));row.append(links);h.append(announce,row);out.append(h,el("p","Header preview — changes update here as you edit.","section-preview-help"));
+    const image=document.getElementById("headerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image";out.append(im)}
+   }else if(current==="footer"){
+    const f=el("footer","","section-footer-mock");f.append(el("div",text("footerToplineBrand","PIXEL STUDIOS × NIRA EDITORIAL"),"section-footer-kicker"),el("h2",text("footerTagline","The art of being seen.")),el("p",text("footerDescriptor","Fashion · Photography · Stories")),el("p",text("footerLocation","Independent image journal")),el("p",text("footerCopyright","© 2026 PIXEL STUDIOS × NIRA EDITORIAL")));out.append(f);
+    const image=document.getElementById("footerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image";out.append(im)}
+   }else if(current==="settings"){
+    const box=el("div","","section-settings-mock");box.append(el("h2",text("brandSelect","nira")==="pixel"?"Pixel Studios":"Nira Editorial"),el("p","Layout: "+(document.getElementById("layoutSelect")?.selectedOptions[0]?.textContent||"Editorial split")),el("p","Canvas size: "+(document.getElementById("canvasWidth")?.value||1440)+" × "+(document.getElementById("canvasHeight")?.value||850)+" px"));out.append(box);
+   }
+  }
+  function choose(id){
+   current=id;nav.querySelectorAll("button").forEach(b=>{const active=b.dataset.pageSection===id;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
+   const isCanvas=id==="canvas",isSettings=id==="settings";
+   canvas.hidden=!isCanvas;gallery.hidden=true;full.hidden=true;preview.hidden=isCanvas;
+   if(toggle)toggle.hidden=!isCanvas;if(note)note.hidden=!isCanvas;
+   if(id==="header")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("HEADER"));
+   if(id==="hero")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("HERO"));
+   if(id==="canvas")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("CANVAS"));
+   if(id==="footer")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("FOOTER"));
+   if(isSettings)controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("PAGE SETTINGS"));
+   if(!isCanvas)draw();
+  }
+  nav.addEventListener("click",e=>{const b=e.target.closest("[data-page-section]");if(b)choose(b.dataset.pageSection)});
+  document.addEventListener("input",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
+  document.addEventListener("change",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
+  const oldSync=window.syncSiteControls; // editor functions are closure-scoped; input/change events keep the section preview live.
+  choose("canvas");
+ };
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+})();
+</script>
+<style>
+.page-section-nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 16px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.page-section-button{padding:10px 16px;border:1px solid var(--line);background:#f7f3eb;color:#302e29;font-size:11px;font-weight:600;letter-spacing:.04em}
+.page-section-button.active{background:#262620;color:#fffdf9;border-color:#262620}
+.section-live-preview{min-height:65vh;padding:clamp(12px,3vw,28px);background:#dcd6ca;border:1px solid var(--line)}
+.section-live-preview[hidden]{display:none!important}
+.section-preview-paper{min-height:55vh;background:#f7f3eb;color:#24231f;padding:clamp(18px,4vw,48px);display:flex;flex-direction:column;justify-content:center;gap:20px}
+.section-preview-kicker{font-size:10px;letter-spacing:.14em;color:#777167;border-bottom:1px solid #d4cabb;padding-bottom:12px}
+.section-header-mock{border:1px solid #d4cabb;background:#fffdf9}
+.section-header-announcement{padding:10px;text-align:center;font-size:9px;letter-spacing:.15em;background:#262620;color:#fffdf9}
+.section-header-row{padding:28px 5%;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.section-header-logo{font:500 clamp(26px,4vw,44px) 'Playfair Display',serif}
+.section-header-links{display:flex;gap:14px;flex-wrap:wrap;font-size:10px}
+.section-preview-help{font-size:12px;color:#777167}
+.section-preview-image{display:block;width:100%;max-height:280px;object-fit:cover}
+.section-footer-mock{background:#262620;color:#f7f3eb;padding:clamp(24px,5vw,60px);min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px}
+.section-footer-mock h2{font:500 clamp(30px,5vw,56px)/1.1 'Playfair Display',serif;margin:10px 0}
+.section-footer-mock p{margin:0;color:#d5cdbf;font-size:12px}
+.section-footer-kicker{font-size:9px;letter-spacing:.15em}
+.section-settings-mock{padding:24px;border:1px solid #d4cabb;background:#fffdf9}
+.section-settings-mock h2{font:500 36px 'Playfair Display',serif}
+@media(max-width:720px){.page-section-button{flex:1 1 28%;padding:10px 6px}.section-header-row{align-items:flex-start;flex-direction:column}.section-live-preview{min-height:55vh}}
+</style>
 </body></html>
