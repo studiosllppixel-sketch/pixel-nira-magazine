@@ -28,3 +28,21 @@
  }catch(e){console.warn("Could not load published site settings.",e)}
  const menuButton=$("menuToggle"),nav=$("mainNav");if(menuButton&&nav){menuButton.addEventListener("click",()=>{const open=nav.classList.toggle("open");menuButton.textContent=open?"×":"☰";menuButton.setAttribute("aria-expanded",String(open));menuButton.setAttribute("aria-label",open?"Close navigation":"Open navigation")});nav.addEventListener("click",e=>{if(!e.target.closest("a"))return;nav.classList.remove("open");menuButton.textContent="☰";menuButton.setAttribute("aria-expanded","false");menuButton.setAttribute("aria-label","Open navigation")})}
 })();
+
+/* Keep page transitions consistent when navigating from About and Contact too. */
+(function initStandalonePageTransitions(){
+ const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const body=document.body;if(!body)return;
+ const curtain=document.createElement("div");curtain.className="page-transition-curtain";curtain.setAttribute("aria-hidden","true");curtain.innerHTML='<span>PIXEL STUDIOS <i>×</i> NIRA EDITORIAL</span>';body.appendChild(curtain);
+ if(!reduce){body.classList.add("page-arriving");requestAnimationFrame(()=>requestAnimationFrame(()=>body.classList.add("page-arrived")));window.setTimeout(()=>body.classList.remove("page-arriving"),760);}
+ let navigating=false;
+ document.addEventListener("click",event=>{
+  if(reduce||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  const link=event.target.closest("a[href]");if(!link||link.target==="_blank"||link.hasAttribute("download")||link.getAttribute("aria-disabled")==="true")return;
+  let next;try{next=new URL(link.href,location.href)}catch{return}
+  if(next.origin!==location.origin||(next.pathname===location.pathname&&next.search===location.search)||(link.hash&&next.pathname===location.pathname&&next.search===location.search))return;
+  if(navigating)return;event.preventDefault();navigating=true;body.classList.remove("page-arriving","page-arrived");body.classList.add("page-leaving");
+  window.setTimeout(()=>{location.href=next.href},480);
+ });
+ window.addEventListener("pageshow",()=>{navigating=false;body.classList.remove("page-leaving")});
+})();
