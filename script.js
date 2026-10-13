@@ -33,10 +33,10 @@ function applyEditorialHeader(settings={},brand=(new URLSearchParams(location.se
 }
 applyEditorialHeader();
 function applyEditorialFooter(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
- const defaults={tagline:brand==="pixel"?"The art of image-making.":"The art of being seen.",descriptor:"Fashion · Photography · Stories",location:"Independent image journal",copyright:"© 2026 PIXEL STUDIOS × NIRA EDITORIAL",niraInstagramUrl:"https://www.instagram.com/nira.editorial/",pixelInstagramUrl:"https://www.instagram.com/pixelstudios.inc/"};
+ const defaults={toplineBrand:"PIXEL STUDIOS × NIRA EDITORIAL",toplineIssue:"INDEPENDENT IMAGE JOURNAL · VOL. 01",backToTop:"BACK TO TOP ↑",tagline:brand==="pixel"?"The art of image-making.":"The art of being seen.",descriptor:"Fashion · Photography · Stories",location:"Independent image journal",copyright:"© 2026 PIXEL STUDIOS × NIRA EDITORIAL",niraInstagramUrl:"https://www.instagram.com/nira.editorial/",pixelInstagramUrl:"https://www.instagram.com/pixelstudios.inc/"};
  const f={...defaults,...(settings||{})},footer=document.querySelector(".editorial-footer");if(!footer)return;
  const put=(selector,value)=>{const node=footer.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value};
- put(".footer-tagline",f.tagline);put(".footer-description",f.descriptor);put(".footer-location",f.location);put(".footer-copyright",f.copyright);
+ put(".footer-topline span:first-child",f.toplineBrand);put(".footer-topline span:last-child",f.toplineIssue);put(".footer-backtop",f.backToTop);put(".footer-tagline",f.tagline);put(".footer-description",f.descriptor);put(".footer-location",f.location);put(".footer-copyright",f.copyright);
  const nira=footer.querySelector(".footer-nira-instagram"),pixel=footer.querySelector(".footer-pixel-instagram");
  if(nira&&/^https:\/\//i.test(f.niraInstagramUrl||""))nira.href=f.niraInstagramUrl;
  if(pixel&&/^https:\/\//i.test(f.pixelInstagramUrl||""))pixel.href=f.pixelInstagramUrl;
