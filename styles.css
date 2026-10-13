@@ -538,3 +538,47 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
  body.gallery-modal-open .editorial-footer .footer-links a,body.gallery-modal-open .editorial-footer .footer-backtop{font-size:7px;letter-spacing:.07em}
 }
 @media(prefers-reduced-motion:reduce){.editorial-footer a{transition:none}}
+
+
+/* Editorial motion system: gentle movement, deliberate pacing, no gimmicks. */
+:root{--motion-ease:cubic-bezier(.22,.72,.22,1)}
+.editorial-motion-ready .site-header{animation:motion-header-in .75s var(--motion-ease) both}
+.editorial-motion-ready .announcement{animation:motion-fade-in .7s ease both}
+.editorial-motion-ready .editorial-cover .cover-overline{animation:motion-rise-in .8s .08s var(--motion-ease) both}
+.editorial-motion-ready .editorial-cover .cover-kicker{animation:motion-rise-in .8s .22s var(--motion-ease) both}
+.editorial-motion-ready .editorial-cover .cover-description{animation:motion-rise-in .8s .46s var(--motion-ease) both}
+.editorial-motion-ready .editorial-cover .cover-enter{animation:motion-rise-in .8s .58s var(--motion-ease) both}
+.editorial-motion-ready .editorial-cover .cover-bottom{animation:motion-fade-in 1s .75s ease both}
+.motion-reveal{opacity:0;transform:translateY(28px);transition:opacity .85s var(--motion-ease),transform .95s var(--motion-ease);transition-delay:var(--motion-delay,0ms);will-change:opacity,transform}
+.motion-reveal.motion-in{opacity:1;transform:translateY(0);will-change:auto}
+.motion-reveal.motion-from-left{transform:translateX(-24px)}
+.motion-reveal.motion-from-left.motion-in{transform:translateX(0)}
+.motion-reveal.motion-from-right{transform:translateX(24px)}
+.motion-reveal.motion-from-right.motion-in{transform:translateX(0)}
+.editorial-footer.motion-reveal{transform:translateY(22px)}
+.editorial-footer.motion-reveal.motion-in{transform:translateY(0)}
+.editorial-cover .cover-enter{transition:transform .35s var(--motion-ease),background .35s ease,box-shadow .35s ease}
+.editorial-cover .cover-enter:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.gallery-card{transition:transform .55s var(--motion-ease)}
+.gallery-card:hover{transform:translateY(-5px)}
+.gallery-card-image{background:var(--brand-soft)}
+.gallery-card-image:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.2);pointer-events:none;opacity:0;transition:opacity .5s ease}
+.gallery-card:hover .gallery-card-image:after{opacity:1}
+.gallery-card-image img{will-change:transform}
+.story-photo{transition:transform .45s var(--motion-ease),box-shadow .45s ease}
+.story-photo:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(28,16,28,.12)}
+.story-photo img{transition:transform 1s var(--motion-ease)}
+.story-photo:hover img{transform:scale(1.025)}
+.editorial-footer .footer-mark{transition:letter-spacing .45s var(--motion-ease),opacity .3s ease}
+.editorial-footer .footer-mark:hover{letter-spacing:-.015em;opacity:.85}
+.editorial-footer.motion-in .footer-tagline{animation:footer-line-arrive .8s .12s var(--motion-ease) both}
+@keyframes motion-header-in{from{opacity:0;transform:translateY(-9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes motion-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes motion-rise-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes footer-line-arrive{from{opacity:.45;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.motion-reveal{transform:translateY(18px);transition-duration:.7s}.gallery-card:hover,.story-photo:hover{transform:none}.story-photo:hover{box-shadow:none}}
+@media(prefers-reduced-motion:reduce){
+ .editorial-motion-ready .site-header,.editorial-motion-ready .announcement,.editorial-motion-ready .editorial-cover .cover-overline,.editorial-motion-ready .editorial-cover .cover-kicker,.editorial-motion-ready .editorial-cover .cover-description,.editorial-motion-ready .editorial-cover .cover-enter,.editorial-motion-ready .editorial-cover .cover-bottom,.editorial-footer.motion-in .footer-tagline{animation:none!important}
+ .motion-reveal,.motion-reveal.motion-in{opacity:1!important;transform:none!important;transition:none!important;will-change:auto}
+ .gallery-card,.gallery-card:hover,.story-photo,.story-photo:hover,.story-photo img,.story-photo:hover img{transition:none!important;transform:none!important}
+}
