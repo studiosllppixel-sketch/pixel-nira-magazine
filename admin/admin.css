@@ -124,3 +124,8 @@
 .site-image-control .two-fields{gap:8px}
 .site-image-control input{padding:8px!important}
 @media(max-width:720px){.workspace{grid-template-columns:minmax(0,1fr)}.editor-tools{padding:14px}.site-image-preview{height:110px}}
+
+/* Editing mode: selection and inspector updates must not replay content animation. */
+#previewCanvas.no-element-animation .preview-element[data-animation]{animation:none!important;opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+#previewCanvas .preview-element.selected{outline:2px solid #756b54!important;outline-offset:3px;cursor:move}
+#previewCanvas .preview-element[data-type="text"]{touch-action:none;user-select:none;-webkit-user-select:none}
