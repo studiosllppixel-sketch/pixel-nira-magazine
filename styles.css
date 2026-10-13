@@ -587,3 +587,23 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
 /* Header navigation: keep the brand menu accessible on tablets and phones. */
 @media (max-width: 900px){.site-header{position:relative}.main-nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;padding:22px 6%;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;gap:20px;z-index:20}.main-nav.open{display:flex}.menu-toggle{display:block;margin-left:auto;cursor:pointer}.header-cta{margin-left:auto;margin-right:16px}}
 @media (min-width: 901px){.main-nav{display:flex;gap:clamp(18px,3vw,34px);margin-left:auto;margin-right:30px}.menu-toggle{display:none}}
+
+
+/* About and contact panels */
+.info-section{padding:clamp(64px,9vw,120px) 8%;scroll-margin-top:24px}
+.info-section .info-eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 22px}
+.info-section h2{font:clamp(42px,7vw,84px)/.98 var(--serif);font-weight:500;letter-spacing:-.065em;max-width:850px;margin:0 0 28px}
+.info-section .info-body{max-width:650px;font-size:13px;line-height:1.95;color:#625e56}
+.info-section .info-links{display:flex;flex-wrap:wrap;gap:24px;margin-top:30px}
+.info-section .info-links a{font-size:10px;letter-spacing:.13em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:10px}
+#about-us{background:#e8e1d5}
+#contact-us{background:var(--paper)}
+@media(max-width:900px){
+ .main-nav{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:auto!important;width:min(84vw,370px);height:100dvh;max-height:100dvh;overflow-y:auto;padding:100px 34px 40px!important;gap:0!important;border:0!important;border-left:1px solid var(--line);box-shadow:-30px 0 80px rgba(20,18,15,.18);z-index:1200!important;transform:translateX(105%);transition:transform .32s cubic-bezier(.2,.7,.2,1);background:var(--paper)}
+ .main-nav.open{display:flex!important;transform:translateX(0)}
+ .main-nav a{font:clamp(22px,6vw,30px)/1.2 var(--serif)!important;letter-spacing:-.025em!important;text-transform:none!important;padding:19px 0!important;border-bottom:1px solid var(--line);width:100%}
+ .main-nav a:after{display:none}
+ .menu-toggle{position:relative;z-index:1201}
+ .main-nav.open{box-shadow:-30px 0 80px rgba(20,18,15,.18),0 0 0 100vmax rgba(20,18,15,.22)}
+}
+@media(prefers-reduced-motion:reduce){.main-nav{transition:none!important}}
