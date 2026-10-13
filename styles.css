@@ -767,3 +767,18 @@ body.gallery-modal-open .site-footer{display:none!important}
  .story-overlay:not([hidden]) .story-photo{margin-bottom:10px}
  .story-overlay:not([hidden]) .story-close{top:6px;left:auto;right:6px;margin:6px 6px -54px 0}
 }
+
+
+/* Mobile viewport fix: keep the opened story inside the visible screen and prevent page canvas showing through. */
+body.gallery-modal-open{position:fixed!important;inset:0!important;width:100%!important;overflow:hidden!important;overscroll-behavior:none}
+.story-overlay:not([hidden]){position:fixed!important;inset:0!important;width:100vw;height:100vh;height:100dvh;max-height:100dvh;margin:0!important;border:0;border-radius:0;z-index:1105;background:var(--paper);overflow-x:hidden;overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.story-overlay:not([hidden]) .story-close{position:sticky;top:8px;z-index:1115}
+.photo-lightbox:not([hidden]){position:fixed!important;inset:0!important;width:100vw;height:100vh;height:100dvh;z-index:1125;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.photo-lightbox .lightbox-image{max-width:calc(100vw - 84px);max-height:calc(100vh - 112px);max-height:calc(100dvh - 112px);object-fit:contain}
+@media(max-width:700px){
+ .story-overlay:not([hidden]) .story-dialog{padding:64px 14px 24px}
+ .story-overlay:not([hidden]) .story-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:12px;right:auto;float:none;margin:0}
+ .photo-lightbox .lightbox-image{max-width:calc(100vw - 32px);max-height:calc(100dvh - 124px)}
+ .photo-lightbox .lightbox-close{top:calc(env(safe-area-inset-top,0px) + 10px);left:12px}
+ .photo-lightbox .lightbox-dismiss{top:calc(env(safe-area-inset-top,0px) + 10px);right:12px}
+}
