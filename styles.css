@@ -582,3 +582,8 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
  .motion-reveal,.motion-reveal.motion-in{opacity:1!important;transform:none!important;transition:none!important;will-change:auto}
  .gallery-card,.gallery-card:hover,.story-photo,.story-photo:hover,.story-photo img,.story-photo:hover img{transition:none!important;transform:none!important}
 }
+
+
+/* Header navigation: keep the brand menu accessible on tablets and phones. */
+@media (max-width: 900px){.site-header{position:relative}.main-nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;padding:22px 6%;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;gap:20px;z-index:20}.main-nav.open{display:flex}.menu-toggle{display:block;margin-left:auto;cursor:pointer}.header-cta{margin-left:auto;margin-right:16px}}
+@media (min-width: 901px){.main-nav{display:flex;gap:clamp(18px,3vw,34px);margin-left:auto;margin-right:30px}.menu-toggle{display:none}}
