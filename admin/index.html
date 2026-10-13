@@ -56,6 +56,36 @@
 .sidebar .editor-controls-dropdown .editor-tools input:focus-visible,
 .sidebar .editor-controls-dropdown .editor-tools select:focus-visible,
 .sidebar .editor-controls-dropdown .editor-tools textarea:focus-visible{outline:2px solid #71365f!important;outline-offset:2px}
+
+/* Nested menu contrast: apply readable foregrounds to every level of the editor accordions. */
+.sidebar .editor-controls-dropdown .editor-tools .tool-section,
+.sidebar .editor-controls-dropdown .editor-tools .tool-accordion,
+.sidebar .editor-controls-dropdown .editor-tools .advanced-controls,
+.sidebar .editor-controls-dropdown .editor-tools details.site-settings,
+.sidebar .editor-controls-dropdown .editor-tools .gallery-editor-settings{
+  background:#f7f3eb!important;color:#24231f!important;border-color:#c9c0b3!important;
+}
+.sidebar .editor-controls-dropdown .editor-tools details>summary,
+.sidebar .editor-controls-dropdown .editor-tools .tool-section>.section-title,
+.sidebar .editor-controls-dropdown .editor-tools .advanced-controls>summary,
+.sidebar .editor-controls-dropdown .editor-tools .tool-accordion>summary{
+  color:#24231f!important;background:#eee7dc!important;font-weight:700!important;opacity:1!important;
+}
+.sidebar .editor-controls-dropdown .editor-tools details label,
+.sidebar .editor-controls-dropdown .editor-tools details .section-title,
+.sidebar .editor-controls-dropdown .editor-tools details p,
+.sidebar .editor-controls-dropdown .editor-tools details span,
+.sidebar .editor-controls-dropdown .editor-tools .gallery-editor-settings,
+.sidebar .editor-controls-dropdown .editor-tools .gallery-toggle-label{
+  color:#302e29!important;opacity:1!important;
+}
+.sidebar .editor-controls-dropdown .editor-tools details input:not([type="color"]):not([type="checkbox"]):not([type="range"]),
+.sidebar .editor-controls-dropdown .editor-tools details select,
+.sidebar .editor-controls-dropdown .editor-tools details textarea{
+  color:#24231f!important;background:#fff!important;border-color:#bcb4a7!important;
+}
+.sidebar .editor-controls-dropdown .editor-tools details input::placeholder,
+.sidebar .editor-controls-dropdown .editor-tools details textarea::placeholder{color:#777167!important;opacity:1!important}
 </style>
 <style>#editorPanel[hidden],#libraryPanel[hidden],#editorControlsDropdown[hidden]{display:none!important}.full-page-preview-frame{width:100%;border:1px solid var(--line);background:#fff}.full-page-preview-note{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.12em;color:var(--muted)}.full-page-preview-note span{font-size:11px;letter-spacing:0;text-transform:none;flex:1}.full-page-preview-frame iframe{display:block;width:100%;height:78vh;border:0;background:#fff}@media(max-width:720px){.full-page-preview-frame iframe{height:65vh}}</style>
 </head>
