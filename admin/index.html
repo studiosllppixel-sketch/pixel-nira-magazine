@@ -322,7 +322,7 @@
    out.innerHTML="";kicker.textContent="LIVE "+current.toUpperCase()+" PREVIEW";
    const el=(tag,txt,cls)=>{const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=txt;return n};
    if(current==="hero"){
-    const source=document.getElementById("heroLivePreview");if(source){const clone=source.cloneNode(true);clone.id="heroSectionPreviewClone";clone.style.margin="0";out.append(clone);if(window.bindHeroVisualEditing)window.bindHeroVisualEditing(clone)}
+    const source=document.getElementById("heroLivePreview");if(source){const clone=source.cloneNode(true);clone.id="heroSectionPreviewClone";clone.style.margin="0";/* cloneNode copies data attributes, not event listeners; clear the source binding flag so this preview gets its own pointer handlers */delete clone.dataset.visualEditorBound;out.append(clone);if(window.bindHeroVisualEditing)window.bindHeroVisualEditing(clone)}
     else out.append(el("h2",text("heroTitle","Hero headline")));
     if(!document.getElementById("heroImagePreview")?.querySelector("img")){const action=el("button","Choose hero image","section-image-pick");action.type="button";action.dataset.pickSiteImage="hero";out.append(action)}
    }else if(current==="header"){
