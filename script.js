@@ -119,7 +119,7 @@ main.innerHTML=coverIntro+pages.map(renderLayoutPage).join("")+'<footer class="g
 initEditorialMotion(main);
 const cover=main.querySelector(".editorial-cover");
 const heroImage=heroSettings.image&&typeof heroSettings.image.url==="string"&&/^https:\/\//i.test(heroSettings.image.url)&&heroSettings.image.url.includes("supabase.co/storage/")?heroSettings.image.url:coverImage;
-if(cover){cover.style.setProperty("--hero-brightness",String(1-Math.max(0,Math.min(90,Number(heroSettings.overlay)||0))/100));cover.style.setProperty("--hero-fallback",heroSettings.backgroundColor||"#f4f0e8");}
+if(cover){cover.style.setProperty("--hero-brightness",String(1-Math.max(0,Math.min(90,Number(heroSettings.overlay)||0))/100));cover.style.setProperty("--hero-fallback",heroSettings.backgroundColor||"#f4f0e8");cover.style.setProperty("--cover-position",Math.max(0,Math.min(100,Number(heroSettings.imageX??50)))+"% "+Math.max(0,Math.min(100,Number(heroSettings.imageY??38)))+"%");}
 if(heroImage&&cover)cover.style.setProperty("--cover-image",'url("'+heroImage.replace(/["\\]/g,"")+'")');
 const enterJournal=main.querySelector("#enterJournal");
 if(enterJournal)enterJournal.addEventListener("click",()=>{cover.classList.add("cover-leaving");const firstCanvas=main.querySelector(".published-editorial-canvas");const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;window.setTimeout(()=>{cover.hidden=true;if(firstCanvas)firstCanvas.scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});},reduced?0:480)});
