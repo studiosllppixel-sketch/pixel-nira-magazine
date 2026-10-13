@@ -244,9 +244,9 @@
     if(!photos.length){const empty=document.createElement('p');empty.className='gallery-preview-empty';empty.textContent='Add an image to this canvas to preview the gallery here.';grid.append(empty)}
   }
   function setMode(next){
-    mode=next;const websiteCanvas=mode==='canvas';canvasFrame.hidden=websiteCanvas||mode!=='canvas';galleryFrame.hidden=mode!=='gallery';fullPageFrame.hidden=!(mode==='fullpage'||websiteCanvas);
+    mode=next;canvasFrame.hidden=mode!=='canvas';galleryFrame.hidden=mode!=='gallery';fullPageFrame.hidden=mode!=='fullpage';
     document.querySelectorAll('[data-preview-mode]').forEach(button=>{const active=button.dataset.previewMode===mode;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active))});
-    if(mode==='gallery'){refreshGallery();galleryFrame.classList.remove('gallery-preview-enter');void galleryFrame.offsetWidth;galleryFrame.classList.add('gallery-preview-enter')}if((mode==='fullpage'||websiteCanvas)&&fullPageIframe&&!fullPageIframe.dataset.loaded){fullPageIframe.src='../';fullPageIframe.dataset.loaded='true'}
+    if(mode==='gallery'){refreshGallery();galleryFrame.classList.remove('gallery-preview-enter');void galleryFrame.offsetWidth;galleryFrame.classList.add('gallery-preview-enter')}if(mode==='fullpage'&&fullPageIframe&&!fullPageIframe.dataset.loaded){fullPageIframe.src='../';fullPageIframe.dataset.loaded='true'}
   }
   document.querySelectorAll('[data-preview-mode]').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.previewMode)));
   refreshFullPage?.addEventListener('click',()=>{if(fullPageIframe){fullPageIframe.src='../';fullPageIframe.dataset.loaded='true'}});
