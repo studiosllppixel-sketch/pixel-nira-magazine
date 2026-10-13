@@ -310,7 +310,7 @@
   const nav=document.createElement("nav");nav.id="pageSectionNav";nav.className="page-section-nav";nav.setAttribute("aria-label","Choose page section to preview");
   const names=[["header","Header"],["hero","Hero"],["canvas","Canvas"],["footer","Footer"],["settings","Page Settings"]];
   names.forEach(([id,label],i)=>{const b=document.createElement("button");b.type="button";b.dataset.pageSection=id;b.textContent=label;b.className="page-section-button"+(id==="canvas"?" active":"");b.setAttribute("aria-pressed",id==="canvas"?"true":"false");nav.append(b)});
-  panel.insertBefore(nav,controls);
+  panel.insertBefore(nav,panel.querySelector(".preview-area")||panel.firstChild);
   const preview=document.createElement("div");preview.id="sectionLivePreview";preview.className="section-live-preview";preview.hidden=true;
   preview.innerHTML='<div class="section-preview-paper"><div class="section-preview-kicker" id="sectionPreviewKicker">LIVE SECTION PREVIEW</div><div id="sectionPreviewContent"></div></div>';
   area.insertBefore(preview,area.querySelector("#canvasPreviewFrame"));
