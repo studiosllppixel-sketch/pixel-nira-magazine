@@ -630,3 +630,33 @@ body.page-arrived .page-transition-curtain{transform:scaleY(0);transform-origin:
 @keyframes editorial-side-reveal{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
 body.page-content-reveal main,body.page-content-reveal .site-footer{animation:editorial-side-reveal .88s cubic-bezier(.22,.61,.36,1) .08s both}
 @media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}body.page-content-reveal main,body.page-content-reveal .site-footer{animation:none!important}}
+
+
+/* Hero refinement: stronger magazine hierarchy, controlled image reveal, brand-aware accents. */
+.editorial-cover{--hero-accent:#d6b9d0;min-height:calc(100svh - 112px);background:#211a20}
+:root[data-brand="nira"] .editorial-cover{--hero-accent:#d6b9d0}
+:root[data-brand="pixel"] .editorial-cover{--hero-accent:#d6c0a2}
+.editorial-cover::before{background-image:linear-gradient(90deg,rgba(22,15,22,.94) 0%,rgba(22,15,22,.78) 34%,rgba(22,15,22,.32) 66%,rgba(22,15,22,.06) 100%),var(--cover-image,linear-gradient(135deg,#55434f,#211a20));background-position:center 38%;transform:scale(1.035);transition:transform 1.2s cubic-bezier(.2,.65,.25,1),filter 1.2s ease}
+.editorial-cover:hover::before{transform:scale(1.055);filter:saturate(.92)}
+.editorial-cover::after{inset:14px;border-color:rgba(245,240,232,.34)}
+.cover-frame{padding:clamp(24px,3.4vw,48px) clamp(16px,3.5vw,50px)}
+.cover-overline,.cover-bottom{font-size:9px;letter-spacing:.2em}
+.cover-main{max-width:min(790px,72%);padding:clamp(48px,8vh,105px) 0}
+.cover-kicker{color:var(--hero-accent);margin-bottom:24px}
+.cover-main h1{font-size:clamp(64px,9.1vw,136px);line-height:.86;max-width:760px;text-wrap:balance}
+.cover-description{max-width:350px;margin-top:30px;margin-bottom:32px;font-size:13px;line-height:1.9}
+.cover-enter{gap:28px;border-bottom-color:var(--hero-accent);padding:16px 0;color:#f5f0e8}
+.cover-enter:hover{gap:42px;border-color:var(--hero-accent)}
+.cover-enter span:last-child{color:var(--hero-accent)}
+.cover-index{color:rgba(245,240,232,.72);right:clamp(24px,4vw,58px)}
+@media(max-width:700px){
+ .editorial-cover{min-height:calc(100svh - 96px)}
+ .editorial-cover::before{background-image:linear-gradient(90deg,rgba(22,15,22,.78),rgba(22,15,22,.42)),linear-gradient(0deg,rgba(22,15,22,.72),transparent 72%),var(--cover-image,linear-gradient(135deg,#55434f,#211a20));background-position:center 38%}
+ .cover-frame{min-height:calc(100svh - 120px);padding:22px 12px}
+ .cover-overline,.cover-bottom{font-size:7px;letter-spacing:.1em}
+ .cover-main{max-width:100%;padding:clamp(36px,8vh,70px) 0}
+ .cover-main h1{font-size:clamp(54px,14vw,86px);max-width:100%;line-height:.9}
+ .cover-description{max-width:280px;font-size:12px;margin-top:22px;margin-bottom:25px}
+ .cover-index{right:12px;top:45%;font-size:7px}
+}
+@media(prefers-reduced-motion:reduce){.editorial-cover::before,.editorial-cover:hover::before{transition:none!important;transform:none!important;filter:none!important}}
