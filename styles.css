@@ -739,3 +739,10 @@ body.page-content-reveal main,body.page-content-reveal .site-footer{animation:ed
 .photo-lightbox .lightbox-dismiss:focus-visible{outline:2px solid #fff;outline-offset:4px}
 @media(max-width:520px){.photo-lightbox .lightbox-dismiss{top:12px;right:12px;width:42px;height:42px;font-size:28px}}
 @media(prefers-reduced-motion:reduce){.photo-lightbox .lightbox-dismiss{transition:none!important}}
+
+
+/* Hide site chrome while the floating gallery is open so its navigation stays unobstructed. */
+body.gallery-modal-open .announcement,
+body.gallery-modal-open .site-header{display:none!important}
+.story-overlay:not([hidden]){inset:24px 3.2% 86px}
+@media(max-width:700px){.story-overlay:not([hidden]){inset:10px 10px 76px}.story-overlay:not([hidden]) .story-close{top:8px;margin:8px 8px -58px 0}}
