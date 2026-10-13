@@ -618,4 +618,6 @@ body.gallery-modal-open .editorial-footer .footer-backtop{margin-left:auto}
 .page-transition-curtain i{font-style:normal;margin:0 .45em;color:#8b7764}
 body.page-leaving .page-transition-curtain{transform:scaleY(1);transform-origin:top}
 body.page-leaving .page-transition-curtain span{opacity:1;transform:translateY(0)}
-@media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}}
+@keyframes editorial-side-reveal{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+body.page-content-reveal main,body.page-content-reveal .site-footer{animation:editorial-side-reveal .52s cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}body.page-content-reveal main,body.page-content-reveal .site-footer{animation:none!important}}
