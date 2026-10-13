@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-sidebar-width-v1"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261013-fullpage-preview-v1"></script><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-sidebar-width-v1"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261013-live-edit-jump-v1"></script><style>
 /* Place the editor accordion in the dark navigation sidebar, not above the canvas. */
 .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;align-self:start}
 .sidebar .editor-controls-dropdown{order:initial;display:block;background:transparent;color:#f6f2ea;border:0;border-top:1px solid #44443b;margin-top:8px}
@@ -106,6 +106,43 @@
 </script>
 
 <script>
+(function jumpToControlsOnSelection(){
+  function openControlFor(node){
+    const root=document.getElementById('editorControlsDropdown');
+    if(root)root.open=true;
+    let section=node?.closest('details');
+    while(section&&section!==root){section.open=true;section=section.parentElement?.closest('details')}
+    node?.scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+  document.addEventListener('click',event=>{
+    const item=event.target.closest('#previewCanvas .preview-element');
+    if(item){const controls=document.getElementById('elementControls');openControlFor(controls);return}
+  });
+  const iframe=document.getElementById('fullPagePreview');
+  function bindFullPage(){
+    try{
+      const doc=iframe?.contentDocument;
+      if(!doc||doc.documentElement.dataset.editorClickBound)return;
+      doc.documentElement.dataset.editorClickBound='true';
+      doc.addEventListener('click',event=>{
+        const target=event.target.closest('header,nav,footer,[class*="hero"],[class*="story"],[class*="section"],main h1,main h2,main p,img');
+        if(!target)return;
+        event.preventDefault();
+        const selector=target.closest('footer')?'footer':target.closest('header,nav')?'header':target.closest('[class*="about"]')?'about':target.closest('[class*="contact"]')?'contact':'canvas';
+        const ids={header:'headerAnnouncement',footer:'footerTagline',about:'aboutTitle',contact:'contactTitle',canvas:'layoutSelect'};
+        const field=document.getElementById(ids[selector]);
+        const section=field?.closest('details');
+        if(section){section.open=true;section.scrollIntoView({block:'nearest',behavior:'smooth'});field.focus({preventScroll:true})}
+        else if(selector==='canvas'){document.getElementById('editorControlsDropdown')?.setAttribute('open','');document.getElementById('layoutSelect')?.focus()}
+        const old=doc.querySelector('[data-editor-selected="true"]');if(old)old.removeAttribute('data-editor-selected');
+        target.setAttribute('data-editor-selected','true');
+      },true);
+      const style=doc.createElement('style');style.textContent='[data-editor-selected="true"]{outline:3px solid #b6a37b!important;outline-offset:3px;cursor:pointer!important}';doc.head.append(style);
+    }catch(e){}
+  }
+  iframe?.addEventListener('load',bindFullPage);
+  document.getElementById('refreshFullPagePreview')?.addEventListener('click',()=>setTimeout(bindFullPage,500));
+})();
 (function galleryPreviewMode(){
   const canvas=document.getElementById('previewCanvas');
   const canvasFrame=document.getElementById('canvasPreviewFrame');
