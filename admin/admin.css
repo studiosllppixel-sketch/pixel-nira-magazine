@@ -129,3 +129,10 @@
 #previewCanvas.no-element-animation .preview-element[data-animation]{animation:none!important;opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
 #previewCanvas .preview-element.selected{outline:2px solid #756b54!important;outline-offset:3px;cursor:move}
 #previewCanvas .preview-element[data-type="text"]{touch-action:none;user-select:none;-webkit-user-select:none}
+
+/* Friendly direct-edit state and touch selection affordances. */
+#previewCanvas .preview-element[data-type="text"]{cursor:move;touch-action:none}
+#previewCanvas .preview-element[data-type="text"] p[contenteditable="true"]{position:relative;z-index:20;outline:2px solid #756b54;outline-offset:4px;background:rgba(255,253,249,.12);cursor:text;user-select:text;-webkit-user-select:text;touch-action:auto}
+#previewCanvas .preview-element.selected:not(.locked-element){outline:2px solid #756b54!important;outline-offset:3px}
+#previewCanvas .preview-element.selected:after{content:"SELECTED · DRAG TO MOVE · DOUBLE-CLICK TEXT TO EDIT";position:absolute;left:0;top:-22px;max-width:calc(100vw - 40px);padding:4px 6px;background:#24231f;color:#fffdf9;font:600 9px/1.2 var(--sans);letter-spacing:.06em;white-space:nowrap;pointer-events:none;z-index:50}
+@media(max-width:720px){#previewCanvas .preview-element.selected:after{font-size:8px;letter-spacing:0;white-space:normal}}
