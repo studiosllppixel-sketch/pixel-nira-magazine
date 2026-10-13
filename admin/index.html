@@ -308,7 +308,7 @@
   const panel=document.getElementById("editorPanel"),controls=document.getElementById("editorControlsDropdown"),area=panel?.querySelector(".preview-area");
   if(!panel||!controls||!area||document.getElementById("pageSectionNav"))return;
   const nav=document.createElement("nav");nav.id="pageSectionNav";nav.className="page-section-nav";nav.setAttribute("aria-label","Choose page section to preview");
-  const names=[["header","Header"],["hero","Hero"],["canvas","Canvas"],["footer","Footer"],["settings","Page Settings"]];
+  const names=[["header","Header"],["hero","Hero"],["canvas","Canvas"],["about","About"],["contact","Contact"],["footer","Footer"],["settings","Page Settings"]];
   names.forEach(([id,label],i)=>{const b=document.createElement("button");b.type="button";b.dataset.pageSection=id;b.textContent=label;b.className="page-section-button"+(id==="canvas"?" active":"");b.setAttribute("aria-pressed",id==="canvas"?"true":"false");nav.append(b)});
   panel.insertBefore(nav,panel.querySelector(".preview-area")||panel.firstChild);
   const preview=document.createElement("div");preview.id="sectionLivePreview";preview.className="section-live-preview";preview.hidden=true;
@@ -327,6 +327,10 @@
    }else if(current==="header"){
     const h=el("header","", "section-header-mock");const announce=el("div",text("headerAnnouncement","PIXEL STUDIOS × NIRA EDITORIAL"),"section-header-announcement");const row=el("div","","section-header-row");row.append(el("strong",text("headerWordmark","NIRA"),"section-header-logo"));const links=el("div","","section-header-links");[text("headerJournalLabel","Journal"),text("headerNiraLabel","Nira Editorial"),text("headerPixelLabel","Pixel Studios"),text("headerAboutLabel","About Us"),text("headerContactLabel","Contact Us")].forEach(v=>links.append(el("span",v)));row.append(links);h.append(announce,row);out.append(h,el("p","Header preview — changes update here as you edit.","section-preview-help"));
     const image=document.getElementById("headerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image";out.append(im)}
+   }else if(current==="about"){
+    const a=el("section","","section-about-mock");a.append(el("p",text("aboutEyebrow","PIXEL STUDIOS × NIRA EDITORIAL"),"section-preview-eyebrow"),el("h2",text("aboutTitle","About Us")),el("p",text("aboutLead","An independent image journal."),"section-about-lead"),el("p",text("aboutBody","Fashion, photography and stories with a point of view."),"section-about-body"));out.append(a);
+   }else if(current==="contact"){
+    const c=el("section","","section-contact-mock");c.append(el("p",text("contactEyebrow","LET’S CONNECT"),"section-preview-eyebrow"),el("h2",text("contactTitle","Contact Us")),el("p",text("contactLead","For collaborations, editorial submissions and enquiries, connect with our teams."),"section-contact-lead"),el("p",text("contactEmail",""),"section-contact-detail"),el("p",text("contactPhone",""),"section-contact-detail"),el("p",text("contactAddress",""),"section-contact-detail"));out.append(c);
    }else if(current==="footer"){
     const f=el("footer","","section-footer-mock");f.append(el("div",text("footerToplineBrand","PIXEL STUDIOS × NIRA EDITORIAL"),"section-footer-kicker"),el("h2",text("footerTagline","The art of being seen.")),el("p",text("footerDescriptor","Fashion · Photography · Stories")),el("p",text("footerLocation","Independent image journal")),el("p",text("footerCopyright","© 2026 PIXEL STUDIOS × NIRA EDITORIAL")));out.append(f);
     const image=document.getElementById("footerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image";out.append(im)}
@@ -343,6 +347,8 @@
    if(id==="hero")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("HERO"));
    if(id==="canvas")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("CANVAS"));
    if(id==="footer")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("FOOTER"));
+   if(id==="about")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("ABOUT"));
+   if(id==="contact")controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("CONTACT"));
    if(isSettings)controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("PAGE SETTINGS"));
    if(!isCanvas)draw();
   }
@@ -350,16 +356,16 @@
   let imageDrag=null;
   preview.addEventListener("pointerdown",e=>{
    const img=e.target.closest(".section-preview-image");
-   if(!img||!["header","footer"].includes(current))return;
+   if(!img||!["header","hero","footer"].includes(current))return;
    const target=current,box=img.getBoundingClientRect();
    if(!box.width||!box.height)return;
-   const x=document.getElementById(target+"ImageX"),y=document.getElementById(target+"ImageY");
+   const x=document.getElementById(target==="hero"?"heroImageX":target+"ImageX"),y=document.getElementById(target==="hero"?"heroImageY":target+"ImageY");
    imageDrag={img,target,startX:e.clientX,startY:e.clientY,baseX:Number(x?.value??50),baseY:Number(y?.value??50),width:box.width,height:box.height,moved:false};
    img.style.cursor="grabbing";img.style.touchAction="none";img.setPointerCapture?.(e.pointerId);e.preventDefault();
   });
   preview.addEventListener("pointermove",e=>{
    if(!imageDrag)return;
-   const x=document.getElementById(imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target+"ImageY");
+   const x=document.getElementById(imageDrag.target==="hero"?"heroImageX":imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target==="hero"?"heroImageY":imageDrag.target+"ImageY");
    const clamp=v=>Math.max(0,Math.min(100,v));
    const px=clamp(imageDrag.baseX-(e.clientX-imageDrag.startX)/imageDrag.width*100);
    const py=clamp(imageDrag.baseY-(e.clientY-imageDrag.startY)/imageDrag.height*100);
@@ -371,7 +377,7 @@
    if(!imageDrag)return;
    const target=imageDrag.target,img=imageDrag.img,moved=imageDrag.moved;
    img.style.cursor="grab";imageDrag=null;
-   if(moved){const x=document.getElementById(target+"ImageX");if(x)x.dispatchEvent(new Event("input",{bubbles:true}));else document.getElementById(target+"ImageY")?.dispatchEvent(new Event("input",{bubbles:true}))}
+   if(moved){const x=document.getElementById(target==="hero"?"heroImageX":target+"ImageX");if(x)x.dispatchEvent(new Event("input",{bubbles:true}));else document.getElementById(target==="hero"?"heroImageY":target+"ImageY")?.dispatchEvent(new Event("input",{bubbles:true}))}
   };
   preview.addEventListener("pointerup",finishImageDrag);
   preview.addEventListener("pointercancel",finishImageDrag);
@@ -398,7 +404,15 @@
 .section-header-logo{font:500 clamp(26px,4vw,44px) 'Playfair Display',serif}
 .section-header-links{display:flex;gap:14px;flex-wrap:wrap;font-size:10px}
 .section-preview-help{font-size:12px;color:#777167}
-.section-preview-image{display:block;width:100%;max-height:280px;object-fit:cover}
+
+.section-preview-image{display:block;width:100%;height:clamp(280px,62vh,720px);max-height:none;object-fit:cover;cursor:grab;touch-action:none}
+.section-about-mock,.section-contact-mock{min-height:55vh;padding:clamp(30px,7vw,90px);display:flex;flex-direction:column;justify-content:center;background:#e9dfe8;color:#241622}
+.section-about-mock h2,.section-contact-mock h2{font:500 clamp(44px,8vw,100px)/.94 'Playfair Display',Georgia,serif;letter-spacing:-.06em;margin:14px 0 22px}
+.section-preview-eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#75406d}
+.section-about-lead,.section-contact-lead{font:clamp(18px,2.3vw,26px)/1.5 'Playfair Display',Georgia,serif;max-width:720px}
+.section-about-body{font-size:13px;line-height:1.9;max-width:620px}
+.section-contact-detail{font-size:13px;line-height:1.8}
+
 .section-footer-mock{background:#262620;color:#f7f3eb;padding:clamp(24px,5vw,60px);min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px}
 .section-footer-mock h2{font:500 clamp(30px,5vw,56px)/1.1 'Playfair Display',serif;margin:10px 0}
 .section-footer-mock p{margin:0;color:#d5cdbf;font-size:12px}
