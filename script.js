@@ -21,6 +21,17 @@ function initEditorialMotion(root=document){
   else window.__pixelNiraMotionObserver.observe(el);
  });
 }
+function applyEditorialHeader(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
+ const d={announcement:"PIXEL STUDIOS × NIRA EDITORIAL",wordmark:brand==="pixel"?"PIXEL":"NIRA",journalLabel:"Journal",niraLabel:"Nira Editorial",pixelLabel:"Pixel Studios",aboutLabel:"About Us",contactLabel:"Contact Us"},h={...d,...(settings||{})};
+ const announcement=document.querySelector(".announcement");if(announcement&&h.announcement)announcement.textContent=h.announcement;
+ const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=String(h.wordmark||d.wordmark).replace(/[&<>"]/g,"")+"<span>®</span>";mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");mark.href="index.html?brand="+brand}
+ const nav=document.querySelector(".main-nav");
+ if(nav){const links=[["journalLabel","index.html#editorial-cover"],["niraLabel","index.html?brand=nira"],["pixelLabel","index.html?brand=pixel"],["aboutLabel","about.html?brand="+brand],["contactLabel","contact.html?brand="+brand]];
+  const labels=links.map(([key])=>String(h[key]||d[key]));
+  [...nav.querySelectorAll("a")].forEach((a,i)=>{if(!links[i])return;a.textContent=labels[i];a.href=links[i][1]});
+ }
+}
+applyEditorialHeader();
 function applyEditorialFooter(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
  const defaults={tagline:brand==="pixel"?"The art of image-making.":"The art of being seen.",descriptor:"Fashion · Photography · Stories",location:"Independent image journal",copyright:"© 2026 PIXEL STUDIOS × NIRA EDITORIAL",niraInstagramUrl:"https://www.instagram.com/nira.editorial/",pixelInstagramUrl:"https://www.instagram.com/pixelstudios.inc/"};
  const f={...defaults,...(settings||{})},footer=document.querySelector(".editorial-footer");if(!footer)return;
@@ -44,10 +55,10 @@ const brand=new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":
 document.documentElement.setAttribute("data-brand",brand);
 try{
 const response=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});if(!response.ok)return;
-const data=await response.json();if(!data?.published_content)return;const published=data.published_content;applyEditorialFooter(published.footerSettings,brand);const view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
+const data=await response.json();if(!data?.published_content)return;const published=data.published_content;applyEditorialHeader(published.headerSettings,brand);applyEditorialFooter(published.footerSettings,brand);const view=matchMedia("(max-width: 720px)").matches?"mobile":"desktop";
 const pages=Array.isArray(published.canvasPages)&&published.canvasPages.length?published.canvasPages:[{title:brand==="pixel"?"Pixel Studios":"Nira Editorial",layout:published.layout,layouts:published.layouts,elements:published.elements,canvasStyle:published.canvasStyle}];
 const main=document.querySelector("main");if(!main)return;document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Photo Stories";
-const nav=document.querySelector(".main-nav");if(nav)nav.innerHTML='<a href="index.html#editorial-cover">Journal</a><a href="index.html?brand=nira">Nira Editorial</a><a href="index.html?brand=pixel">Pixel Studios</a><a href="about.html">About Us</a><a href="contact.html">Contact Us</a>';
+const nav=document.querySelector(".main-nav");if(nav)nav.innerHTML='<a href="index.html#editorial-cover">Journal</a><a href="index.html?brand=nira">Nira Editorial</a><a href="index.html?brand=pixel">Pixel Studios</a><a href="about.html?brand='+brand+'">About Us</a><a href="contact.html?brand='+brand+'">Contact Us</a>';
 const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=brand==="pixel"?'PIXEL<span>®</span>':'NIRA<span>®</span>';mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home")}
 const esc=v=>String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const safeImage=url=>typeof url==="string"&&/^https:\/\//i.test(url)&&!/images\.unsplash\.com|source\.unsplash\.com|images\.pexels\.com|picsum\.photos/i.test(url)&&url.includes("supabase.co/storage/");
