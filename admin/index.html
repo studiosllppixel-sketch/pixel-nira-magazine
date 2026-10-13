@@ -382,6 +382,19 @@
   preview.addEventListener("pointerup",finishImageDrag);
   preview.addEventListener("pointercancel",finishImageDrag);
   preview.addEventListener("dblclick",e=>{
+   /* Double-tap a section image to jump straight to its real image controls. */
+   const image=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
+   if(image&&["header","hero","footer"].includes(current)){
+    e.preventDefault();e.stopPropagation();
+    controls.open=true;
+    const label=current.toUpperCase();
+    const section=[...controls.querySelectorAll(".page-editor-section")].find(d=>d.querySelector(":scope > summary")?.textContent.toUpperCase().includes(label));
+    if(section)section.open=true;
+    const targetId=current==="hero"?"heroImagePreview":current+"ImagePreview";
+    const target=document.getElementById(targetId);
+    if(target){target.scrollIntoView({behavior:"smooth",block:"center"});target.setAttribute("tabindex","-1");target.focus({preventScroll:true});}
+    return;
+   }
    const map=[
     ["[data-hero-eyebrow]","heroEyebrow"],["[data-hero-title]","heroTitle"],["[data-hero-description]","heroDescription"],["[data-hero-button]","heroButtonLabel"],
     [".section-header-announcement","headerAnnouncement"],[".section-header-logo","headerWordmark"],
@@ -456,6 +469,7 @@
 .section-live-preview:has(#heroSectionPreviewClone),.section-live-preview:has(.section-header-mock){padding:0;background:#f4f0e8;overflow:hidden}
 .section-preview-paper:has(#heroSectionPreviewClone),.section-preview-paper:has(.section-header-mock){padding:0;min-height:0;display:block;gap:0;background:#f4f0e8}
 #heroSectionPreviewClone{display:block;width:100%;min-height:calc(100svh - 112px)!important;height:auto;margin:0!important;border-radius:0;container-type:inline-size}
+#heroSectionPreviewClone [data-hero-image-layer]{pointer-events:auto!important;cursor:grab!important;touch-action:none!important}
 #heroSectionPreviewClone .admin-cover-frame{min-height:calc(100svh - 112px)}
 .section-live-preview:has(.section-header-mock){min-height:0}
 .section-preview-paper:has(.section-header-mock) .section-header-mock{width:100%;min-height:112px;border:0;border-radius:0}
