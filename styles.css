@@ -621,6 +621,4 @@ body.page-leaving .page-transition-curtain span{opacity:1;transform:translateY(0
 body.page-arriving .page-transition-curtain{transform:scaleY(1);transform-origin:top;transition-duration:.68s}
 body.page-arriving .page-transition-curtain span{opacity:1;transform:translateY(0)}
 body.page-arrived .page-transition-curtain{transform:scaleY(0);transform-origin:top}
-body.page-arriving main,body.page-arriving .site-footer{opacity:0;transform:translateY(16px)}
-body.page-arrived main,body.page-arrived .site-footer{opacity:1;transform:translateY(0);transition:opacity .65s ease .08s,transform .75s cubic-bezier(.2,.7,.2,1) .08s}
-@media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}body.page-arriving main,body.page-arriving .site-footer,body.page-arrived main,body.page-arrived .site-footer{opacity:1!important;transform:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){.page-transition-curtain{display:none!important}}
