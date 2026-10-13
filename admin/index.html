@@ -253,4 +253,52 @@
   new MutationObserver(()=>{if(mode==='gallery')refreshGallery()}).observe(canvas,{childList:true,subtree:true,attributes:true,attributeFilter:['src','style']});
 })();
 </script>
+<script>
+/* Organize the existing editor controls into the requested section-first workflow. */
+(function(){
+  function organizePageEditor(){
+    const tools=document.querySelector("#editorControlsDropdown .editor-tools");
+    if(!tools||tools.dataset.sectionOrganized==="true")return;
+    const direct=[...tools.children];
+    const find=(fn)=>direct.find(fn);
+    const brand=find(n=>n.matches(".field")&&n.querySelector("#brandSelect"));
+    const pages=tools.querySelector("#canvasPagesBar");
+    const layout=find(n=>n.matches(".field")&&n.querySelector("#layoutSelect"));
+    const canvas=find(n=>n.matches(".tool-section")&&n.querySelector(".section-title")?.textContent.trim().toUpperCase()==="CANVAS");
+    const background=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase()==="CANVAS BACKGROUND");
+    const selected=find(n=>n.matches(".tool-section")&&n.querySelector(".section-title")?.textContent.trim().toUpperCase()==="SELECTED ELEMENT");
+    const header=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase()==="HEADER CONTROLS");
+    const hero=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase()==="HERO SECTION EDITOR");
+    const footer=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase().startsWith("FOOTER"));
+    const about=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase().startsWith("ABOUT US"));
+    const contact=find(n=>n.matches("details")&&n.querySelector(":scope > summary")?.textContent.trim().toUpperCase().startsWith("CONTACT US"));
+    const section=(name,desc)=>{const d=document.createElement("details");d.className="editor-dropdown page-editor-section";const sum=document.createElement("summary");sum.className="section-title";sum.textContent=name;const hint=document.createElement("span");hint.className="page-editor-section-hint";hint.textContent=desc;sum.append(hint);d.append(sum);return d};
+    const headerSection=section("HEADER","Logo, navigation and spacing");
+    const heroSection=section("HERO","Image, headline and alignment");
+    const canvasSection=section("CANVAS","Arrange canvases and edit elements");
+    const footerSection=section("FOOTER","Brand details, links and background");
+    const pageSection=section("PAGE SETTINGS","Brand, layout and page-wide settings");
+    const sections=[headerSection,heroSection,canvasSection,footerSection,pageSection];
+    [header,hero,pages,layout,canvas,background,selected,footer,brand,about,contact].forEach(n=>{if(n)n.remove()});
+    if(header)headerSection.append(header);
+    if(hero)heroSection.append(hero);
+    if(pages)canvasSection.append(pages);
+    if(canvas)canvasSection.append(canvas);
+    if(selected)canvasSection.append(selected);
+    if(background)pageSection.append(background);
+    if(brand)pageSection.prepend(brand);
+    if(layout)pageSection.append(layout);
+    if(about)pageSection.append(about);
+    if(contact)pageSection.append(contact);
+    sections.forEach(d=>tools.append(d));
+    headerSection.open=false;heroSection.open=false;canvasSection.open=true;footerSection.open=false;pageSection.open=false;
+    if(footer)footerSection.append(footer);
+    tools.dataset.sectionOrganized="true";
+    const style=document.createElement("style");
+    style.textContent=".page-editor-section{border-top:1px solid #c9c0b3!important;padding:0!important;margin:0!important}.page-editor-section>summary{display:flex!important;align-items:center;justify-content:space-between;gap:8px;padding:15px 10px!important;background:#eee7dc!important;color:#24231f!important;font-size:11px!important;font-weight:700!important;letter-spacing:.09em}.page-editor-section>summary .page-editor-section-hint{margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;color:#625e55; text-align:right}.page-editor-section[open]>summary{margin-bottom:8px}.page-editor-section>details{margin:8px 0!important}.page-editor-section #canvasPagesBar{margin:10px 0 14px}.page-editor-section .canvas-page-tabs{flex-wrap:wrap}.page-editor-section .canvas-page-actions{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:720px){.page-editor-section>summary{flex-wrap:wrap}.page-editor-section>summary .page-editor-section-hint{width:100%;text-align:left;margin-left:0}.page-editor-section .canvas-page-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    document.head.append(style);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",organizePageEditor,{once:true});else organizePageEditor();
+})();
+</script>
 </body></html>
