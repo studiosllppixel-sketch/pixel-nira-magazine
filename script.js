@@ -1,3 +1,26 @@
+function initEditorialMotion(root=document){
+ const doc=root&&root.querySelectorAll?root:document;
+ document.documentElement.classList.add("editorial-motion-ready");
+ const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const targets=[];
+ if(root===document)targets.push(...document.querySelectorAll(".editorial-footer,.site-header,.announcement"));
+ targets.push(...doc.querySelectorAll(".gallery-intro,.gallery-card,.gallery-bottom,.story-photo"));
+ if(reduce||!("IntersectionObserver" in window)){targets.forEach(el=>el.classList.add("motion-in"));return}
+ if(!window.__pixelNiraMotionObserver){
+  window.__pixelNiraMotionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+   if(!entry.isIntersecting)return;
+   entry.target.classList.add("motion-in");
+   window.__pixelNiraMotionObserver.unobserve(entry.target);
+  }),{threshold:.12,rootMargin:"0px 0px -5% 0px"});
+ }
+ targets.forEach((el,index)=>{
+  if(el.dataset.motionReady==="1")return;
+  el.dataset.motionReady="1";el.classList.add("motion-reveal");
+  el.style.setProperty("--motion-delay",Math.min(index%5,4)*85+"ms");
+  if(el.getBoundingClientRect().top<window.innerHeight*.92)el.classList.add("motion-in");
+  else window.__pixelNiraMotionObserver.observe(el);
+ });
+}
 function applyEditorialFooter(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
  const defaults={tagline:brand==="pixel"?"The art of image-making.":"The art of being seen.",descriptor:"Fashion · Photography · Stories",location:"Independent image journal",copyright:"© 2026 PIXEL STUDIOS × NIRA EDITORIAL",niraInstagramUrl:"https://www.instagram.com/nira.editorial/",pixelInstagramUrl:"https://www.instagram.com/pixelstudios.inc/"};
  const f={...defaults,...(settings||{})},footer=document.querySelector(".editorial-footer");if(!footer)return;
@@ -79,6 +102,7 @@ main.classList.add("published-layout-main");const coverImage=stories.find(story=
 const coverTitle=brand==="pixel"?"The art of image-making.":"The art of being seen.";
 const coverIntro='<section class="editorial-cover" id="editorial-cover" aria-label="Magazine cover"><div class="cover-frame"><p class="cover-overline"><span>INDEPENDENT IMAGE JOURNAL</span><span>ISSUE 01 · 2026</span></p><div class="cover-main"><p class="cover-kicker">'+pageTitle+' PRESENTS</p><h1>'+coverTitle+'</h1><p class="cover-description">'+(brand==="pixel"?"Fashion, portraiture and image-making with a point of view.":"A considered collection of fashion, portraiture and visual stories.")+'</p><button type="button" class="cover-enter" id="enterJournal"><span>ENTER THE JOURNAL</span><span aria-hidden="true">↘</span></button></div><div class="cover-bottom"><span>PIXEL STUDIOS <i>×</i> NIRA EDITORIAL</span><span>SCROLL TO DISCOVER</span></div><span class="cover-index" aria-hidden="true">P / N</span></div></section>';
 main.innerHTML=coverIntro+pages.map(renderLayoutPage).join("")+'<footer class="gallery-bottom"><span>'+pageTitle+'</span><span>AN INDEPENDENT IMAGE JOURNAL</span></footer><div class="story-overlay" hidden role="dialog" aria-modal="true" aria-label="Photo story"><button class="story-close" aria-label="Close story">×</button><div class="story-dialog"><div class="story-copy"><p class="gallery-kicker">'+pageTitle+' · EDITORIAL</p><h2 class="story-title"></h2><p class="story-description"></p><p class="story-position"></p></div><div class="story-photos"></div></div></div><div class="photo-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full-screen photo viewer"><button class="lightbox-close" aria-label="Close photo viewer">×</button><button class="lightbox-prev" aria-label="Previous photo">‹</button><img class="lightbox-image" alt=""><button class="lightbox-next" aria-label="Next photo">›</button><div class="lightbox-counter"></div></div>';
+initEditorialMotion(main);
 const cover=main.querySelector(".editorial-cover");
 if(coverImage&&cover)cover.style.setProperty("--cover-image",'url("'+coverImage+'")');
 const enterJournal=main.querySelector("#enterJournal");
@@ -87,7 +111,7 @@ const overlay=main.querySelector(".story-overlay"),lightbox=main.querySelector("
 let activeStory=0,activePhoto=0,lastFocus=null;
 const openLightbox=index=>{const story=stories[activeStory];if(!story)return;activePhoto=(index+story.photos.length)%story.photos.length;const p=story.photos[activePhoto];lightbox.querySelector(".lightbox-image").src=p.url;lightbox.querySelector(".lightbox-image").alt=p.alt;lightbox.querySelector(".lightbox-counter").textContent=(activePhoto+1)+" / "+story.photos.length;lightbox.hidden=false;document.body.classList.add("gallery-modal-open")};
 const closeLightbox=()=>{lightbox.hidden=true;if(overlay.hidden)document.body.classList.remove("gallery-modal-open")};
-const openStory=index=>{activeStory=index;const story=stories[index];if(!story)return;lastFocus=document.activeElement;overlay.querySelector(".story-title").textContent=story.title;overlay.querySelector(".story-description").textContent=story.description;overlay.querySelector(".story-position").textContent=story.photos.length+" PHOTOGRAPHS · "+story.brand.toUpperCase();overlay.querySelector(".story-photos").innerHTML=story.photos.map((p,i)=>'<button class="story-photo" data-photo="'+i+'" aria-label="View photograph '+(i+1)+'"><img loading="lazy" src="'+esc(p.url)+'" alt="'+esc(p.alt)+'" style="object-position:'+p.focalX+'% '+p.focalY+'%"><span>VIEW FULL SCREEN ↗</span></button>').join("");overlay.hidden=false;document.body.classList.add("gallery-modal-open");overlay.querySelector(".story-close").focus()};
+const openStory=index=>{activeStory=index;const story=stories[index];if(!story)return;lastFocus=document.activeElement;overlay.querySelector(".story-title").textContent=story.title;overlay.querySelector(".story-description").textContent=story.description;overlay.querySelector(".story-position").textContent=story.photos.length+" PHOTOGRAPHS · "+story.brand.toUpperCase();overlay.querySelector(".story-photos").innerHTML=story.photos.map((p,i)=>'<button class="story-photo" data-photo="'+i+'" aria-label="View photograph '+(i+1)+'"><img loading="lazy" src="'+esc(p.url)+'" alt="'+esc(p.alt)+'" style="object-position:'+p.focalX+'% '+p.focalY+'%"><span>VIEW FULL SCREEN ↗</span></button>').join("");initEditorialMotion(overlay);overlay.hidden=false;document.body.classList.add("gallery-modal-open");overlay.querySelector(".story-close").focus()};
 main.querySelectorAll("[data-canvas-story]").forEach(card=>card.addEventListener("click",()=>{const index=Number(card.dataset.canvasStory);if(index<0)return;activeStory=index;if(stories[index]?.galleryEnabled)openStory(index);else openLightbox(0)}));
 main.querySelectorAll(".published-editorial-canvas").forEach((canvas,index)=>{canvas.classList.add("gallery-enter");canvas.style.setProperty("--gallery-order",index);canvas.querySelectorAll(".published-canvas-image").forEach((image,i)=>{image.classList.add("gallery-image-enter");image.style.setProperty("--gallery-order",i);});canvas.querySelectorAll(".published-canvas-text").forEach((node,i)=>{node.classList.add("gallery-text-enter");node.style.setProperty("--gallery-order",i);});});
 if("IntersectionObserver" in window){const galleryObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("gallery-visible");entry.target.querySelectorAll(".gallery-image-enter,.gallery-text-enter").forEach(node=>node.classList.add("gallery-visible"));galleryObserver.unobserve(entry.target)}}),{threshold:.04});main.querySelectorAll(".published-editorial-canvas").forEach(canvas=>galleryObserver.observe(canvas));}else{main.querySelectorAll(".published-editorial-canvas,.gallery-image-enter,.gallery-text-enter").forEach(node=>node.classList.add("gallery-visible"));}
@@ -99,6 +123,7 @@ lightbox.querySelector(".lightbox-next").addEventListener("click",()=>openLightb
 document.addEventListener("keydown",e=>{if(lightbox.hidden===false){if(e.key==="Escape")closeLightbox();if(e.key==="ArrowLeft")openLightbox(activePhoto-1);if(e.key==="ArrowRight")openLightbox(activePhoto+1)}else if(overlay.hidden===false&&e.key==="Escape"){overlay.hidden=true;document.body.classList.remove("gallery-modal-open");if(lastFocus)lastFocus.focus()}});
 }catch(error){console.error("Unable to load published magazine page.",error)}
 })();
+initEditorialMotion(document);
 /* Brand palette: Nira's plum-black and Pixel's studio-plum accent. */
 (function applyBrandPalette(){
   const brand = new URLSearchParams(window.location.search).get("brand")==="pixel" ? "pixel" : "nira";
