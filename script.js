@@ -60,6 +60,7 @@ const pages=Array.isArray(published.canvasPages)&&published.canvasPages.length?p
 const main=document.querySelector("main");if(!main)return;document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Photo Stories";
 const nav=document.querySelector(".main-nav");if(nav)nav.innerHTML='<a href="index.html#editorial-cover">Journal</a><a href="index.html?brand=nira">Nira Editorial</a><a href="index.html?brand=pixel">Pixel Studios</a><a href="about.html?brand='+brand+'">About Us</a><a href="contact.html?brand='+brand+'">Contact Us</a>';
 const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=brand==="pixel"?'PIXEL<span>®</span>':'NIRA<span>®</span>';mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home")}
+applyEditorialHeader(published.headerSettings,brand);
 const esc=v=>String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const safeImage=url=>typeof url==="string"&&/^https:\/\//i.test(url)&&!/images\.unsplash\.com|source\.unsplash\.com|images\.pexels\.com|picsum\.photos/i.test(url)&&url.includes("supabase.co/storage/");
 const stories=[];
