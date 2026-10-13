@@ -24,7 +24,7 @@ function initEditorialMotion(root=document){
 function applyEditorialHeader(settings={},brand=(new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira")){
  const d={announcement:"PIXEL STUDIOS × NIRA EDITORIAL",wordmark:brand==="pixel"?"PIXEL":"NIRA",journalLabel:"Journal",niraLabel:"Nira Editorial",pixelLabel:"Pixel Studios",aboutLabel:"About Us",contactLabel:"Contact Us"},h={...d,...(settings||{})};
  const announcement=document.querySelector(".announcement");if(announcement&&h.announcement)announcement.textContent=h.announcement;
- const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=String(h.wordmark||d.wordmark).replace(/[&<>"]/g,"")+"<span>®</span>";mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");mark.href="index.html?brand="+brand}
+ const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=(brand==="pixel"?"PIXEL":"NIRA")+"<span>®</span>";mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");mark.href="index.html?brand="+brand}
  const nav=document.querySelector(".main-nav");
  if(nav){const links=[["journalLabel","index.html#editorial-cover"],["niraLabel","index.html?brand=nira"],["pixelLabel","index.html?brand=pixel"],["aboutLabel","about.html?brand="+brand],["contactLabel","contact.html?brand="+brand]];
   const labels=links.map(([key])=>String(h[key]||d[key]));
@@ -59,7 +59,7 @@ const data=await response.json();if(!data?.published_content)return;const publis
 const pages=Array.isArray(published.canvasPages)&&published.canvasPages.length?published.canvasPages:[{title:brand==="pixel"?"Pixel Studios":"Nira Editorial",layout:published.layout,layouts:published.layouts,elements:published.elements,canvasStyle:published.canvasStyle}];
 const main=document.querySelector("main");if(!main)return;document.title=(brand==="pixel"?"Pixel Studios":"Nira Editorial")+" — Photo Stories";
 const nav=document.querySelector(".main-nav");if(nav)nav.innerHTML='<a href="index.html#editorial-cover">Journal</a><a href="index.html?brand=nira">Nira Editorial</a><a href="index.html?brand=pixel">Pixel Studios</a><a href="about.html?brand='+brand+'">About Us</a><a href="contact.html?brand='+brand+'">Contact Us</a>';
-const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=brand==="pixel"?'PIXEL<span>®</span>':'NIRA<span>®</span>';mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home")}
+const mark=document.querySelector(".wordmark");if(mark){mark.innerHTML=(brand==="pixel"?'PIXEL':'NIRA')+'<span>®</span>';mark.setAttribute("aria-label",brand==="pixel"?"Pixel Studios home":"Nira Editorial home");mark.href="index.html?brand="+brand}
 applyEditorialHeader(published.headerSettings,brand);
 const esc=v=>String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const safeImage=url=>typeof url==="string"&&/^https:\/\//i.test(url)&&!/images\.unsplash\.com|source\.unsplash\.com|images\.pexels\.com|picsum\.photos/i.test(url)&&url.includes("supabase.co/storage/");
