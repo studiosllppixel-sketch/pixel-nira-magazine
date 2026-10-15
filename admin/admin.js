@@ -99,7 +99,7 @@ function addCanvasTextTools(c){
 }
 
 function resizeTextStart(e,pos,x,c){
- if(x.locked||e.button!==0)return;e.preventDefault();e.stopPropagation();select(x.id);snap();
+ if(x.locked||e.button!==0)return;e.preventDefault();e.stopPropagation();try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}select(x.id);snap();
  const rect=c.getBoundingClientRect(),startX=e.clientX,startY=e.clientY;
  const orig={x:Number(x.x)||0,y:Number(x.y)||0,w:Number(x.width)||50,size:Number(x.fontSize)||32};
  let moved=false;
@@ -124,7 +124,7 @@ function resizeTextStart(e,pos,x,c){
 
 function textPointerDown(e,x){
  if(x.locked||e.button!==0)return;
- e.preventDefault();e.stopPropagation();select(x.id);
+ e.preventDefault();e.stopPropagation();try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}select(x.id);
  const sx=e.clientX,sy=e.clientY,ox=Number(x.x)||0,oy=Number(x.y)||0,c=$("previewCanvas"),r=c.getBoundingClientRect();
  let moved=false,longPressed=false,finished=false;
  const timer=setTimeout(()=>{if(!moved&&!finished){longPressed=true;openTextQuickMenu(x,e.clientX,e.clientY)}},480);
