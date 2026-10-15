@@ -73,3 +73,55 @@
  [data-reveal]{opacity:1;transform:none;transition:none}
  .hero-image,.feature-image img,.duo-image img,.pixel-image img{transition:none}
 }
+
+
+/* Automatic responsive tuning for the Nira homepage preview.
+   One content source adapts fluidly; no separate desktop/mobile copy is created. */
+img{max-width:100%}
+.hero-art,.feature-image,.duo-image,.pixel-image{min-width:0}
+.hero-copy h1{font-size:clamp(3.4rem,8.5vw,7rem)}
+.intro-statement{font-size:clamp(2.45rem,6vw,4.7rem)}
+.feature-text h3,.duo-card h3{overflow-wrap:normal}
+@media (min-width:761px) and (max-width:1100px){
+  .site-header{padding-inline:4%}
+  .main-nav{gap:22px;margin-left:20px}
+  .hero{padding-inline:4%}
+  .hero-art{height:58vw;min-height:440px}
+  .hero-copy{padding-inline:1%}
+  .feature-section{padding-inline:6%}
+  .feature-image{height:54vw;max-height:600px}
+  .duo-section{padding-inline:8%;gap:8%}
+  .duo-image{height:44vw}
+  .pixel-copy{padding-inline:5%}
+}
+@media (max-width:520px){
+  .announcement{font-size:8px;gap:7px;letter-spacing:.11em}
+  .site-header{padding-inline:5%;gap:10px}
+  .header-cta{font-size:8px;margin-right:10px;letter-spacing:.08em}
+  .hero-art{height:118vw;min-height:390px}
+  .hero-stamp{font-size:clamp(40px,12vw,64px)}
+  .image-credit{left:14px;bottom:14px;font-size:8px}
+  .hero-bottom{font-size:7px;letter-spacing:.1em}
+  .hero-bottom span:last-child{text-align:right}
+  .intro-band{padding-inline:6%}
+  .intro-statement{font-size:clamp(2.25rem,10vw,3.2rem)}
+  .feature-section{padding-inline:6%}
+  .section-heading{align-items:flex-end}
+  .section-heading h2{font-size:clamp(2.5rem,11vw,3.3rem)}
+  .feature-image{height:112vw;max-height:520px}
+  .feature-text h3{font-size:clamp(2.8rem,12vw,3.6rem)}
+  .duo-section{grid-template-columns:1fr;gap:42px;padding-inline:7%}
+  .duo-card-offset{margin-top:0}
+  .duo-image{height:112vw;min-height:0;max-height:520px}
+  .duo-card h3{font-size:clamp(2.7rem,11vw,3.5rem)}
+  .quote-section blockquote{font-size:clamp(2.1rem,9vw,3.1rem)}
+  .pixel-image{height:105vw;max-height:480px}
+  .pixel-copy{padding:52px 7% 60px}
+  .newsletter form{gap:8px}
+  .newsletter input{font-size:8px;letter-spacing:.08em}
+  .newsletter button{font-size:8px;letter-spacing:.07em;padding-left:6px}
+  .site-footer{gap:14px}
+}
+@media (hover:none){
+  .hero-art:hover .hero-image,.feature-image:hover img,.duo-image:hover img,.pixel-section:hover .pixel-image img{transform:none}
+}
