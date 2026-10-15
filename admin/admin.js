@@ -85,29 +85,68 @@ function autoAvoidTextOverlaps(){
 
 function addCanvasTextTools(c){
  const x=el();if(!x||x.type!=="text"||x.locked)return;
- ["nw","n","ne","e","se","s","sw","w"].forEach(pos=>{const h=document.createElement("button");h.type="button";h.className="canvas-resize-handle text-resize-handle handle-"+pos;h.setAttribute("aria-label","Resize text "+pos);h.style.left=(x.x+(pos.includes("w")?0:pos.includes("e")?x.width:x.width/2))+"%";const n=c.querySelector('[data-id="'+x.id+'"]');const hpx=n?n.offsetHeight:30;h.style.top=(x.y+(pos.includes("n")?0:pos.includes("s")?hpx/c.clientHeight*100:hpx/c.clientHeight*50))+"%";h.addEventListener("pointerdown",e=>resizeTextStart(e,pos,x,c));c.append(h)});
+ const node=c.querySelector('[data-id="'+x.id+'"]');if(!node)return;
+ ["nw","n","ne","e","se","s","sw","w"].forEach(pos=>{
+  const h=document.createElement("button");h.type="button";h.className="canvas-resize-handle text-resize-handle handle-"+pos;
+  h.setAttribute("aria-label","Resize text "+pos);h.setAttribute("data-text-resize","true");
+  const left=pos.includes("w")?node.offsetLeft:pos.includes("e")?node.offsetLeft+node.offsetWidth:node.offsetLeft+node.offsetWidth/2;
+  const top=pos.includes("n")?node.offsetTop:pos.includes("s")?node.offsetTop+node.offsetHeight:node.offsetTop+node.offsetHeight/2;
+  h.style.left=(left/Math.max(1,c.clientWidth)*100)+"%";h.style.top=(top/Math.max(1,c.clientHeight)*100)+"%";
+  h.addEventListener("pointerdown",e=>{e.preventDefault();e.stopPropagation();resizeTextStart(e,pos,x,c)});
+  h.addEventListener("click",e=>{e.preventDefault();e.stopPropagation()});
+  c.append(h);
+ });
 }
+
 function resizeTextStart(e,pos,x,c){
  if(x.locked||e.button!==0)return;e.preventDefault();e.stopPropagation();select(x.id);snap();
- const r=c.getBoundingClientRect(),startX=e.clientX,startY=e.clientY,baseW=c.clientWidth,baseH=c.clientHeight,orig={x:x.x,y:x.y,w:x.width,size:Number(x.fontSize)||32};
- const move=v=>{const dx=(v.clientX-startX)/r.width*100,dy=(v.clientY-startY)/r.height*100;let left=orig.x,top=orig.y,width=orig.w,size=orig.size;
- if(pos.includes("e"))width=orig.w+dx;if(pos.includes("w")){width=orig.w-dx;left=orig.x+dx}
- if(pos.includes("n")){top=orig.y+dy;size=orig.size-dy*baseH/Math.max(1,baseW)*10}
- if(pos.includes("s"))size=orig.size+dy*baseH/Math.max(1,baseW)*10;
- if(pos.length===2)size=orig.size+((dx+dy)/2)*Math.min(baseW,baseH)/Math.max(1,baseW)*35;
- width=Math.max(8,Math.min(100,width));left=Math.max(0,Math.min(100-width,left));top=Math.max(0,Math.min(94,top));size=Math.max(9,Math.min(120,size));
- x.x=left;x.y=top;x.width=width;x.fontSize=size;const n=c.querySelector('[data-id="'+x.id+'"]');if(n){n.style.left=left+"%";n.style.top=top+"%";n.style.width=width+"%";n.style.fontSize=size+"px"}dirty();
+ const rect=c.getBoundingClientRect(),startX=e.clientX,startY=e.clientY;
+ const orig={x:Number(x.x)||0,y:Number(x.y)||0,w:Number(x.width)||50,size:Number(x.fontSize)||32};
+ let moved=false;
+ const move=v=>{
+  const dx=(v.clientX-startX)/Math.max(1,rect.width)*100;
+  const dy=(v.clientY-startY)/Math.max(1,rect.height)*100;
+  let left=orig.x,top=orig.y,width=orig.w,size=orig.size;
+  if(pos.includes("e"))width=orig.w+dx;
+  if(pos.includes("w")){width=orig.w-dx;left=orig.x+dx}
+  if(pos.includes("n")){top=orig.y+dy;size=orig.size-dy*Math.max(1,c.clientHeight)/Math.max(1,c.clientWidth)*10}
+  if(pos.includes("s"))size=orig.size+dy*Math.max(1,c.clientHeight)/Math.max(1,c.clientWidth)*10;
+  if(pos.length===2)size=orig.size+((dx+dy)/2)*35;
+  width=Math.max(8,Math.min(100,width));left=Math.max(0,Math.min(100-width,left));top=Math.max(0,Math.min(94,top));size=Math.max(9,Math.min(120,size));
+  x.x=left;x.y=top;x.width=width;x.fontSize=size;moved=true;
+  const n=c.querySelector('[data-id="'+x.id+'"]');
+  if(n){n.style.left=left+"%";n.style.top=top+"%";n.style.width=width+"%";n.style.fontSize=size+"px"}
+  $("elementWidth").value=Math.round(width);$("fontSize").value=Math.round(size);$("elementX").value=Math.round(left);$("elementY").value=Math.round(top);dirty();
  };
- const up=()=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);$("elementWidth").value=Math.round(x.width);$("fontSize").value=Math.round(x.fontSize);$("elementX").value=Math.round(x.x);$("elementY").value=Math.round(x.y);render()};
- window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);
+ const up=()=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);if(moved){render();select(x.id)}};
+ window.addEventListener("pointermove",move);window.addEventListener("pointerup",up,{once:true});window.addEventListener("pointercancel",up,{once:true});
 }
+
 function textPointerDown(e,x){
- if(x.locked||e.button!==0)return;e.preventDefault();e.stopPropagation();select(x.id);const sx=e.clientX,sy=e.clientY,ox=x.x,oy=x.y,c=$("previewCanvas"),r=c.getBoundingClientRect();let moved=false,longPressed=false;
- const timer=setTimeout(()=>{if(!moved){longPressed=true;openTextQuickMenu(x,e.clientX,e.clientY)}},480);
- const move=v=>{if(Math.abs(v.clientX-sx)+Math.abs(v.clientY-sy)>6){moved=true;clearTimeout(timer)}if(!moved||longPressed)return;x.x=Math.max(0,Math.min(100-x.width,ox+(v.clientX-sx)/r.width*100));x.y=Math.max(0,Math.min(94,oy+(v.clientY-sy)/r.height*100));const n=c.querySelector('[data-id="'+x.id+'"]');if(n){n.style.left=x.x+"%";n.style.top=x.y+"%"}$("elementX").value=Math.round(x.x);$("elementY").value=Math.round(x.y);dirty()};
- const up=()=>{clearTimeout(timer);window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);if(moved&&!longPressed){autoAvoidTextOverlaps();dirty();render()}};
- window.addEventListener("pointermove",move);window.addEventListener("pointerup",up,{once:true});
+ if(x.locked||e.button!==0)return;
+ e.preventDefault();e.stopPropagation();select(x.id);
+ const sx=e.clientX,sy=e.clientY,ox=Number(x.x)||0,oy=Number(x.y)||0,c=$("previewCanvas"),r=c.getBoundingClientRect();
+ let moved=false,longPressed=false,finished=false;
+ const timer=setTimeout(()=>{if(!moved&&!finished){longPressed=true;openTextQuickMenu(x,e.clientX,e.clientY)}},480);
+ const cleanup=()=>{if(finished)return;finished=true;clearTimeout(timer);window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up)};
+ const move=v=>{
+  if(finished||longPressed)return;
+  if(Math.abs(v.clientX-sx)+Math.abs(v.clientY-sy)>5){moved=true;clearTimeout(timer)}
+  if(!moved)return;
+  x.x=Math.max(0,Math.min(100-(Number(x.width)||8),ox+(v.clientX-sx)/Math.max(1,r.width)*100));
+  x.y=Math.max(0,Math.min(94,oy+(v.clientY-sy)/Math.max(1,r.height)*100));
+  const n=c.querySelector('[data-id="'+x.id+'"]');
+  if(n){n.style.left=x.x+"%";n.style.top=x.y+"%"}
+  $("elementX").value=Math.round(x.x);$("elementY").value=Math.round(x.y);dirty();
+ };
+ const up=()=>{
+  if(finished)return;
+  const didMove=moved&&!longPressed;cleanup();
+  if(didMove){saveActiveLayout();render();select(x.id)}
+ };
+ window.addEventListener("pointermove",move);window.addEventListener("pointerup",up,{once:true});window.addEventListener("pointercancel",up,{once:true});
 }
+
 function openTextQuickMenu(x,clientX,clientY){
  let menu=$("textQuickMenu");if(!menu){menu=document.createElement("aside");menu.id="textQuickMenu";menu.className="text-quick-menu";menu.innerHTML='<div class="text-menu-head"><strong>Type settings</strong><button type="button" aria-label="Close text settings">×</button></div><label>Font<select id="quickFont"><option>Playfair Display</option><option>DM Sans</option><option>Cormorant Garamond</option><option>Libre Baskerville</option><option>Montserrat</option><option>Oswald</option><option>Prata</option><option>Raleway</option><option>Space Grotesk</option><option>Georgia</option><option>Arial</option></select></label><label>Font size <span id="quickFontSizeValue"></span><input id="quickFontSize" type="range" min="9" max="120" value="32"></label><label>Text colour<input id="quickTextColor" type="color" value="#22221f"></label><label>Width (%)<input id="quickTextWidth" type="range" min="8" max="100" value="50"></label>';document.body.append(menu);menu.querySelector(".text-menu-head button").onclick=()=>menu.remove();menu.addEventListener("pointerdown",e=>e.stopPropagation())}
  menu.dataset.target=x.id;$("quickFont").value=x.fontFamily||"DM Sans";$("quickFontSize").value=x.fontSize||32;$("quickFontSizeValue").textContent=(x.fontSize||32)+" px";$("quickTextColor").value=x.color||"#22221f";$("quickTextWidth").value=x.width||50;
