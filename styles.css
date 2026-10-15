@@ -14,3 +14,62 @@
 .live-magazine-footer a{color:inherit}
 @media(max-width:700px){.live-magazine-canvas{min-height:760px}.live-magazine-masthead{font-size:7px;padding:0 4%}.live-magazine-masthead strong{font-size:15px}.live-magazine-text{font-size: min(4vw,16px)!important}.live-magazine-text.is-heading{font-size:clamp(23px,7vw,40px)!important}.live-magazine-footer{font-size:8px;flex-wrap:wrap}}
 
+
+/* Nira homepage refinement — cinematic pacing, quiet motion, editorial rhythm */
+:root{--paper:#f5f1e9;--ink:#191916;--muted:#77736b;--line:rgba(25,25,22,.2)}
+::selection{background:#cfc2ad;color:#191916}
+.site-header{backdrop-filter:blur(12px);background:rgba(245,241,233,.94)}
+.wordmark{transition:letter-spacing .35s ease}
+.wordmark:hover{letter-spacing:-.04em}
+.hero{padding-top:28px}
+.hero-art{isolation:isolate}
+.hero-art:before{content:"";position:absolute;z-index:1;inset:14px;border:1px solid rgba(255,255,255,.34);pointer-events:none}
+.hero-image{transform:scale(1.015);transition:transform 1.4s cubic-bezier(.2,.7,.2,1),filter 1.2s}
+.hero-art:hover .hero-image{transform:scale(1.045);filter:saturate(.9)}
+.hero-stamp{text-shadow:0 2px 24px rgba(0,0,0,.08)}
+.hero-copy{padding-top:44px;padding-bottom:48px}
+.hero-copy h1{max-width:760px}
+.hero-description p{max-width:310px}
+.editorial-ticker{overflow:hidden;background:#1c1c19;color:#f5f1e9;border-top:1px solid #34342e;border-bottom:1px solid #34342e;padding:17px 0}
+.ticker-track{display:flex;align-items:center;justify-content:space-around;gap:clamp(24px,4vw,62px);width:max-content;min-width:100%;animation:niraTicker 34s linear infinite}
+.ticker-track span{font:9px var(--sans);letter-spacing:.2em;white-space:nowrap}
+.ticker-track i{font:18px var(--serif);font-style:normal;color:#c8bca9}
+.editorial-ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes niraTicker{to{transform:translateX(-35%)}}
+.intro-band{position:relative;overflow:hidden}
+.intro-band:before,.intro-band:after{content:"";position:absolute;width:1px;height:52px;background:#b8ad9d;left:50%;transform:translateX(-50%)}
+.intro-band:before{top:0}.intro-band:after{bottom:0}
+.section-heading{padding-bottom:18px;border-bottom:1px solid var(--line)}
+.feature-image,.duo-image,.pixel-image{background:#d7cbbb}
+.feature-image img,.duo-image img,.pixel-image img{transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .8s}
+.feature-image:hover img,.duo-image:hover img,.pixel-image:hover img{transform:scale(1.025)}
+.feature-text h3{max-width:520px}
+.duo-card{min-width:0}
+.quote-section{position:relative;overflow:hidden}
+.quote-section:before,.quote-section:after{content:"";position:absolute;top:50%;width:13vw;height:1px;background:rgba(245,241,233,.22)}
+.quote-section:before{left:0}.quote-section:after{right:0}
+.pixel-section{overflow:hidden}
+.pixel-image img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.pixel-section:hover .pixel-image img{transform:scale(1.025)}
+.newsletter form{transition:border-color .25s;max-width:500px}
+.newsletter form:focus-within{border-color:#8c7c66}
+.newsletter input:focus-visible,.newsletter button:focus-visible,.main-nav a:focus-visible,.header-cta:focus-visible{outline:1px solid currentColor;outline-offset:5px}
+.underlined-link{transition:gap .25s ease}
+.underlined-link:hover{gap:34px}
+[data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+[data-reveal].is-visible{opacity:1;transform:translateY(0)}
+[data-reveal="hero"]{opacity:1;transform:none}
+@media(max-width:760px){
+ .hero{padding-top:18px}
+ .hero-art:before{inset:9px}
+ .hero-copy{padding-top:29px;padding-bottom:34px}
+ .ticker-track{gap:28px;animation-duration:26s}
+ .ticker-track span{font-size:8px}
+ .intro-band:before,.intro-band:after{height:34px}
+ .quote-section:before,.quote-section:after{width:6vw}
+}
+@media(prefers-reduced-motion:reduce){
+ .ticker-track{animation:none}
+ [data-reveal]{opacity:1;transform:none;transition:none}
+ .hero-image,.feature-image img,.duo-image img,.pixel-image img{transition:none}
+}
