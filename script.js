@@ -38,3 +38,14 @@ if(newsletterForm)newsletterForm.addEventListener("submit",event=>{event.prevent
     main.innerHTML='<section class="live-magazine-canvas" aria-label="'+(brand==="pixel"?"Pixel Studios":"Nira Editorial")+' published page"><div class="live-magazine-masthead"><span>INDEPENDENT CREATIVE JOURNAL</span><strong>'+(brand==="pixel"?"PIXEL STUDIOS":"NIRA EDITORIAL")+'</strong><span>VOL. 01</span></div>'+items+'</section><footer class="live-magazine-footer"><span>PIXEL STUDIOS × NIRA EDITORIAL</span><a href="https://www.instagram.com/'+(brand==="pixel"?"pixelstudios.inc":"nira.editorial")+'/" target="_blank" rel="noreferrer">FOLLOW ON INSTAGRAM ↗</a></footer>';
   }catch(error){console.error("Unable to load published magazine page.",error);}
 })();
+/* Gentle, one-time section reveals; preserve reduced-motion accessibility. */
+(function initEditorialReveal(){
+  const sections=[...document.querySelectorAll("[data-reveal]:not([data-reveal='hero'])")];
+  if(!sections.length)return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){sections.forEach(el=>el.classList.add("is-visible"));return;}
+  if(!("IntersectionObserver" in window)){sections.forEach(el=>el.classList.add("is-visible"));return;}
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}
+  }),{threshold:.08,rootMargin:"0px 0px -35px 0px"});
+  sections.forEach(el=>observer.observe(el));
+})();
