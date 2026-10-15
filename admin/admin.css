@@ -9,3 +9,15 @@
 .preview-masthead{height:62px}
 .preview-note{max-width:720px}
 @media(max-width:720px){.canvas-frame{justify-content:center;min-height:0;padding:12px}.preview-canvas{width:1440px;height:900px;min-height:900px}.preview-canvas.mobile-preview{width:390px;height:844px;min-height:844px}}
+
+/* Restored contextual page sections */
+.section-selector{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0 0;padding:8px;background:var(--white);border:1px solid var(--line)}
+.section-tab{flex:1 1 auto;min-width:78px;padding:11px 12px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:11px;letter-spacing:.04em}
+.section-tab:hover{background:#eee9df;color:var(--ink)}
+.section-tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+.editor-workspace>.workspace{padding-top:12px}
+.section-hint{font-size:11px;line-height:1.6;padding:11px 12px;margin:12px 0;background:#eeeae1;border-left:2px solid var(--accent);color:var(--ink)}
+.preview-element.header-element,.preview-element.footer-element{cursor:move}
+.preview-element.header-element p{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.preview-element.footer-element p{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:720px){.section-selector{gap:4px;margin-top:12px;padding:6px}.section-tab{min-width:0;padding:10px 7px;font-size:10px}.editor-workspace>.workspace{padding-top:10px}}
