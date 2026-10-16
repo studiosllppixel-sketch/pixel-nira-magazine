@@ -13,7 +13,7 @@ function applyStandaloneVisualLayout(section,settings={}){const all=settings&&se
   if(!cfg.supabaseUrl||!cfg.supabaseAnonKey)return;
   const res=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});
   if(!res.ok)return;const data=await res.json(),content=data?.published_content;if(!content)return;
-  applyHeader(content.headerSettings);applyFooter(content.footerSettings);applyStandaloneVisualLayout('header',content.headerSettings);applyStandaloneVisualLayout('footer',content.footerSettings);
+  applyHeader(content.headerSettings);applyFooter(content.footerSettings);applyStandaloneVisualLayout('header',content.headerSettings);applyStandaloneVisualLayout('footer',content.footerSettings);window.addEventListener('resize',()=>{applyStandaloneVisualLayout('header',content.headerSettings);applyStandaloneVisualLayout('footer',content.footerSettings);if(location.pathname.endsWith('about.html'))applyStandaloneVisualLayout('about',content.aboutSettings);if(location.pathname.endsWith('contact.html'))applyStandaloneVisualLayout('contact',content.contactSettings)},{passive:true});
   if(kind==="about"){
    const a={eyebrow:"PIXEL STUDIOS × NIRA EDITORIAL",title:"About Us",lead:"",body:"",...(content.aboutSettings||{})};
    put("pageEyebrow",a.eyebrow);put("pageTitle",a.title);put("pageLead",a.lead);applyStandaloneVisualLayout("about",a);
