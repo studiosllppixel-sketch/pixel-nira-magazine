@@ -1,3 +1,4 @@
+function applyStandaloneVisualLayout(section,settings={}){const map={header:{announcement:"#announcementText",wordmark:"#siteWordmark",navigation:"#mainNav",image:".site-header"},footer:{brand:".footer-topline",tagline:"#footerTagline",descriptor:"#footerDescriptor",location:"#footerLocation",copyright:"#footerCopyright",image:"#site-footer"},about:{eyebrow:"#pageEyebrow",title:"#pageTitle",lead:"#pageLead",body:"#pageBody"},contact:{eyebrow:"#pageEyebrow",title:"#pageTitle",lead:"#pageLead",email:"#contactDetails p:nth-child(1)",phone:"#contactDetails p:nth-child(2)",address:"#contactDetails p:nth-child(3)"}};Object.entries(map[section]||{}).forEach(([key,selector])=>{const node=document.querySelector(selector),v=settings?.visualLayout?.[key];if(!node||!v)return;node.style.transform="translate("+Math.max(-100,Math.min(100,Number(v.x)||0))+"%, "+Math.max(-100,Math.min(100,Number(v.y)||0))+"%) scale("+Math.max(.25,Math.min(3,Number(v.scaleX)||1))+", "+Math.max(.25,Math.min(3,Number(v.scaleY)||1))+")";node.style.transformOrigin="top left"})}
 (async function loadStandalonePageSettings(){
  const cfg=window.PIXEL_NIRA_CONFIG||{},brand=new URLSearchParams(location.search).get("brand")==="pixel"?"pixel":"nira";
  document.documentElement.dataset.brand=brand;
@@ -12,14 +13,14 @@
   if(!cfg.supabaseUrl||!cfg.supabaseAnonKey)return;
   const res=await fetch(cfg.supabaseUrl.replace(/\/+$/,"")+"/functions/v1/published-magazine-images?brand="+encodeURIComponent(brand),{headers:{apikey:cfg.supabaseAnonKey}});
   if(!res.ok)return;const data=await res.json(),content=data?.published_content;if(!content)return;
-  applyHeader(content.headerSettings);applyFooter(content.footerSettings);
+  applyHeader(content.headerSettings);applyFooter(content.footerSettings);applyStandaloneVisualLayout('header',content.headerSettings);applyStandaloneVisualLayout('footer',content.footerSettings);
   if(kind==="about"){
    const a={eyebrow:"PIXEL STUDIOS × NIRA EDITORIAL",title:"About Us",lead:"",body:"",...(content.aboutSettings||{})};
-   put("pageEyebrow",a.eyebrow);put("pageTitle",a.title);put("pageLead",a.lead);
+   put("pageEyebrow",a.eyebrow);put("pageTitle",a.title);put("pageLead",a.lead);applyStandaloneVisualLayout("about",a);
    const body=$("pageBody");if(body){body.replaceChildren();String(a.body||"").split(/\n\s*\n|\n/).map(x=>x.trim()).filter(Boolean).forEach(paragraph=>{const p=document.createElement("p");p.className="info-body";p.textContent=paragraph;body.append(p)})}
   }else if(kind==="contact"){
    const d={eyebrow:"LET’S CONNECT",title:"Contact Us",lead:"For collaborations, editorial submissions, photography, production, and other enquiries, connect with the teams below.",email:"",phone:"",address:"",niraUrl:"https://www.instagram.com/nira.editorial/",pixelUrl:"https://www.instagram.com/pixelstudios.inc/"},v={...d,...(content.contactSettings||{})};
-   put("pageEyebrow",v.eyebrow);put("pageTitle",v.title);put("pageLead",v.lead);
+   put("pageEyebrow",v.eyebrow);put("pageTitle",v.title);put("pageLead",v.lead);applyStandaloneVisualLayout("contact",v);
    const details=$("contactDetails");if(details){details.replaceChildren();const add=(label,value,href)=>{if(!value)return;const p=document.createElement("p");p.className="info-body";const strong=document.createElement("strong");strong.textContent=label+" ";p.append(strong);if(href){const a=document.createElement("a");a.href=safeUrl(href);a.textContent=value;p.append(a)}else p.append(document.createTextNode(value));details.append(p)};
     add("Email:",v.email,v.email?"mailto:"+v.email:"");add("Phone:",v.phone,v.phone?"tel:"+v.phone:"");add("Location:",v.address,"");
     const links=$("contactSocialLinks");if(links){links.replaceChildren();[[ "Nira Editorial",v.niraUrl ],[ "Pixel Studios",v.pixelUrl ]].forEach(([label,url])=>{if(!url)return;const a=document.createElement("a");a.href=safeUrl(url);a.target="_blank";a.rel="noreferrer";a.textContent=label+" ↗";links.append(a)})}
