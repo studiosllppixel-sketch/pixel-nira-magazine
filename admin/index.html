@@ -564,6 +564,10 @@
  .section-live-preview .section-element-selected{outline:2px solid #b58d78!important;outline-offset:3px!important;cursor:pointer!important}
  .section-header-mock .section-header-announcement,.section-header-mock .section-header-logo,.section-header-mock .section-header-links span{cursor:pointer}
 #heroLivePreview .admin-cover-main,
-#heroSectionPreviewClone .admin-cover-main{pointer-events:none!important}
+#heroSectionPreviewClone .admin-cover-main{pointer-events:auto!important}
+#heroLivePreview .admin-cover-frame>* ,
+#heroSectionPreviewClone .admin-cover-frame>*{pointer-events:auto!important}
+#heroLivePreview [data-hero-eyebrow],#heroLivePreview [data-hero-title],#heroLivePreview [data-hero-description],#heroLivePreview [data-hero-button],
+#heroSectionPreviewClone [data-hero-eyebrow],#heroSectionPreviewClone [data-hero-title],#heroSectionPreviewClone [data-hero-description],#heroSectionPreviewClone [data-hero-button]{pointer-events:auto!important;touch-action:none!important;cursor:move!important}
 </style>
 </body></html>
