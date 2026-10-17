@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-admin-login-fix-v2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261018-hero-all-elements-v2"></script><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Editorial Studio · Pixel × Nira</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Prata&family=Raleway:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="./admin.css?v=20261013-admin-login-fix-v2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script defer src="./admin.js?v=20261018-about-contact-drag-v1"></script><style>
 /* Place the editor accordion in the dark navigation sidebar, not above the canvas. */
 .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;align-self:start}
 .sidebar .editor-controls-dropdown{order:initial;display:block;background:transparent;color:#f6f2ea;border:0;border-top:1px solid #44443b;margin-top:8px}
@@ -329,9 +329,9 @@
     const h=el("header","", "section-header-mock");const announce=el("div",text("headerAnnouncement","PIXEL STUDIOS × NIRA EDITORIAL"),"section-header-announcement");const row=el("div","","section-header-row");row.append(el("strong",text("headerWordmark","NIRA"),"section-header-logo"));const links=el("div","","section-header-links");[text("headerJournalLabel","Journal"),text("headerNiraLabel","Nira Editorial"),text("headerPixelLabel","Pixel Studios"),text("headerAboutLabel","About Us"),text("headerContactLabel","Contact Us")].forEach(v=>links.append(el("span",v)));row.append(links);h.append(announce,row);out.append(h,el("p","Header preview — changes update here as you edit.","section-preview-help"));
     const image=document.getElementById("headerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image section-header-preview-image";im.style.height=(document.getElementById("headerImageHeight")?.value||82)+"px";out.append(im)}else{const action=el("button","Choose header image","section-image-pick");action.type="button";action.dataset.pickSiteImage="header";out.append(action)}
    }else if(current==="about"){
-    const a=el("section","","section-about-mock");a.append(el("p",text("aboutEyebrow","PIXEL STUDIOS × NIRA EDITORIAL"),"section-preview-eyebrow"),el("h2",text("aboutTitle","About Us")),el("p",text("aboutLead","An independent image journal."),"section-about-lead"),el("p",text("aboutBody","Fashion, photography and stories with a point of view."),"section-about-body"));out.append(a);
+    const a=el("section","","section-about-mock");const movable=(node,key)=>{node.dataset.siteMove="about:"+key;const pos=window.getSiteVisualLayout?.("about",key)||{x:0,y:0};node.style.transform="translate("+Number(pos.x||0)+"%, "+Number(pos.y||0)+"%)";node.style.cursor="move";node.style.touchAction="none";return node};a.append(movable(el("p",text("aboutEyebrow","PIXEL STUDIOS × NIRA EDITORIAL"),"section-preview-eyebrow"),"eyebrow"),movable(el("h2",text("aboutTitle","About Us")),"title"),movable(el("p",text("aboutLead","An independent image journal."),"section-about-lead"),"lead"),movable(el("p",text("aboutBody","Fashion, photography and stories with a point of view."),"section-about-body"),"body"));out.append(a);
    }else if(current==="contact"){
-    const c=el("section","","section-contact-mock");c.append(el("p",text("contactEyebrow","LET’S CONNECT"),"section-preview-eyebrow"),el("h2",text("contactTitle","Contact Us")),el("p",text("contactLead","For collaborations, editorial submissions and enquiries, connect with our teams."),"section-contact-lead"),el("p",text("contactEmail",""),"section-contact-detail"),el("p",text("contactPhone",""),"section-contact-detail"),el("p",text("contactAddress",""),"section-contact-detail"));out.append(c);
+    const c=el("section","","section-contact-mock");const movable=(node,key)=>{node.dataset.siteMove="contact:"+key;const pos=window.getSiteVisualLayout?.("contact",key)||{x:0,y:0};node.style.transform="translate("+Number(pos.x||0)+"%, "+Number(pos.y||0)+"%)";node.style.cursor="move";node.style.touchAction="none";return node};c.append(movable(el("p",text("contactEyebrow","LET’S CONNECT"),"section-preview-eyebrow"),"eyebrow"),movable(el("h2",text("contactTitle","Contact Us")),"title"),movable(el("p",text("contactLead","For collaborations, editorial submissions and enquiries, connect with our teams."),"section-contact-lead"),"lead"),movable(el("p",text("contactEmail",""),"section-contact-detail"),"email"),movable(el("p",text("contactPhone",""),"section-contact-detail"),"phone"),movable(el("p",text("contactAddress",""),"section-contact-detail"),"address"));out.append(c);
    }else if(current==="footer"){
     const f=el("footer","","section-footer-mock");f.append(el("div",text("footerToplineBrand","PIXEL STUDIOS × NIRA EDITORIAL"),"section-footer-kicker"),el("h2",text("footerTagline","The art of being seen.")),el("p",text("footerDescriptor","Fashion · Photography · Stories")),el("p",text("footerLocation","Independent image journal")),el("p",text("footerCopyright","© 2026 PIXEL STUDIOS × NIRA EDITORIAL")));out.append(f);
     const image=document.getElementById("footerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image";out.append(im)}
@@ -356,13 +356,14 @@
   /* Drag section images to reframe and Hero text to position it; edits are saved in the editor state. */
   let imageDrag=null,textDrag=null;
   preview.addEventListener("pointerdown",e=>{
-   const text=e.target.closest("#heroSectionPreviewClone [data-hero-eyebrow],#heroSectionPreviewClone [data-hero-title],#heroSectionPreviewClone [data-hero-description],#heroSectionPreviewClone [data-hero-button]");
-   if(text&&current==="hero"&&!e.target.closest("button,input,textarea,select")){
+   const text=e.target.closest("#heroSectionPreviewClone [data-hero-eyebrow],#heroSectionPreviewClone [data-hero-title],#heroSectionPreviewClone [data-hero-description],#heroSectionPreviewClone [data-hero-button],[data-site-move]");
+   if(text&&(current==="hero"||current==="about"||current==="contact")&&!e.target.closest("button,input,textarea,select")){
     if(e.button!==0)return;
-    const key=text.hasAttribute("data-hero-eyebrow")?"eyebrow":text.hasAttribute("data-hero-title")?"title":text.hasAttribute("data-hero-description")?"description":"buttonLabel";
+    const section=current==="hero"?"hero":(text.dataset.siteMove?.split(":")[0]||current);
+    const key=section==="hero"?(text.hasAttribute("data-hero-eyebrow")?"eyebrow":text.hasAttribute("data-hero-title")?"title":text.hasAttribute("data-hero-description")?"description":"buttonLabel"):text.dataset.siteMove?.split(":")[1];
     const match=(text.style.transform||"").match(/translate\(\s*(-?[\d.]+)%\s*,\s*(-?[\d.]+)%\s*\)/);
-    const box=document.getElementById("heroSectionPreviewClone").getBoundingClientRect();
-    textDrag={node:text,key,startX:e.clientX,startY:e.clientY,baseX:match?Number(match[1]):0,baseY:match?Number(match[2]):0,width:box.width,height:box.height,moved:false};
+    const box=(section==="hero"?document.getElementById("heroSectionPreviewClone"):document.getElementById("sectionPreviewContent")).getBoundingClientRect();
+    textDrag={node:text,key,section,startX:e.clientX,startY:e.clientY,baseX:match?Number(match[1]):0,baseY:match?Number(match[2]):0,width:box.width,height:box.height,moved:false};
     text.style.cursor="grabbing";text.style.outline="1px dashed #d6b9d0";e.preventDefault();e.stopPropagation();return;
    }
    const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
@@ -391,7 +392,7 @@
   const finishImageDrag=()=>{
    if(textDrag){
     const t=textDrag;textDrag=null;t.node.style.cursor="move";t.node.style.outline="";
-    if(t.moved&&typeof window.setHeroVisualLayout==="function")window.setHeroVisualLayout(t.key,t.nextX,t.nextY);
+    if(t.moved){if(t.section==="hero"&&typeof window.setHeroVisualLayout==="function")window.setHeroVisualLayout(t.key,t.nextX,t.nextY);else if(typeof window.setSiteVisualLayout==="function")window.setSiteVisualLayout(t.section,t.key,t.nextX,t.nextY)}
    }
    if(!imageDrag)return;
    const target=imageDrag.target,img=imageDrag.img,moved=imageDrag.moved;
