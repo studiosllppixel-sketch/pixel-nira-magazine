@@ -361,9 +361,9 @@
     if(e.button!==0)return;
     const section=current==="hero"?"hero":(text.dataset.siteMove?.split(":")[0]||current);
     const key=section==="hero"?(text.hasAttribute("data-hero-eyebrow")?"eyebrow":text.hasAttribute("data-hero-title")?"title":text.hasAttribute("data-hero-description")?"description":"buttonLabel"):text.dataset.siteMove?.split(":")[1];
-    const matchX=(text.style.left||"0%").match(/(-?[\d.]+)%/),matchY=(text.style.top||"0%").match(/(-?[\d.]+)%/);
+    const matchTransform=(text.style.transform||"").match(/translate\(\s*(-?[\d.]+)%\s*,\s*(-?[\d.]+)%\s*\)/),matchX=(text.style.left||"0%").match(/(-?[\d.]+)%/),matchY=(text.style.top||"0%").match(/(-?[\d.]+)%/);
     const box=(section==="hero"?document.getElementById("heroSectionPreviewClone"):document.getElementById("sectionPreviewContent")).getBoundingClientRect();
-    textDrag={node:text,key,section,startX:e.clientX,startY:e.clientY,baseX:matchX?Number(matchX[1]):0,baseY:matchY?Number(matchY[1]):0,width:box.width,height:box.height,moved:false};
+    textDrag={node:text,key,section,startX:e.clientX,startY:e.clientY,baseX:section==="hero"?(matchTransform?Number(matchTransform[1]):0):(matchX?Number(matchX[1]):0),baseY:section==="hero"?(matchTransform?Number(matchTransform[2]):0):(matchY?Number(matchY[1]):0),width:box.width,height:box.height,moved:false};
     text.style.cursor="grabbing";text.style.outline="1px dashed #d6b9d0";e.preventDefault();e.stopPropagation();return;
    }
    const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
@@ -378,7 +378,7 @@
    if(textDrag){
     const dx=(e.clientX-textDrag.startX)/Math.max(1,textDrag.width)*100,dy=(e.clientY-textDrag.startY)/Math.max(1,textDrag.height)*100;
     textDrag.nextX=Math.max(-45,Math.min(45,textDrag.baseX+dx));textDrag.nextY=Math.max(-45,Math.min(45,textDrag.baseY+dy));
-    textDrag.node.style.left=textDrag.nextX+"%";textDrag.node.style.top=textDrag.nextY+"%";textDrag.moved=true;return;
+    if(textDrag.section==="hero")textDrag.node.style.transform="translate("+textDrag.nextX+"%, "+textDrag.nextY+"%)";else{textDrag.node.style.left=textDrag.nextX+"%";textDrag.node.style.top=textDrag.nextY+"%"}textDrag.moved=true;return;
    }
    if(!imageDrag)return;
    const x=document.getElementById(imageDrag.target==="hero"?"heroImageX":imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target==="hero"?"heroImageY":imageDrag.target+"ImageY");
@@ -430,7 +430,7 @@
   });
   preview.addEventListener("click",e=>{const b=e.target.closest("[data-pick-site-image]");if(!b)return;e.preventDefault();e.stopPropagation();document.getElementById(b.dataset.pickSiteImage==="hero"?"chooseHeroImage":"chooseHeaderImage")?.click()});
   nav.addEventListener("click",e=>{const b=e.target.closest("[data-page-section]");if(b)choose(b.dataset.pageSection)});
-  document.addEventListener("input",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
+  document.addEventListener("input",e=>{if(["header","hero","about","contact","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
   document.addEventListener("change",e=>{if(["header","hero","footer","settings"].includes(current)&&e.target.closest("#editorControlsDropdown"))draw()});
   const oldSync=window.syncSiteControls; // editor functions are closure-scoped; input/change events keep the section preview live.
   choose("canvas");
