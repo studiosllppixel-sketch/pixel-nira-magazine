@@ -356,6 +356,9 @@
   /* Drag the large section-preview photo to adjust its focal point. */
   let imageDrag=null;
   preview.addEventListener("pointerdown",e=>{
+   /* Hero has its own pointer-capture editor (image focal point + movable text).
+      Do not run a second drag handler here: competing handlers caused the photo to jump. */
+   if(current==="hero"&&e.target.closest("#heroSectionPreviewClone"))return;
    const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
    if(!img||!["header","hero","footer"].includes(current))return;
    const target=current,box=img.getBoundingClientRect();
@@ -473,7 +476,9 @@
 /* Header and hero use a real, dimensioned editing surface like Canvas. */
 .section-live-preview:has(#heroSectionPreviewClone),.section-live-preview:has(.section-header-mock){padding:0;background:#f4f0e8;overflow:hidden}
 .section-preview-paper:has(#heroSectionPreviewClone),.section-preview-paper:has(.section-header-mock){padding:0;min-height:0;display:block;gap:0;background:#f4f0e8}
-#heroSectionPreviewClone{display:block;width:100%;min-height:calc(100svh - 112px)!important;height:auto;margin:0!important;border-radius:0;container-type:inline-size}
+#heroSectionPreviewClone{display:block;position:relative;isolation:isolate;overflow:hidden;box-sizing:border-box;width:100%;height:min(82svh,900px)!important;min-height:620px!important;margin:0!important;border-radius:0;container-type:inline-size}
+#heroSectionPreviewClone>.admin-cover-frame{height:100%!important;min-height:100%!important;box-sizing:border-box}
+#heroSectionPreviewClone>[data-hero-image-layer],#heroSectionPreviewClone>[data-hero-overlay-layer]{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
 #heroSectionPreviewClone [data-hero-image-layer]{pointer-events:auto!important;cursor:grab!important;touch-action:none!important;z-index:0!important}
 #heroSectionPreviewClone .admin-cover-frame{min-height:calc(100svh - 112px);pointer-events:none!important;z-index:1!important}
 #heroSectionPreviewClone .admin-cover-frame>*{pointer-events:auto}
@@ -490,8 +495,8 @@
 .section-header-preview-image{display:block;width:100%;max-height:none;object-fit:cover;cursor:grab;touch-action:none}
 .section-footer-preview-image{display:block;width:100%;max-height:none;object-fit:cover;cursor:grab;touch-action:none}
 @media(max-width:760px){
- #heroSectionPreviewClone{min-height:calc(100svh - 96px)!important}
- #heroSectionPreviewClone .admin-cover-frame{min-height:calc(100svh - 120px);pointer-events:none!important}
+ #heroSectionPreviewClone{height:78svh!important;min-height:540px!important}
+ #heroSectionPreviewClone .admin-cover-frame{height:100%!important;min-height:100%!important;pointer-events:none!important}
  #heroSectionPreviewClone .admin-cover-frame>*{pointer-events:auto}
  .section-preview-paper:has(.section-header-mock) .section-header-row{height:auto;min-height:70px;padding:0 5%;flex-wrap:wrap}
  .section-preview-paper:has(.section-header-mock) .section-header-logo{font-size:29px}
