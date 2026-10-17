@@ -329,7 +329,7 @@
     const h=el("header","", "section-header-mock");const announce=el("div",text("headerAnnouncement","PIXEL STUDIOS × NIRA EDITORIAL"),"section-header-announcement");const row=el("div","","section-header-row");row.append(el("strong",text("headerWordmark","NIRA"),"section-header-logo"));const links=el("div","","section-header-links");[text("headerJournalLabel","Journal"),text("headerNiraLabel","Nira Editorial"),text("headerPixelLabel","Pixel Studios"),text("headerAboutLabel","About Us"),text("headerContactLabel","Contact Us")].forEach(v=>links.append(el("span",v)));row.append(links);h.append(announce,row);out.append(h,el("p","Header preview — changes update here as you edit.","section-preview-help"));
     const image=document.getElementById("headerImagePreview")?.querySelector("img");if(image){const im=image.cloneNode();im.className="section-preview-image section-header-preview-image";im.style.height=(document.getElementById("headerImageHeight")?.value||82)+"px";out.append(im)}else{const action=el("button","Choose header image","section-image-pick");action.type="button";action.dataset.pickSiteImage="header";out.append(action)}
    }else if(current==="about"){
-    const a=el("section","","section-about-mock");const movable=(node,key)=>{node.dataset.siteMove="about:"+key;const pos=window.getSiteVisualLayout?.("about",key)||{x:0,y:0};node.style.transform="translate("+Number(pos.x||0)+"%, "+Number(pos.y||0)+"%)";node.style.cursor="move";node.style.touchAction="none";return node};a.append(movable(el("p",text("aboutEyebrow","PIXEL STUDIOS × NIRA EDITORIAL"),"section-preview-eyebrow"),"eyebrow"),movable(el("h2",text("aboutTitle","About Us")),"title"),movable(el("p",text("aboutLead","An independent image journal."),"section-about-lead"),"lead"),movable(el("p",text("aboutBody","Fashion, photography and stories with a point of view."),"section-about-body"),"body"));out.append(a);
+    const a=el("section","","section-about-mock");const movable=(node,key)=>{node.dataset.siteMove="about:"+key;const pos=window.getSiteVisualLayout?.("about",key)||{x:0,y:0};node.style.position="relative";node.style.left=Number(pos.x||0)+"%";node.style.top=Number(pos.y||0)+"%";node.style.cursor="move";node.style.touchAction="none";return node};a.append(movable(el("p",text("aboutEyebrow","PIXEL STUDIOS × NIRA EDITORIAL"),"section-preview-eyebrow"),"eyebrow"),movable(el("h2",text("aboutTitle","About Us")),"title"),movable(el("p",text("aboutLead","An independent image journal."),"section-about-lead"),"lead"),movable(el("p",text("aboutBody","Fashion, photography and stories with a point of view."),"section-about-body"),"body"));out.append(a);
    }else if(current==="contact"){
     const c=el("section","","section-contact-mock");const movable=(node,key)=>{node.dataset.siteMove="contact:"+key;const pos=window.getSiteVisualLayout?.("contact",key)||{x:0,y:0};node.style.transform="translate("+Number(pos.x||0)+"%, "+Number(pos.y||0)+"%)";node.style.cursor="move";node.style.touchAction="none";return node};c.append(movable(el("p",text("contactEyebrow","LET’S CONNECT"),"section-preview-eyebrow"),"eyebrow"),movable(el("h2",text("contactTitle","Contact Us")),"title"),movable(el("p",text("contactLead","For collaborations, editorial submissions and enquiries, connect with our teams."),"section-contact-lead"),"lead"),movable(el("p",text("contactEmail",""),"section-contact-detail"),"email"),movable(el("p",text("contactPhone",""),"section-contact-detail"),"phone"),movable(el("p",text("contactAddress",""),"section-contact-detail"),"address"));out.append(c);
    }else if(current==="footer"){
@@ -361,9 +361,9 @@
     if(e.button!==0)return;
     const section=current==="hero"?"hero":(text.dataset.siteMove?.split(":")[0]||current);
     const key=section==="hero"?(text.hasAttribute("data-hero-eyebrow")?"eyebrow":text.hasAttribute("data-hero-title")?"title":text.hasAttribute("data-hero-description")?"description":"buttonLabel"):text.dataset.siteMove?.split(":")[1];
-    const match=(text.style.transform||"").match(/translate\(\s*(-?[\d.]+)%\s*,\s*(-?[\d.]+)%\s*\)/);
+    const matchX=(text.style.left||"0%").match(/(-?[\d.]+)%/),matchY=(text.style.top||"0%").match(/(-?[\d.]+)%/);
     const box=(section==="hero"?document.getElementById("heroSectionPreviewClone"):document.getElementById("sectionPreviewContent")).getBoundingClientRect();
-    textDrag={node:text,key,section,startX:e.clientX,startY:e.clientY,baseX:match?Number(match[1]):0,baseY:match?Number(match[2]):0,width:box.width,height:box.height,moved:false};
+    textDrag={node:text,key,section,startX:e.clientX,startY:e.clientY,baseX:matchX?Number(matchX[1]):0,baseY:matchY?Number(matchY[1]):0,width:box.width,height:box.height,moved:false};
     text.style.cursor="grabbing";text.style.outline="1px dashed #d6b9d0";e.preventDefault();e.stopPropagation();return;
    }
    const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
@@ -378,7 +378,7 @@
    if(textDrag){
     const dx=(e.clientX-textDrag.startX)/Math.max(1,textDrag.width)*100,dy=(e.clientY-textDrag.startY)/Math.max(1,textDrag.height)*100;
     textDrag.nextX=Math.max(-45,Math.min(45,textDrag.baseX+dx));textDrag.nextY=Math.max(-45,Math.min(45,textDrag.baseY+dy));
-    textDrag.node.style.transform="translate("+textDrag.nextX+"%, "+textDrag.nextY+"%)";textDrag.moved=true;return;
+    textDrag.node.style.left=textDrag.nextX+"%";textDrag.node.style.top=textDrag.nextY+"%";textDrag.moved=true;return;
    }
    if(!imageDrag)return;
    const x=document.getElementById(imageDrag.target==="hero"?"heroImageX":imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target==="hero"?"heroImageY":imageDrag.target+"ImageY");
