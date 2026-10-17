@@ -353,12 +353,18 @@
    if(isSettings)controls.querySelectorAll(".page-editor-section").forEach(d=>d.open=d.querySelector(":scope > summary")?.textContent.includes("PAGE SETTINGS"));
    if(!isCanvas)draw();
   }
-  /* Drag the large section-preview photo to adjust its focal point. */
-  let imageDrag=null;
+  /* Drag section images to reframe and Hero text to position it; edits are saved in the editor state. */
+  let imageDrag=null,textDrag=null;
   preview.addEventListener("pointerdown",e=>{
-   /* Hero has its own pointer-capture editor (image focal point + movable text).
-      Do not run a second drag handler here: competing handlers caused the photo to jump. */
-   if(current==="hero"&&e.target.closest("#heroSectionPreviewClone"))return;
+   const text=e.target.closest("#heroSectionPreviewClone [data-hero-eyebrow],#heroSectionPreviewClone [data-hero-title],#heroSectionPreviewClone [data-hero-description],#heroSectionPreviewClone [data-hero-button]");
+   if(text&&current==="hero"&&!e.target.closest("button,input,textarea,select")){
+    if(e.button!==0)return;
+    const key=text.hasAttribute("data-hero-eyebrow")?"eyebrow":text.hasAttribute("data-hero-title")?"title":text.hasAttribute("data-hero-description")?"description":"buttonLabel";
+    const match=(text.style.transform||"").match(/translate\(\s*(-?[\d.]+)%\s*,\s*(-?[\d.]+)%\s*\)/);
+    const box=document.getElementById("heroSectionPreviewClone").getBoundingClientRect();
+    textDrag={node:text,key,startX:e.clientX,startY:e.clientY,baseX:match?Number(match[1]):0,baseY:match?Number(match[2]):0,width:box.width,height:box.height,moved:false};
+    text.style.cursor="grabbing";text.style.outline="1px dashed #d6b9d0";e.preventDefault();e.stopPropagation();return;
+   }
    const img=e.target.closest(".section-preview-image, #heroSectionPreviewClone [data-hero-image-layer]");
    if(!img||!["header","hero","footer"].includes(current))return;
    const target=current,box=img.getBoundingClientRect();
@@ -368,6 +374,11 @@
    img.style.cursor="grabbing";img.style.touchAction="none";img.setPointerCapture?.(e.pointerId);e.preventDefault();
   });
   preview.addEventListener("pointermove",e=>{
+   if(textDrag){
+    const dx=(e.clientX-textDrag.startX)/Math.max(1,textDrag.width)*100,dy=(e.clientY-textDrag.startY)/Math.max(1,textDrag.height)*100;
+    textDrag.nextX=Math.max(-45,Math.min(45,textDrag.baseX+dx));textDrag.nextY=Math.max(-45,Math.min(45,textDrag.baseY+dy));
+    textDrag.node.style.transform="translate("+textDrag.nextX+"%, "+textDrag.nextY+"%)";textDrag.moved=true;return;
+   }
    if(!imageDrag)return;
    const x=document.getElementById(imageDrag.target==="hero"?"heroImageX":imageDrag.target+"ImageX"),y=document.getElementById(imageDrag.target==="hero"?"heroImageY":imageDrag.target+"ImageY");
    const clamp=v=>Math.max(0,Math.min(100,v));
@@ -378,6 +389,10 @@
    imageDrag.moved=true;
   });
   const finishImageDrag=()=>{
+   if(textDrag){
+    const t=textDrag;textDrag=null;t.node.style.cursor="move";t.node.style.outline="";
+    if(t.moved&&typeof window.setHeroVisualLayout==="function")window.setHeroVisualLayout(t.key,t.nextX,t.nextY);
+   }
    if(!imageDrag)return;
    const target=imageDrag.target,img=imageDrag.img,moved=imageDrag.moved;
    img.style.cursor="grab";imageDrag=null;
