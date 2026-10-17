@@ -20,6 +20,24 @@
     .standalone-page .social-links a{font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:10px}
     .site-footer.editorial-footer{display:block}
     .standalone-page .content-note{margin-top:42px;font:italic 18px/1.5 var(--serif);color:var(--muted)}
+    .contact-intro{max-width:760px;margin-top:54px;border-top:1px solid var(--line);padding-top:25px}
+    .contact-intro-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 22px}
+    .contact-enquiry-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;max-width:1050px;margin-top:24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .contact-enquiry{padding:25px 24px 28px 0;min-height:132px}
+    .contact-enquiry+.contact-enquiry{border-left:1px solid var(--line);padding-left:24px}
+    .contact-enquiry h2{font:500 25px/1.1 var(--serif);letter-spacing:-.025em;margin:0 0 12px}
+    .contact-enquiry p{font-size:11px;line-height:1.8;color:#625e56;margin:0;max-width:240px}
+    .standalone-page #contactDetails{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 28px;max-width:900px;margin-top:35px}
+    .standalone-page #contactDetails:empty{display:none}
+    .standalone-page #contactDetails .info-body{border-top:1px solid var(--line);padding-top:15px;margin:0;font-size:11px;line-height:1.8;overflow-wrap:anywhere}
+    .standalone-page #contactDetails strong{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-bottom:6px}
+    .standalone-page #contactDetails a{border-bottom:1px solid var(--line);padding-bottom:2px}
+    .standalone-page .social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;max-width:900px;margin-top:44px;border-top:1px solid var(--line)}
+    .standalone-page .social-links a{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 18px 22px 0;border-bottom:1px solid var(--line);font-size:9px;letter-spacing:.15em;transition:padding .3s ease,color .3s ease}
+    .standalone-page .social-links a:after{content:"↗";font-size:15px;letter-spacing:0}
+    .standalone-page .social-links a:nth-child(even){padding-left:22px;border-left:1px solid var(--line)}
+    .standalone-page .social-links a:hover{padding-left:8px;color:var(--muted)}
+    @media(max-width:700px){.contact-enquiry-grid{grid-template-columns:1fr}.contact-enquiry{min-height:0;padding:22px 0}.contact-enquiry+.contact-enquiry{border-left:0;border-top:1px solid var(--line);padding-left:0}.standalone-page .social-links{grid-template-columns:1fr}.standalone-page .social-links a:nth-child(even){padding-left:0;border-left:0}}
     @media(max-width:900px){.standalone-page{padding-left:7%;padding-right:7%}}
   </style>
 </head>
@@ -36,7 +54,7 @@
     </nav>
     <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
   </header>
-  <main id="top" class="standalone-page" data-page-content="contact"><p class="eyebrow" id="pageEyebrow">LET’S CONNECT</p><h1 id="pageTitle">Contact Us</h1><p class="lead" id="pageLead">Edit contact information from the admin editor.</p><div id="contactDetails"></div><div class="social-links" id="contactSocialLinks"><a href="https://www.instagram.com/nira.editorial/" target="_blank" rel="noreferrer">Nira Editorial ↗</a><a href="https://www.instagram.com/pixelstudios.inc/" target="_blank" rel="noreferrer">Pixel Studios ↗</a></div><div class="page-rule"></div></main>
+  <main id="top" class="standalone-page" data-page-content="contact"><p class="eyebrow" id="pageEyebrow">LET’S CONNECT</p><h1 id="pageTitle">Contact Us</h1><p class="lead" id="pageLead">For collaborations, editorial submissions, photography, production, and other enquiries, connect with the teams below.</p><section class="contact-intro" aria-label="Contact enquiries"><p class="contact-intro-label">START A CONVERSATION</p><div class="contact-enquiry-grid"><article class="contact-enquiry"><h2>Editorial</h2><p>Features, stories, interviews and submissions for Nira Editorial.</p></article><article class="contact-enquiry"><h2>Photography</h2><p>Portraits, fashion shoots, image-making and production with Pixel Studios.</p></article><article class="contact-enquiry"><h2>Collaborations</h2><p>Creative partnerships, campaigns and other project enquiries.</p></article></div></section><div id="contactDetails"></div><div class="social-links" id="contactSocialLinks"><a href="https://www.instagram.com/nira.editorial/" target="_blank" rel="noreferrer">Nira Editorial ↗</a><a href="https://www.instagram.com/pixelstudios.inc/" target="_blank" rel="noreferrer">Pixel Studios ↗</a></div><div class="page-rule"></div></main>
   <footer class="site-footer editorial-footer" id="site-footer">
     <div class="footer-topline"><span id="footerToplineBrand">PIXEL STUDIOS × NIRA EDITORIAL</span><span id="footerToplineIssue">INDEPENDENT IMAGE JOURNAL · VOL. 01</span></div>
     <div class="footer-center"><a class="footer-mark" id="footerMark" href="index.html">NIRA<span>®</span></a><p class="footer-tagline" id="footerTagline">The art of being seen.</p><p class="footer-description" id="footerDescriptor">Fashion · Photography · Stories</p></div>
